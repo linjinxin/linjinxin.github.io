@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Times New Roman:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="git,git 用法,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="git 基础git 三种状态已提交(committed)、已修改(modified)、已暂存(staged) git 三个工作区域远程仓库、工作目录、暂存区域  在工作目录修改文件 –&amp;gt; 已修改   将文件快照放入暂存区域 –&amp;gt; 工作目录 to 暂存区域 –&amp;gt; 已暂存   提交更新 –&amp;gt; 暂存区域 to 远程仓库 –&amp;gt; 已提交  git 配置git 配置有三个作用域，">
+<meta name="keywords" content="git,git 用法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="git 基础用法">
+<meta property="og:url" content="http://linjinxin.com/2019/09/05/coder/git/index.html">
+<meta property="og:site_name" content="Welcome to Code World">
+<meta property="og:description" content="git 基础git 三种状态已提交(committed)、已修改(modified)、已暂存(staged) git 三个工作区域远程仓库、工作目录、暂存区域  在工作目录修改文件 –&amp;gt; 已修改   将文件快照放入暂存区域 –&amp;gt; 工作目录 to 暂存区域 –&amp;gt; 已暂存   提交更新 –&amp;gt; 暂存区域 to 远程仓库 –&amp;gt; 已提交  git 配置git 配置有三个作用域，">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-09-05T10:22:38.808Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="git 基础用法">
+<meta name="twitter:description" content="git 基础git 三种状态已提交(committed)、已修改(modified)、已暂存(staged) git 三个工作区域远程仓库、工作目录、暂存区域  在工作目录修改文件 –&amp;gt; 已修改   将文件快照放入暂存区域 –&amp;gt; 工作目录 to 暂存区域 –&amp;gt; 已暂存   提交更新 –&amp;gt; 暂存区域 to 远程仓库 –&amp;gt; 已提交  git 配置git 配置有三个作用域，">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://linjinxin.com/2019/09/05/coder/git/">
+
+
+
+
+
+  <title>git 基础用法 | Welcome to Code World</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Welcome to Code World</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">Learning the ocean without boundaries</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>
+            
+            日程表
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linjinxin.com/2019/09/05/coder/git/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="林锦新">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Welcome to Code World">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">git 基础用法</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-05T18:20:33+08:00">
+                2019-09-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/IT-日常/" itemprop="url" rel="index">
+                    <span itemprop="name">IT 日常</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/09/05/coder/git/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/09/05/coder/git/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="git-基础"><a href="#git-基础" class="headerlink" title="git 基础"></a>git 基础</h1><h2 id="git-三种状态"><a href="#git-三种状态" class="headerlink" title="git 三种状态"></a>git 三种状态</h2><p><strong><em>已提交(committed)、已修改(modified)、已暂存(staged)</em></strong></p>
+<h2 id="git-三个工作区域"><a href="#git-三个工作区域" class="headerlink" title="git 三个工作区域"></a>git 三个工作区域</h2><p><strong>远程仓库、工作目录、暂存区域</strong></p>
+<ul>
+<li>在工作目录修改文件 –&gt; 已修改  </li>
+<li>将文件快照放入暂存区域 –&gt; 工作目录 to 暂存区域 –&gt; 已暂存  </li>
+<li>提交更新 –&gt; 暂存区域 to 远程仓库 –&gt; 已提交</li>
+</ul>
+<h2 id="git-配置"><a href="#git-配置" class="headerlink" title="git 配置"></a>git 配置</h2><p>git 配置有三个作用域，其应用优先级：<strong>local &gt; global &gt; system</strong>。</p>
+<ul>
+<li><code>--system</code> 配置文件为 <code>/etc/gitconfig</code> 下，所有用户的配置</li>
+<li><code>--global</code> 配置文件为 <code>~/.gitconfig</code> 或 <code>~/.config/git/config</code> 下，只针对当前用户的配置</li>
+<li><code>--local</code> 配置文件为 <code>proj/.git/config</code>，只针对当前仓库的配置</li>
+</ul>
+<h3 id="查看配置"><a href="#查看配置" class="headerlink" title="查看配置"></a>查看配置</h3><ul>
+<li>查看所有配置项 <code>git config [--system|--global|--local] --list</code></li>
+<li>查看特定配置项 <code>git config [--system|--global|--local] user.name</code></li>
+</ul>
+<p>如果不指定作用域，则按优先级获取，即在 <code>local</code> 取不到该项的值再从 <code>global</code> 取，还是取不到再从 <code>system</code> 取，如果 <code>system</code> 中也没配置，则返回空。</p>
+<h3 id="设置配置"><a href="#设置配置" class="headerlink" title="设置配置"></a>设置配置</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name xxx</span><br><span class="line">git config --global user.email xxx@example.com</span><br><span class="line">git config --system core.editor vim</span><br><span class="line">git config --<span class="built_in">local</span> core.ignorecase <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+<p>如果不指定作用域，则默认为 <code>--local</code>。</p>
+<h3 id="删除配置项"><a href="#删除配置项" class="headerlink" title="删除配置项"></a>删除配置项</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global --<span class="built_in">unset</span> user.name</span><br><span class="line">git config --<span class="built_in">local</span> --<span class="built_in">unset</span> user.email</span><br></pre></td></tr></table></figure>
+<p>如果不指定作用域，则默认为 <code>--local</code>。</p>
+<h2 id="查看帮助"><a href="#查看帮助" class="headerlink" title="查看帮助"></a>查看帮助</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">help</span> [verb]</span><br><span class="line">git [verb] --<span class="built_in">help</span>  </span><br><span class="line">man git-[verb]</span><br></pre></td></tr></table></figure>
+<h1 id="git-仓库"><a href="#git-仓库" class="headerlink" title="git 仓库"></a>git 仓库</h1><h3 id="创建远程仓库"><a href="#创建远程仓库" class="headerlink" title="创建远程仓库"></a>创建远程仓库</h3><p><code>git remote add &lt;remote-name&gt; &lt;url&gt;</code></p>
+<h3 id="查看远程仓库"><a href="#查看远程仓库" class="headerlink" title="查看远程仓库"></a>查看远程仓库</h3><p><code>git remote</code><br><code>git remote -v</code>(显示url)<br><code>git remote show &lt;remote-name&gt;</code>(查看某一远程仓库的详细信息)</p>
+<h3 id="重命名远程仓库"><a href="#重命名远程仓库" class="headerlink" title="重命名远程仓库"></a>重命名远程仓库</h3><p><code>git remote rename &lt;old-name&gt; &lt;new-name&gt;</code></p>
+<h3 id="移除远程仓库"><a href="#移除远程仓库" class="headerlink" title="移除远程仓库"></a>移除远程仓库</h3><p><code>git remote rm &lt;remote-name&gt;</code></p>
+<h3 id="从远程仓库抓取"><a href="#从远程仓库抓取" class="headerlink" title="从远程仓库抓取"></a>从远程仓库抓取</h3><p><code>git fetch &lt;remote-name&gt;</code><br>此命令会抓取远程仓库的所有分支的引用，不会进行合并，必须手动合并分支<br><code>git pull &lt;remote-name&gt; &lt;branch-name&gt;</code><br>如果本地一个分支设置为跟踪一个远程分支，使用pull可自动抓取并合并远程分支到本地分支</p>
+<h3 id="推送到远程仓库"><a href="#推送到远程仓库" class="headerlink" title="推送到远程仓库"></a>推送到远程仓库</h3><p><code>git push &lt;remote-name&gt; &lt;branch-name&gt;</code><br>当前远程仓库没人抢先推送时才能推送成功，否则必须先抓取远程分支合并后再推送。</p>
+<h2 id="Git分支"><a href="#Git分支" class="headerlink" title="Git分支"></a>Git分支</h2><h2 id="创建-获取Git仓库"><a href="#创建-获取Git仓库" class="headerlink" title="创建/获取Git仓库"></a>创建/获取Git仓库</h2><p>创建本地工作目录：<code>git init</code><br>克隆服务器仓库：<code>git clone &lt;url&gt; &lt;name&gt;</code></p>
+<h2 id="跟踪文件"><a href="#跟踪文件" class="headerlink" title="跟踪文件"></a>跟踪文件</h2><h3 id="文件状态"><a href="#文件状态" class="headerlink" title="文件状态"></a>文件状态</h3><p><em>未跟踪(untracked)、已修改(modified)、已暂存(staged)、未修改(unmodified)/已提交(commited)</em></p>
+<h3 id="检查文件状态"><a href="#检查文件状态" class="headerlink" title="检查文件状态"></a>检查文件状态</h3><ul>
+<li><code>git status</code></li>
+<li><code>git status -s</code></li>
+<li><code>git status --short</code></li>
+</ul>
+<h3 id="跟踪新文件"><a href="#跟踪新文件" class="headerlink" title="跟踪新文件"></a>跟踪新文件</h3><p><code>git add &lt;file&gt;/&lt;dir&gt;</code></p>
+<h3 id="跟踪修改的文件"><a href="#跟踪修改的文件" class="headerlink" title="跟踪修改的文件"></a>跟踪修改的文件</h3><p><code>git add &lt;file&gt;/&lt;dir&gt;</code><br>每次修改文件后，提交更新前都要重新跟踪这个修改的文件，因为提交更新时是暂存区的版本，而不是本地目录的版本。</p>
+<h2 id="忽略文件"><a href="#忽略文件" class="headerlink" title="忽略文件"></a>忽略文件</h2><p>创建一个.gitignore文件来指定哪些文件不需要跟踪  </p>
+<ul>
+<li><em>*.[oa]</em>            所有以.o或.a结尾的文件</li>
+<li>_*~_                所有以~结尾的文件</li>
+<li><em>build/</em>          build目录下的所有文件</li>
+<li><em>/build</em>            本目录下的build文件，不是目录，也不包含其它目录的build文件</li>
+<li><em>doc/*.txt</em>        doc根目录下的所有文本文件</li>
+<li><em>doc/*<em>/</em>.txt</em>    doc目录下的所有文本文件</li>
+</ul>
+<h2 id="查看已暂存-未暂存修改"><a href="#查看已暂存-未暂存修改" class="headerlink" title="查看已暂存/未暂存修改"></a>查看已暂存/未暂存修改</h2><ol>
+<li>查看未暂存文件的修改信息：<br><code>git diff</code></li>
+<li>查看已暂存文件的修改信息：<br><code>git diff -cached</code><br><code>git diff -staged</code></li>
+</ol>
+<h2 id="提交更新"><a href="#提交更新" class="headerlink" title="提交更新"></a>提交更新</h2><ol>
+<li>打开编辑器：<code>git commit</code></li>
+<li>直接输入说明：<code>git commit -m &lt;statement&gt;</code></li>
+<li>跳过暂存区域直接提交：<code>git commit -a</code></li>
+</ol>
+<h2 id="移除文件"><a href="#移除文件" class="headerlink" title="移除文件"></a>移除文件</h2><ol>
+<li>从暂存区域和本地目录移除：<code>git rm &lt;file&gt;</code></li>
+<li>只从暂存区域移除，保留在本地目录成为未跟踪文件：<code>git rm --cached &lt;file&gt;</code></li>
+<li>如果文件修改过且放入暂存区域，删除时必须强制删除：<code>git rm -f &lt;file&gt;</code></li>
+</ol>
+<h2 id="移动文件"><a href="#移动文件" class="headerlink" title="移动文件"></a>移动文件</h2><p><code>git mv &lt;oldfile&gt; &lt;newfile&gt;</code><br>等价于下面三条命令集<br><code>mv &lt;oldfile&gt; &lt;newfile&gt;</code><br><code>git rm &lt;oldfile&gt;</code><br><code>git add &lt;newfile&gt;</code></p>
+<h2 id="查看提交日志"><a href="#查看提交日志" class="headerlink" title="查看提交日志"></a>查看提交日志</h2><p><code>git log</code>  </p>
+<ul>
+<li>-p    显示每次提交的内容差异</li>
+<li>-<n>    只显示最新的n次提交</n></li>
+<li>–stat    显示简略的统计信息</li>
+<li>–pretty 指定显示的格式</li>
+</ul>
+<h2 id="撤销操作"><a href="#撤销操作" class="headerlink" title="撤销操作"></a>撤销操作</h2><h3 id="重新提交"><a href="#重新提交" class="headerlink" title="重新提交"></a>重新提交</h3><p><code>git commit --amend</code><br>第二次提交会覆盖上一次的提交，如果第二次提交没有新的修改，就会使用第一次的快照，只覆盖提交信息</p>
+<h3 id="撤销暂存"><a href="#撤销暂存" class="headerlink" title="撤销暂存"></a>撤销暂存</h3><p><code>git reset HEAD &lt;file&gt;</code></p>
+<h3 id="撤销修改"><a href="#撤销修改" class="headerlink" title="撤销修改"></a>撤销修改</h3><p><code>git checkout -- &lt;file&gt;</code><br>将文件修改为上次提交的样子或者刚放入工作目录时的样子，直接拿以前的文件来覆盖，因此很危险</p>
+<h3 id="分支简介"><a href="#分支简介" class="headerlink" title="分支简介"></a>分支简介</h3><ul>
+<li>git分支本质上仅仅是指向提交对象的可变指针，提交对象提交时分支会自动向前移动。</li>
+<li>git init会默认创建一个名为master的分支，这个分支和普通分支没什么区别。</li>
+<li>HEAD才是特别的分支，它指向当前所在的本地分支，可看作当前分支的别名。切换分支时HEA   D会指向另一个分支，同时把本地目录的文件替换为另一个分支指向的文件。</li>
+</ul>
+<h3 id="分支创建"><a href="#分支创建" class="headerlink" title="分支创建"></a>分支创建</h3><p><code>git branch &lt;branch-name&gt;</code></p>
+<h3 id="分支切换"><a href="#分支切换" class="headerlink" title="分支切换"></a>分支切换</h3><ul>
+<li><code>git checkout &lt;branch-name&gt;</code>  </li>
+<li><p><code>git checkout -b &lt;branch-name&gt;</code></p>
+<p>  会同时创建分支并切换到该分支，等价于下面两条命令集<br><code>git branch &lt;branch-name&gt;</code><br><code>git checkout &lt;branch-name&gt;</code></p>
+</li>
+</ul>
+<h3 id="分支合并"><a href="#分支合并" class="headerlink" title="分支合并"></a>分支合并</h3><p><code>git merge &lt;other-branch&gt;</code><br>将other-branch合并到当前分支，合并后other-branch的状态就是merged，可直接删除。</p>
+<h3 id="查看分支"><a href="#查看分支" class="headerlink" title="查看分支"></a>查看分支</h3><ul>
+<li>查看所有分支：<code>git branch</code></li>
+<li>查看所有分支最后一次提交：<code>git branch -v</code></li>
+<li>查看所有已合并分支：<code>git branch --merged</code></li>
+<li>查看所有未合并分支：<code>git branch --no-merged</code></li>
+</ul>
+<h3 id="删除分支"><a href="#删除分支" class="headerlink" title="删除分支"></a>删除分支</h3><p><code>git branch -d &lt;branch-name&gt;</code><br>只能删除那些已经合并的分支，如果想强制删除未合并的分支，使用<br><code>git branch -D &lt;branch-name&gt;</code></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/git/" rel="tag"># git</a>
+          
+            <a href="/tags/git-用法/" rel="tag"># git 用法</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/23/coder/hexo/" rel="next" title="使用 github + hexo 搭建个人博客">
+                <i class="fa fa-chevron-left"></i> 使用 github + hexo 搭建个人博客
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="林锦新">
+            
+              <p class="site-author-name" itemprop="name">林锦新</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/linjinxin" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#git-基础"><span class="nav-number">1.</span> <span class="nav-text">git 基础</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#git-三种状态"><span class="nav-number">1.1.</span> <span class="nav-text">git 三种状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-三个工作区域"><span class="nav-number">1.2.</span> <span class="nav-text">git 三个工作区域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-配置"><span class="nav-number">1.3.</span> <span class="nav-text">git 配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查看配置"><span class="nav-number">1.3.1.</span> <span class="nav-text">查看配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置配置"><span class="nav-number">1.3.2.</span> <span class="nav-text">设置配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除配置项"><span class="nav-number">1.3.3.</span> <span class="nav-text">删除配置项</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看帮助"><span class="nav-number">1.4.</span> <span class="nav-text">查看帮助</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#git-仓库"><span class="nav-number">2.</span> <span class="nav-text">git 仓库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建远程仓库"><span class="nav-number">2.0.1.</span> <span class="nav-text">创建远程仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看远程仓库"><span class="nav-number">2.0.2.</span> <span class="nav-text">查看远程仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重命名远程仓库"><span class="nav-number">2.0.3.</span> <span class="nav-text">重命名远程仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#移除远程仓库"><span class="nav-number">2.0.4.</span> <span class="nav-text">移除远程仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#从远程仓库抓取"><span class="nav-number">2.0.5.</span> <span class="nav-text">从远程仓库抓取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#推送到远程仓库"><span class="nav-number">2.0.6.</span> <span class="nav-text">推送到远程仓库</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Git分支"><span class="nav-number">2.1.</span> <span class="nav-text">Git分支</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建-获取Git仓库"><span class="nav-number">2.2.</span> <span class="nav-text">创建/获取Git仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#跟踪文件"><span class="nav-number">2.3.</span> <span class="nav-text">跟踪文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#文件状态"><span class="nav-number">2.3.1.</span> <span class="nav-text">文件状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#检查文件状态"><span class="nav-number">2.3.2.</span> <span class="nav-text">检查文件状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#跟踪新文件"><span class="nav-number">2.3.3.</span> <span class="nav-text">跟踪新文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#跟踪修改的文件"><span class="nav-number">2.3.4.</span> <span class="nav-text">跟踪修改的文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#忽略文件"><span class="nav-number">2.4.</span> <span class="nav-text">忽略文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看已暂存-未暂存修改"><span class="nav-number">2.5.</span> <span class="nav-text">查看已暂存/未暂存修改</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#提交更新"><span class="nav-number">2.6.</span> <span class="nav-text">提交更新</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#移除文件"><span class="nav-number">2.7.</span> <span class="nav-text">移除文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#移动文件"><span class="nav-number">2.8.</span> <span class="nav-text">移动文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看提交日志"><span class="nav-number">2.9.</span> <span class="nav-text">查看提交日志</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#撤销操作"><span class="nav-number">2.10.</span> <span class="nav-text">撤销操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#重新提交"><span class="nav-number">2.10.1.</span> <span class="nav-text">重新提交</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#撤销暂存"><span class="nav-number">2.10.2.</span> <span class="nav-text">撤销暂存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#撤销修改"><span class="nav-number">2.10.3.</span> <span class="nav-text">撤销修改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分支简介"><span class="nav-number">2.10.4.</span> <span class="nav-text">分支简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分支创建"><span class="nav-number">2.10.5.</span> <span class="nav-text">分支创建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分支切换"><span class="nav-number">2.10.6.</span> <span class="nav-text">分支切换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分支合并"><span class="nav-number">2.10.7.</span> <span class="nav-text">分支合并</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看分支"><span class="nav-number">2.10.8.</span> <span class="nav-text">查看分支</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除分支"><span class="nav-number">2.10.9.</span> <span class="nav-text">删除分支</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">林锦新</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://ljx.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://linjinxin.com/2019/09/05/coder/git/';
+          this.page.identifier = '2019/09/05/coder/git/';
+          this.page.title = 'git 基础用法';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://ljx.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
