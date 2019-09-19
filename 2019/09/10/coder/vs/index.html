@@ -100,7 +100,7 @@
 
 
 
-  <meta name="keywords" content="Visual Studio,Visual Studio 环境配置，Windows 环境配置,">
+  <meta name="keywords" content="Visual Studio,Visual Studio 环境配置,Windows 环境配置,">
 
 
 
@@ -112,24 +112,24 @@
 
 
 <meta name="description" content="链接库在 Windows 上开发 C++ 程序，需要 头文件 和 链接库，头文件大家都很熟，就是包含函数定义的 .h 文件，链接库就是编译好的代码库，供其它程序使用，分为 动态链接库 和 静态链接库。关于动态链接库和静态链接库的区别，简单来说，就是下面几点  静态链接库把所有指令都编译到 .lib 文件中。使用时要把 lib 文件和头文件包含到项目中，生成项目时地把静态链接库的所有指令链接到应用程">
-<meta name="keywords" content="Visual Studio,Visual Studio 环境配置，Windows 环境配置">
+<meta name="keywords" content="Visual Studio,Visual Studio 环境配置,Windows 环境配置">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Visual Studio 环境配置.md">
+<meta property="og:title" content="Visual Studio 环境配置">
 <meta property="og:url" content="http://linjinxin.com/2019/09/10/coder/vs/index.html">
 <meta property="og:site_name" content="Welcome to Code World">
 <meta property="og:description" content="链接库在 Windows 上开发 C++ 程序，需要 头文件 和 链接库，头文件大家都很熟，就是包含函数定义的 .h 文件，链接库就是编译好的代码库，供其它程序使用，分为 动态链接库 和 静态链接库。关于动态链接库和静态链接库的区别，简单来说，就是下面几点  静态链接库把所有指令都编译到 .lib 文件中。使用时要把 lib 文件和头文件包含到项目中，生成项目时地把静态链接库的所有指令链接到应用程">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://linjinxin.com/2019/09/10/coder/vs/vs/include.png">
-<meta property="og:image" content="http://linjinxin.com/2019/09/10/coder/vs/vs/lib-include.png">
+<meta property="og:image" content="http://linjinxin.com/2019/09/10/coder/vs/include.png">
+<meta property="og:image" content="http://linjinxin.com/2019/09/10/coder/vs/lib-include.png">
 <meta property="og:image" content="http://linjinxin.com/2019/09/10/coder/vs/vs/lib.png">
 <meta property="og:image" content="http://linjinxin.com/2019/09/10/coder/vs/vs/platform-config.png">
 <meta property="og:image" content="http://linjinxin.com/2019/09/10/coder/vs/vs/platform-select.png">
 <meta property="og:image" content="http://linjinxin.com/2019/09/10/coder/vs/vs/all-platform.png">
-<meta property="og:updated_time" content="2019-09-10T14:08:52.907Z">
+<meta property="og:updated_time" content="2019-09-19T12:04:25.332Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Visual Studio 环境配置.md">
+<meta name="twitter:title" content="Visual Studio 环境配置">
 <meta name="twitter:description" content="链接库在 Windows 上开发 C++ 程序，需要 头文件 和 链接库，头文件大家都很熟，就是包含函数定义的 .h 文件，链接库就是编译好的代码库，供其它程序使用，分为 动态链接库 和 静态链接库。关于动态链接库和静态链接库的区别，简单来说，就是下面几点  静态链接库把所有指令都编译到 .lib 文件中。使用时要把 lib 文件和头文件包含到项目中，生成项目时地把静态链接库的所有指令链接到应用程">
-<meta name="twitter:image" content="http://linjinxin.com/2019/09/10/coder/vs/vs/include.png">
+<meta name="twitter:image" content="http://linjinxin.com/2019/09/10/coder/vs/include.png">
 
 
 
@@ -165,7 +165,7 @@
 
 
 
-  <title>Visual Studio 环境配置.md | Welcome to Code World</title>
+  <title>Visual Studio 环境配置 | Welcome to Code World</title>
   
 
 
@@ -329,7 +329,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">Visual Studio 环境配置.md</h2>
+          <h2 class="post-title" itemprop="name headline">Visual Studio 环境配置</h2>
         
 
         <div class="post-meta">
@@ -426,12 +426,12 @@
 <p>VS 默认会有一个 <code>附加包含目录</code>，位于 VS 安装目录下，所有 C++ 项目都会默认包含这个目录，所以如果我们把头文件放这个目录下，则所有的项目都无需再另外配置，这种方式暂且称之为 <strong>系统级配置</strong>；另外的方式就是为每个程序单独那个目录存放头文件，然后手动把这个目录包含进来，这种方式暂且称之为 <strong>程序级配置</strong>。</p>
 <h3 id="系统级配置"><a href="#系统级配置" class="headerlink" title="系统级配置"></a>系统级配置</h3><p>这种方式很简单，只需要把头文件放在系统定义的附加包含目录 <code>%VS_ROOT%\VC\include</code> 中去即可，可建子目录存放，然后使用的时候加上子目录即可，比如 <code>#include &lt;gl/glew.h&gt;</code>。</p>
 <h3 id="程序级配置"><a href="#程序级配置" class="headerlink" title="程序级配置"></a>程序级配置</h3><p>随便找个目录存放头文件，但遵循规范一般都是在工程目录下建个 <code>include</code> 目录，然后打开 <em>项目属性页</em>，在 <em>配置属性 –&gt; C/C++ –&gt; 常规 –&gt; 附加包含目录</em> 中添加我们新建的目录即可，可使用绝对路径和相对路径，推荐使用相对路径，方便项目移植。相对路径是相对于项目文件 <code>xxx.vcxproj</code> 的路径，如果 <code>include</code> 目录和项目文件同层级，则使用 <code>.\include</code>，如果在项目文件上一层，比如多个项目使用同一个头文件库，通常会这样放，则使用 <code>..\include</code>。</p>
-<p><img src="vs/include.png" alt="include"></p>
+<p><img src="include.png" alt="include"></p>
 <p>上图中的 <code>%(AdditionalIncludeDiretories)</code> 就是指系统定义的附加包含目录，VS 自动加上的，即使你把它删了也没关系，VS 还是会找到 <code>%VS_ROOT%\VC\include</code> 这个目录。</p>
 <h2 id="附加库目录"><a href="#附加库目录" class="headerlink" title="附加库目录"></a>附加库目录</h2><p>库文件在链接的时候使用，如果使用的是静态链接库，则是库文件本身，如果是动态链接库，则是导入库文件，即无论使用哪种库，需要包含的都是 <code>.lib</code> 文件。这些 <code>.lib</code> 文件统一放在 <code>附加库目录</code> 下，和头文件一样，VS 在安装目录下有一个系统的 <code>附加库目录</code>，所有 C++ 项目都会包含这个库目录。</p>
 <h3 id="系统级配置-1"><a href="#系统级配置-1" class="headerlink" title="系统级配置"></a>系统级配置</h3><p>和头文件不同，库文件有 32 位和 64 位之分，如果是 32 位库文件则放在 <code>%VS_ROOT%\VC\lib</code> 目录下，如果是 64 位库文件则放在 <code>%VS_ROOT\VC\lib\amd64</code> 目录下。</p>
 <h3 id="程序级配置-1"><a href="#程序级配置-1" class="headerlink" title="程序级配置"></a>程序级配置</h3><p>同样找个目录存放库文件，一般在工程目录下建个 <code>lib</code> 目录，然后打开 <em>项目属性页</em>，在 <em>配置属性 –&gt; 链接器 –&gt; 常规 –&gt; 附加库目录</em> 添加新建的目录即可。</p>
-<p><img src="vs/lib-include.png" alt="lib-include"></p>
+<p><img src="lib-include.png" alt="lib-include"></p>
 <h2 id="附加依赖项"><a href="#附加依赖项" class="headerlink" title="附加依赖项"></a>附加依赖项</h2><p>库文件和头文件不同，头文件只要放在 <code>附加包含目录</code> 下即可，而库文件不仅要放在 <code>附加库目录</code> 下，还要告诉 VS 这个库需要链接到程序中去，VS 不会把 <code>附加库目录</code> 下所有的库都链接到程序中去，而是指明要链接的库才会进行链接，这些要链接的库称为 <code>附加依赖项</code>。VS 同样会指明一些默认的附加依赖项，这些库是 Windows 程序必须包含的库，比如 <code>kernel32.lib, user32.lib, gdi32.lib</code> 等等。这些库 VS 默认会进行链接，但如果是我们自己添加的库，即使放在系统的 <code>附加库目录</code>，VS 也不会自动链接，而是需要手动添加到 <code>附加依赖项</code>，所以附加依赖项没有系统配置和程序级配置之分。打开 <em>项目属性页</em>，在 <em>配置属性 –&gt; 链接库 –&gt; 输入 –&gt; 附加依赖项</em> 中填入要链接的库文件名即可。</p>
 <p><img src="vs/lib.png" alt="lib"></p>
 <p><code>%(AdditionalLibraryDirectories)</code> 为系统 <code>包含库目录</code>，<code>%(AdditionalDependencies)</code> 为系统 <code>附加依赖项</code>，都是 VS 默认配置的。</p>
@@ -474,7 +474,9 @@
           
             <a href="/tags/Visual-Studio/" rel="tag"># Visual Studio</a>
           
-            <a href="/tags/Visual-Studio-环境配置，Windows-环境配置/" rel="tag"># Visual Studio 环境配置，Windows 环境配置</a>
+            <a href="/tags/Visual-Studio-环境配置/" rel="tag"># Visual Studio 环境配置</a>
+          
+            <a href="/tags/Windows-环境配置/" rel="tag"># Windows 环境配置</a>
           
         </div>
       
@@ -606,7 +608,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -821,7 +823,7 @@
         var disqus_config = function () {
           this.page.url = 'http://linjinxin.com/2019/09/10/coder/vs/';
           this.page.identifier = '2019/09/10/coder/vs/';
-          this.page.title = 'Visual Studio 环境配置.md';
+          this.page.title = 'Visual Studio 环境配置';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://ljx.disqus.com/embed.js';
