@@ -430,7 +430,7 @@
 <h3 id="程序级配置-1"><a href="#程序级配置-1" class="headerlink" title="程序级配置"></a>程序级配置</h3><p>同样找个目录存放库文件，一般在工程目录下建个 <code>lib</code> 目录，然后打开 <em>项目属性页</em>，在 <em>配置属性 –&gt; 链接器 –&gt; 常规 –&gt; 附加库目录</em> 添加新建的目录即可。</p>
 <p><img src="lib-include.png" alt="lib-include"></p>
 <h2 id="附加依赖项"><a href="#附加依赖项" class="headerlink" title="附加依赖项"></a>附加依赖项</h2><p>库文件和头文件不同，头文件只要放在 <code>附加包含目录</code> 下即可，而库文件不仅要放在 <code>附加库目录</code> 下，还要告诉 VS 这个库需要链接到程序中去，VS 不会把 <code>附加库目录</code> 下所有的库都链接到程序中去，而是指明要链接的库才会进行链接，这些要链接的库称为 <code>附加依赖项</code>。VS 同样会指明一些默认的附加依赖项，这些库是 Windows 程序必须包含的库，比如 <code>kernel32.lib, user32.lib, gdi32.lib</code> 等等。这些库 VS 默认会进行链接，但如果是我们自己添加的库，即使放在系统的 <code>附加库目录</code>，VS 也不会自动链接，而是需要手动添加到 <code>附加依赖项</code>，所以附加依赖项没有系统配置和程序级配置之分。打开 <em>项目属性页</em>，在 <em>配置属性 –&gt; 链接库 –&gt; 输入 –&gt; 附加依赖项</em> 中填入要链接的库文件名即可。</p>
-<p><img src="vs/lib.png" alt="lib"></p>
+<p><img src="lib.png" alt="lib"></p>
 <p><code>%(AdditionalLibraryDirectories)</code> 为系统 <code>包含库目录</code>，<code>%(AdditionalDependencies)</code> 为系统 <code>附加依赖项</code>，都是 VS 默认配置的。</p>
 <h2 id="动态链接库"><a href="#动态链接库" class="headerlink" title="动态链接库"></a>动态链接库</h2><p>如果使用的是静态链接库，则不需要这一步，因为所有库代码都被链接到可执行程序 <code>.exe</code> 中去了，单个文件即可执行。反之则需要把动态链接库 <code>.dll</code> 文件放在可执行文件能自动找到的目录下，系统目录或可执行文件所在目录。系统目录在 32 位系统和 64 位系统上有所不同，</p>
 <ul>
@@ -447,11 +447,11 @@
 <li><strong>x64-Release</strong></li>
 </ul>
 <p>在 <em>项目属性页</em> 的顶部，可选择配置版本和平台，之后我们编辑的所有配置都只对当前选中的版本和平台生效，点击 <em>配置管理器</em> 可打开配置管理器，查看所有配置项或者新建配置项。</p>
-<p><img src="vs/platform-config.png" alt="配置版本和平台"></p>
+<p><img src="platform-config.png" alt="配置版本和平台"></p>
 <p>生成项目的时候也需要选择对应的发布版本和发布平台，比如 <code>Debug</code> 和 <code>Win32</code>，则本次生成会使用 <code>Win32-Debug</code> 配置项的配置。</p>
-<p><img src="vs/platform-select.png" alt="选择版本和平台"></p>
+<p><img src="platform-select.png" alt="选择版本和平台"></p>
 <p>当前选中的版本和平台会在属性页显示 <code>活动</code>，如果想一次配置对所有版本和平台都生效，在属性页选择 <code>所有配置</code> 和 <code>所有平台</code> 即可。</p>
-<p><img src="vs/all-platform.png" alt="全部配置"></p>
+<p><img src="all-platform.png" alt="全部配置"></p>
 
           
         
@@ -616,7 +616,7 @@
 <li>第二步，把 <code>glut.lib glut32.lib</code> 放在 Visual Studio 安装目录下的 <code>VC/lib</code> 目录下；</li>
 <li>第三步，把 <code>glut.dll glut32.dll</code> 放在系统目录下。</li>
 </ul>
-<p>关于 VS 配置的详细内容，可参考 <a href="../coder/vs.md">Visual Studio 环境配置</a>。</p>
+<p>关于 VS 配置的详细内容，可参考 <a href="../coder/vs">Visual Studio 环境配置</a>。</p>
 <h1 id="第一个例子"><a href="#第一个例子" class="headerlink" title="第一个例子"></a>第一个例子</h1><p>新建一个 C++ 空项目，控制台或 win32 都行，然后添加一个 <code>main.c</code> 源文件。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;gl/glut.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">renderPreFrame</span><span class="params">()</span></span>;</span><br><span class="line">		</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>** argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	glutInit(&amp;argc, argv);</span><br><span class="line">	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);</span><br><span class="line"></span><br><span class="line">	glutInitWindowPosition(<span class="number">100</span>, <span class="number">100</span>);</span><br><span class="line">	glutInitWindowSize(<span class="number">400</span>, <span class="number">400</span>);</span><br><span class="line">	glutCreateWindow(<span class="string">"First Window"</span>);</span><br><span class="line"></span><br><span class="line">	glClearColor(<span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>);</span><br><span class="line">	glutDisplayFunc(renderPreFrame);</span><br><span class="line">	glutMainLoop();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">renderPreFrame</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	glClear(GL_COLOR_BUFFER_BIT);</span><br><span class="line">	glutSwapBuffers();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>运行之后可以看到一个 400x400 的黑窗口，在距离左上角 (100,100) 的位置。  </p>
