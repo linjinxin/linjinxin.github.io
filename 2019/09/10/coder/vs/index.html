@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Times New Roman:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Visual Studio,Visual Studio 环境配置，Windows 环境配置,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="链接库在 Windows 上开发 C++ 程序，需要 头文件 和 链接库，头文件大家都很熟，就是包含函数定义的 .h 文件，链接库就是编译好的代码库，供其它程序使用，分为 动态链接库 和 静态链接库。关于动态链接库和静态链接库的区别，简单来说，就是下面几点  静态链接库把所有指令都编译到 .lib 文件中。使用时要把 lib 文件和头文件包含到项目中，生成项目时地把静态链接库的所有指令链接到应用程">
+<meta name="keywords" content="Visual Studio,Visual Studio 环境配置，Windows 环境配置">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Visual Studio 环境配置.md">
+<meta property="og:url" content="http://linjinxin.com/2019/09/10/coder/vs/index.html">
+<meta property="og:site_name" content="Welcome to Code World">
+<meta property="og:description" content="链接库在 Windows 上开发 C++ 程序，需要 头文件 和 链接库，头文件大家都很熟，就是包含函数定义的 .h 文件，链接库就是编译好的代码库，供其它程序使用，分为 动态链接库 和 静态链接库。关于动态链接库和静态链接库的区别，简单来说，就是下面几点  静态链接库把所有指令都编译到 .lib 文件中。使用时要把 lib 文件和头文件包含到项目中，生成项目时地把静态链接库的所有指令链接到应用程">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://linjinxin.com/2019/09/10/coder/vs/vs/include.png">
+<meta property="og:image" content="http://linjinxin.com/2019/09/10/coder/vs/vs/lib-include.png">
+<meta property="og:image" content="http://linjinxin.com/2019/09/10/coder/vs/vs/lib.png">
+<meta property="og:image" content="http://linjinxin.com/2019/09/10/coder/vs/vs/platform-config.png">
+<meta property="og:image" content="http://linjinxin.com/2019/09/10/coder/vs/vs/platform-select.png">
+<meta property="og:image" content="http://linjinxin.com/2019/09/10/coder/vs/vs/all-platform.png">
+<meta property="og:updated_time" content="2019-09-10T14:08:52.907Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Visual Studio 环境配置.md">
+<meta name="twitter:description" content="链接库在 Windows 上开发 C++ 程序，需要 头文件 和 链接库，头文件大家都很熟，就是包含函数定义的 .h 文件，链接库就是编译好的代码库，供其它程序使用，分为 动态链接库 和 静态链接库。关于动态链接库和静态链接库的区别，简单来说，就是下面几点  静态链接库把所有指令都编译到 .lib 文件中。使用时要把 lib 文件和头文件包含到项目中，生成项目时地把静态链接库的所有指令链接到应用程">
+<meta name="twitter:image" content="http://linjinxin.com/2019/09/10/coder/vs/vs/include.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://linjinxin.com/2019/09/10/coder/vs/">
+
+
+
+
+
+  <title>Visual Studio 环境配置.md | Welcome to Code World</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Welcome to Code World</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">Learning the ocean without boundaries</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>
+            
+            日程表
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linjinxin.com/2019/09/10/coder/vs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="林锦新">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Welcome to Code World">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Visual Studio 环境配置.md</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-10T18:05:35+08:00">
+                2019-09-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/IT-日常/" itemprop="url" rel="index">
+                    <span itemprop="name">IT 日常</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/09/10/coder/vs/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/09/10/coder/vs/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="链接库"><a href="#链接库" class="headerlink" title="链接库"></a>链接库</h1><p>在 Windows 上开发 C++ 程序，需要 <strong>头文件</strong> 和 <strong>链接库</strong>，头文件大家都很熟，就是包含函数定义的 <code>.h</code> 文件，链接库就是编译好的代码库，供其它程序使用，分为 <strong>动态链接库</strong> 和 <strong>静态链接库</strong>。关于动态链接库和静态链接库的区别，简单来说，就是下面几点</p>
+<ol>
+<li>静态链接库把所有指令都编译到 <code>.lib</code> 文件中。使用时要把 lib 文件和头文件包含到项目中，生成项目时地把静态链接库的所有指令链接到应用程序 exe 中去；因此应用程序会比较大，但不需要其它库的支持，单独一个 exe 文件就能执行；</li>
+<li>动态链接库把所有指令都编译到 <code>.dll</code> 文件中去，另外还会生成一个导入动态库的 lib 文件，这个文件只定义了 dll 文件中哪个指令可以使用，并不包含实际的指令内容，使用时要把 lib 文件和头文件包含到项目中，生成项目时不会把指令链接到 exe 文件中，而是在执行时动态从 dll 文件中加载，因此应用程序会比较小，但必须把 dll 文件放在可执行文件所在目录或程序能找到的系统目录；</li>
+<li>lib 文件有两种，一种是静态链接库本身，它包含了所有编译后的指令，文件比较大；另一种是动态链接库的导入库，它只声明了动态库中哪些有哪些导出的指令，不包含实际内容，文件比较小。</li>
+</ol>
+<p>关于动态链接库和静态链接库更多的细节，可参考 <a href="http://www.cnblogs.com/dongzhiquan/archive/2010/07/22/1994587.html" target="_blank" rel="noopener">动态链接库&amp;静态链接库</a>。</p>
+<ul>
+<li>使用动态链接库：<strong>头文件 <code>.h</code>，库文件 <code>.dll</code>，导入库文件 <code>.lib</code></strong>；</li>
+<li>动态链接库：<strong>头文件 <code>.h</code>，库文件 <code>.lib</code></strong>。</li>
+</ul>
+<h1 id="C-配置"><a href="#C-配置" class="headerlink" title="C++ 配置"></a>C++ 配置</h1><h2 id="附加包含目录"><a href="#附加包含目录" class="headerlink" title="附加包含目录"></a>附加包含目录</h2><p><code>附加包含目录</code> 存放项目需要用到的额外头文件，在代码中包含一个不属于项目本身的头文件时(一般会写 <code>#include &lt;xxx.h&gt;</code>，而包含项目内的头文件则写 <code>#include &quot;xxx.h&quot;</code>)，VS 会去 <code>附加包含目录</code> 查找有没有这个头文件，如果找不到则会报语法错误。</p>
+<p>VS 默认会有一个 <code>附加包含目录</code>，位于 VS 安装目录下，所有 C++ 项目都会默认包含这个目录，所以如果我们把头文件放这个目录下，则所有的项目都无需再另外配置，这种方式暂且称之为 <strong>系统级配置</strong>；另外的方式就是为每个程序单独那个目录存放头文件，然后手动把这个目录包含进来，这种方式暂且称之为 <strong>程序级配置</strong>。</p>
+<h3 id="系统级配置"><a href="#系统级配置" class="headerlink" title="系统级配置"></a>系统级配置</h3><p>这种方式很简单，只需要把头文件放在系统定义的附加包含目录 <code>%VS_ROOT%\VC\include</code> 中去即可，可建子目录存放，然后使用的时候加上子目录即可，比如 <code>#include &lt;gl/glew.h&gt;</code>。</p>
+<h3 id="程序级配置"><a href="#程序级配置" class="headerlink" title="程序级配置"></a>程序级配置</h3><p>随便找个目录存放头文件，但遵循规范一般都是在工程目录下建个 <code>include</code> 目录，然后打开 <em>项目属性页</em>，在 <em>配置属性 –&gt; C/C++ –&gt; 常规 –&gt; 附加包含目录</em> 中添加我们新建的目录即可，可使用绝对路径和相对路径，推荐使用相对路径，方便项目移植。相对路径是相对于项目文件 <code>xxx.vcxproj</code> 的路径，如果 <code>include</code> 目录和项目文件同层级，则使用 <code>.\include</code>，如果在项目文件上一层，比如多个项目使用同一个头文件库，通常会这样放，则使用 <code>..\include</code>。</p>
+<p><img src="vs/include.png" alt="include"></p>
+<p>上图中的 <code>%(AdditionalIncludeDiretories)</code> 就是指系统定义的附加包含目录，VS 自动加上的，即使你把它删了也没关系，VS 还是会找到 <code>%VS_ROOT%\VC\include</code> 这个目录。</p>
+<h2 id="附加库目录"><a href="#附加库目录" class="headerlink" title="附加库目录"></a>附加库目录</h2><p>库文件在链接的时候使用，如果使用的是静态链接库，则是库文件本身，如果是动态链接库，则是导入库文件，即无论使用哪种库，需要包含的都是 <code>.lib</code> 文件。这些 <code>.lib</code> 文件统一放在 <code>附加库目录</code> 下，和头文件一样，VS 在安装目录下有一个系统的 <code>附加库目录</code>，所有 C++ 项目都会包含这个库目录。</p>
+<h3 id="系统级配置-1"><a href="#系统级配置-1" class="headerlink" title="系统级配置"></a>系统级配置</h3><p>和头文件不同，库文件有 32 位和 64 位之分，如果是 32 位库文件则放在 <code>%VS_ROOT%\VC\lib</code> 目录下，如果是 64 位库文件则放在 <code>%VS_ROOT\VC\lib\amd64</code> 目录下。</p>
+<h3 id="程序级配置-1"><a href="#程序级配置-1" class="headerlink" title="程序级配置"></a>程序级配置</h3><p>同样找个目录存放库文件，一般在工程目录下建个 <code>lib</code> 目录，然后打开 <em>项目属性页</em>，在 <em>配置属性 –&gt; 链接器 –&gt; 常规 –&gt; 附加库目录</em> 添加新建的目录即可。</p>
+<p><img src="vs/lib-include.png" alt="lib-include"></p>
+<h2 id="附加依赖项"><a href="#附加依赖项" class="headerlink" title="附加依赖项"></a>附加依赖项</h2><p>库文件和头文件不同，头文件只要放在 <code>附加包含目录</code> 下即可，而库文件不仅要放在 <code>附加库目录</code> 下，还要告诉 VS 这个库需要链接到程序中去，VS 不会把 <code>附加库目录</code> 下所有的库都链接到程序中去，而是指明要链接的库才会进行链接，这些要链接的库称为 <code>附加依赖项</code>。VS 同样会指明一些默认的附加依赖项，这些库是 Windows 程序必须包含的库，比如 <code>kernel32.lib, user32.lib, gdi32.lib</code> 等等。这些库 VS 默认会进行链接，但如果是我们自己添加的库，即使放在系统的 <code>附加库目录</code>，VS 也不会自动链接，而是需要手动添加到 <code>附加依赖项</code>，所以附加依赖项没有系统配置和程序级配置之分。打开 <em>项目属性页</em>，在 <em>配置属性 –&gt; 链接库 –&gt; 输入 –&gt; 附加依赖项</em> 中填入要链接的库文件名即可。</p>
+<p><img src="vs/lib.png" alt="lib"></p>
+<p><code>%(AdditionalLibraryDirectories)</code> 为系统 <code>包含库目录</code>，<code>%(AdditionalDependencies)</code> 为系统 <code>附加依赖项</code>，都是 VS 默认配置的。</p>
+<h2 id="动态链接库"><a href="#动态链接库" class="headerlink" title="动态链接库"></a>动态链接库</h2><p>如果使用的是静态链接库，则不需要这一步，因为所有库代码都被链接到可执行程序 <code>.exe</code> 中去了，单个文件即可执行。反之则需要把动态链接库 <code>.dll</code> 文件放在可执行文件能自动找到的目录下，系统目录或可执行文件所在目录。系统目录在 32 位系统和 64 位系统上有所不同，</p>
+<ul>
+<li><p>如果是 32 位操作系统，系统目录只有 <code>C:\\Windows\\System32</code> 这个目录，32 位系统可以运行 32 位和 16 位程序，不能运行 64 位程序，但只有 <code>System32</code> 这一个系统目录，Windows 是如何兼容这两种程序的，我们就不深入研究了，毕竟 16 位程序已经很少见了，32 位系统也将逐步淘汰。</p>
+</li>
+<li><p>如果是 64 位操作系统，32 位程序放在 <code>C:\\Windows\\SysWOW64</code> 目录下，而 64 位程序正常放在 <code>System32</code> 目录下。可能你会奇怪为什么是反过来的，这是为了兼容性，因为以前在 32 位系统开发的程序，引用的都是 <code>System32</code> 目录下的库，为了保持习惯，不管是新开发的 64 位程序还是由 32 位程序升级而来的 64 位程序，仍旧引用 <code>System32</code> 目录下的库，另外把 32 位程序升级到 64 位程序，也不用作任何代码修改。至于在 64 位系统运行的 32 位程序，只能屈尊引用 <code>SysWOW64</code> 目录下的库了，<code>SysWOW64</code> 的全称是 <code>32bit Windows on 64bit Windows(Windows on Windows64)</code>，即 64 位系统上的 32 位系统，由此可见其是专门为 32 位程序准备的，而不是为 64 位准备的。</p>
+</li>
+</ul>
+<h2 id="配置平台"><a href="#配置平台" class="headerlink" title="配置平台"></a>配置平台</h2><p>VS 生成的程序分为 <code>Debug</code> 版本和 <code>Release</code> 版本，平台有 <code>Win32, x64, ARM</code> 三种。<code>ARM</code> 是指使用 <code>ARM</code> 架构的平台，Windows 平台使用的是 <code>X86</code> 架构，一般我们不会涉及到 <code>ARM</code>，所以先不管它。Win32 和 x64 则是 32 位和 64 位的区别，如果发布到 <code>Win32</code> 平台，则必须使用 32 位的库，反之必须使用 64 位的库。根据版本不同和平台不同，有 4 种组合的配置项，</p>
+<ul>
+<li><strong>Win32-Debug</strong></li>
+<li><strong>Win32-Release</strong></li>
+<li><strong>x64-Debug</strong></li>
+<li><strong>x64-Release</strong></li>
+</ul>
+<p>在 <em>项目属性页</em> 的顶部，可选择配置版本和平台，之后我们编辑的所有配置都只对当前选中的版本和平台生效，点击 <em>配置管理器</em> 可打开配置管理器，查看所有配置项或者新建配置项。</p>
+<p><img src="vs/platform-config.png" alt="配置版本和平台"></p>
+<p>生成项目的时候也需要选择对应的发布版本和发布平台，比如 <code>Debug</code> 和 <code>Win32</code>，则本次生成会使用 <code>Win32-Debug</code> 配置项的配置。</p>
+<p><img src="vs/platform-select.png" alt="选择版本和平台"></p>
+<p>当前选中的版本和平台会在属性页显示 <code>活动</code>，如果想一次配置对所有版本和平台都生效，在属性页选择 <code>所有配置</code> 和 <code>所有平台</code> 即可。</p>
+<p><img src="vs/all-platform.png" alt="全部配置"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Visual-Studio/" rel="tag"># Visual Studio</a>
+          
+            <a href="/tags/Visual-Studio-环境配置，Windows-环境配置/" rel="tag"># Visual Studio 环境配置，Windows 环境配置</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/10/opengl/windows1/" rel="next" title="创建窗口（一）">
+                <i class="fa fa-chevron-left"></i> 创建窗口（一）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="林锦新">
+            
+              <p class="site-author-name" itemprop="name">林锦新</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/linjinxin" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#链接库"><span class="nav-number">1.</span> <span class="nav-text">链接库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-配置"><span class="nav-number">2.</span> <span class="nav-text">C++ 配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#附加包含目录"><span class="nav-number">2.1.</span> <span class="nav-text">附加包含目录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#系统级配置"><span class="nav-number">2.1.1.</span> <span class="nav-text">系统级配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#程序级配置"><span class="nav-number">2.1.2.</span> <span class="nav-text">程序级配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#附加库目录"><span class="nav-number">2.2.</span> <span class="nav-text">附加库目录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#系统级配置-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">系统级配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#程序级配置-1"><span class="nav-number">2.2.2.</span> <span class="nav-text">程序级配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#附加依赖项"><span class="nav-number">2.3.</span> <span class="nav-text">附加依赖项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动态链接库"><span class="nav-number">2.4.</span> <span class="nav-text">动态链接库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置平台"><span class="nav-number">2.5.</span> <span class="nav-text">配置平台</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">林锦新</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://ljx.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://linjinxin.com/2019/09/10/coder/vs/';
+          this.page.identifier = '2019/09/10/coder/vs/';
+          this.page.title = 'Visual Studio 环境配置.md';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://ljx.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
