@@ -115,16 +115,16 @@
 <meta name="keywords" content="OpenGL">
 <meta property="og:type" content="article">
 <meta property="og:title" content="创建窗口（一）">
-<meta property="og:url" content="http://linjinxin.com/2019/09/10/opengl/windows1/index.html">
+<meta property="og:url" content="http://linjinxin.com/2019/09/10/opengl/window1/index.html">
 <meta property="og:site_name" content="Welcome to Code World">
 <meta property="og:description" content="没有开始，就永远不会有结果。  使用 glutOpenGL 标准并没有提供用于创建和管理窗口的 api，各个主流操作系统都提供了支持 OpenGL 的接口，X 系统提供的接口叫做 GLX，Windows 提供的接口叫 WGL，Mac 系统提供的接口叫做 CGL。我们可以使用 OpenGL 的一个工具库 glut(opengl utility toolkit) 来管理窗口，处理事件，IO 控制和其">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://linjinxin.com/2019/09/10/opengl/windows1/win.png">
-<meta property="og:updated_time" content="2019-09-20T07:54:53.872Z">
+<meta property="og:image" content="http://linjinxin.com/image/opengl/window1/win.png">
+<meta property="og:updated_time" content="2019-09-21T02:32:11.299Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="创建窗口（一）">
 <meta name="twitter:description" content="没有开始，就永远不会有结果。  使用 glutOpenGL 标准并没有提供用于创建和管理窗口的 api，各个主流操作系统都提供了支持 OpenGL 的接口，X 系统提供的接口叫做 GLX，Windows 提供的接口叫 WGL，Mac 系统提供的接口叫做 CGL。我们可以使用 OpenGL 的一个工具库 glut(opengl utility toolkit) 来管理窗口，处理事件，IO 控制和其">
-<meta name="twitter:image" content="http://linjinxin.com/2019/09/10/opengl/windows1/win.png">
+<meta name="twitter:image" content="http://linjinxin.com/image/opengl/window1/win.png">
 
 
 
@@ -154,7 +154,7 @@
 
 
 
-  <link rel="canonical" href="http://linjinxin.com/2019/09/10/opengl/windows1/">
+  <link rel="canonical" href="http://linjinxin.com/2019/09/10/opengl/window1/">
 
 
 
@@ -307,7 +307,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linjinxin.com/2019/09/10/opengl/windows1/">
+    <link itemprop="mainEntityOfPage" href="http://linjinxin.com/2019/09/10/opengl/window1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="林锦新">
@@ -377,8 +377,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/09/10/opengl/windows1/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/09/10/opengl/windows1/" itemprop="commentCount"></span>
+                <a href="/2019/09/10/opengl/window1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/09/10/opengl/window1/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -424,7 +424,7 @@
 <h1 id="第一个例子"><a href="#第一个例子" class="headerlink" title="第一个例子"></a>第一个例子</h1><p>新建一个 C++ 空项目，控制台或 win32 都行，然后添加一个 <code>main.c</code> 源文件。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;gl/glut.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">renderPreFrame</span><span class="params">()</span></span>;</span><br><span class="line">		</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>** argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	glutInit(&amp;argc, argv);</span><br><span class="line">	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);</span><br><span class="line"></span><br><span class="line">	glutInitWindowPosition(<span class="number">100</span>, <span class="number">100</span>);</span><br><span class="line">	glutInitWindowSize(<span class="number">400</span>, <span class="number">400</span>);</span><br><span class="line">	glutCreateWindow(<span class="string">"First Window"</span>);</span><br><span class="line"></span><br><span class="line">	glClearColor(<span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>);</span><br><span class="line">	glutDisplayFunc(renderPreFrame);</span><br><span class="line">	glutMainLoop();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">renderPreFrame</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	glClear(GL_COLOR_BUFFER_BIT);</span><br><span class="line">	glutSwapBuffers();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>运行之后可以看到一个 400x400 的黑窗口，在距离左上角 (100,100) 的位置。</p>
-<p><img src="win.png" alt="first window"></p>
+<p><img src="/image/opengl/window1/win.png" alt="first window"></p>
 <h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><ul>
 <li><strong>glutInit</strong> 函数用于初始化 glut，其参数可以直接从命令行获取，从命令行启动程序可以带一些有用的参数，比如 <code>-sync</code> 可以关闭 X 异步性质，<code>-gldebug</code> 可以检查 gl 错误并独立地显示它们；</li>
 <li><strong>glutInitDisplayMode</strong> 配置 glut 选项，<code>GLUT_DOUBLE</code> 设置双缓冲，即一个缓冲绘制，一个缓冲显示，默认是单缓冲 <code>GLUT_SINGLE</code>；<code>GLUT_RGBA</code> 指定大多数渲染结束位置（比如屏幕）的颜色模式；</li>
@@ -810,8 +810,8 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://linjinxin.com/2019/09/10/opengl/windows1/';
-          this.page.identifier = '2019/09/10/opengl/windows1/';
+          this.page.url = 'http://linjinxin.com/2019/09/10/opengl/window1/';
+          this.page.identifier = '2019/09/10/opengl/window1/';
           this.page.title = '创建窗口（一）';
         };
         var d = document, s = d.createElement('script');

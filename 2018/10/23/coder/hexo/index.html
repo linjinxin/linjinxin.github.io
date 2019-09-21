@@ -119,15 +119,15 @@
 <meta property="og:site_name" content="Welcome to Code World">
 <meta property="og:description" content="前言作为本站的第一篇文章，当然是介绍本站是如何搭建的啦！ 和网上大部分的教程一样，本站使用 Github Pages + Hexo + Next theme 搭建。其实并没有什么工作量，都是前人做好的工具，我们无非就是把工具放在一起罢了。 准备工作注册一个 github 账号为了让别人可以访问我们的网站，必须将我们的网站部署到服务器上而不是在本地；但我们并没有自己的服务器（大部分人），所以一种很实">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://linjinxin.com/2018/10/23/coder/hexo/new_repository.png">
-<meta property="og:image" content="http://linjinxin.com/2018/10/23/coder/hexo/github_page_is_disabled.png">
-<meta property="og:image" content="http://linjinxin.com/2018/10/23/coder/hexo/github_page_enable.png">
+<meta property="og:image" content="http://linjinxin.com/image/coder/hexo/new_repository.png">
+<meta property="og:image" content="http://linjinxin.com/image/coder/hexo/github_page_is_disabled.png">
+<meta property="og:image" content="http://linjinxin.com/image/coder/hexo/github_page_enable.png">
 <meta property="og:image" content="http://linjinxin.com/image/coder/hexo/hello-world.png">
-<meta property="og:updated_time" content="2019-09-21T02:24:43.103Z">
+<meta property="og:updated_time" content="2019-09-21T02:29:57.222Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用 Github + Hexo 搭建个人博客">
 <meta name="twitter:description" content="前言作为本站的第一篇文章，当然是介绍本站是如何搭建的啦！ 和网上大部分的教程一样，本站使用 Github Pages + Hexo + Next theme 搭建。其实并没有什么工作量，都是前人做好的工具，我们无非就是把工具放在一起罢了。 准备工作注册一个 github 账号为了让别人可以访问我们的网站，必须将我们的网站部署到服务器上而不是在本地；但我们并没有自己的服务器（大部分人），所以一种很实">
-<meta name="twitter:image" content="http://linjinxin.com/2018/10/23/coder/hexo/new_repository.png">
+<meta name="twitter:image" content="http://linjinxin.com/image/coder/hexo/new_repository.png">
 
 
 
@@ -421,7 +421,7 @@
 <h2 id="安装-node-js"><a href="#安装-node-js" class="headerlink" title="安装 node.js"></a>安装 node.js</h2><p>如果只是想搭建一个个人网站，这一步并不是必需的。但因为我们想要搭建一个个人博客，即将我们的网站设计成一个博客系统，所以需要用到前人做好的优秀博客框架，比如下面要介绍的 Hexo 博客框架（当然，前端大神完全可以自己手撸，但对于像我这种不懂前端的，还是站在巨人的肩膀上吧）。而下载 Hexo 需要用到 Node.js，所以我们需要先将 Node.js 准备好。同样，安装工作没什么好说的，直接去官网下载一个和操作系统匹配的版本安装即可。</p>
 <h1 id="创建-github-pages"><a href="#创建-github-pages" class="headerlink" title="创建 github pages"></a>创建 github pages</h1><p>github pages 就是我们在 github 展示的个人页面，github pages 其实就是一个 github repository，只是这个 respository 的命名比较特殊，要求是 <code>name.github.io</code>，只有以这个形式命名的仓库才会被当成 github pages，这里的 <code>name</code> 最好写我们的账号用户名或组织名，原因下面再讲。</p>
 <p>首先，创建一个 github 仓库。点击 <code>New repository</code> 按钮（点击右上角的加号就会弹出），然后分别填写仓库名，添加仓库描述，设置项目公开或私有，是否以 <code>readme</code> 文件初始化仓库，是否添加 <code>.gitignore</code> 文件，是否添加 <code>license</code> 文件，最后点击 <code>Create repository</code> 按钮即可。除了仓库名，其它都是可省略的，但仓库描述最好写一下。</p>
-<p><img src="new_repository.png" alt="new repository"></p>
+<p><img src="/image/coder/hexo/new_repository.png" alt="new repository"></p>
 <p>创建成功之后就可以通过 <code>https://name.github.io</code> 来访问我们的网站。 下面是几点要注意的事项：</p>
 <ul>
 <li><p>再次重复一下仓库名必须是 <code>name.github.io</code>，只有这种格式的仓库才会被 github 当成 github pages。</p>
@@ -438,9 +438,9 @@
 </ul>
 <p>如果仓库名是以“直接方式”命名的，则仓库自动指定了 <code>master</code> 分支为 github pages 的 source 分支，而且不能更改，所以这时候直接去访问是可以访问的；<br>如果仓库是以“间接方式”命名的，则默认是没有指定 github pages 的 source 分支的，所以这时候直接去访问就会报 404 错误。</p>
 <p>对于“间接方式”命名的仓库，需要我们手动去设置 github pages 的 source 分支；打开仓库，点击 <code>Settings</code>，找到 <code>Github Pages</code> 分页，可以看到 source 下面是一个 <code>none</code>；</p>
-<p> <img src="github_page_is_disabled.png" alt="github pages is disabled"></p>
+<p> <img src="/image/coder/hexo/github_page_is_disabled.png" alt="github pages is disabled"></p>
 <p> 这时我们手动选择一个分支，并点击 <code>Save</code> 按钮即可。注意，只能选 <code>master</code> 或 <code>gh-pages</code> 分支，其实选项里就没有别的分支可选，如果没有这两个分支，就先创建分支（默认 <code>master</code> 分支一定有的）。具体的可以看 github 的官方文档 <a href="https://help.github.com/articles/configuring-a-publishing-source-for-github-pages" target="_blank" rel="noopener">github pages</a>。保存之后，就可以看到 github pages 可用了，而且访问地址也列出来，这里也可以看到访问地址并不是直接用的仓库名，而是用户名+仓库名。</p>
-<p> <img src="github_page_enable.png" alt="enable github pages"></p>
+<p> <img src="/image/coder/hexo/github_page_enable.png" alt="enable github pages"></p>
 <h1 id="安装-hexo"><a href="#安装-hexo" class="headerlink" title="安装 hexo"></a>安装 hexo</h1><p>hexo 是一个流行的静态博客框架，安装 hexo 需要先安装 node.js 和 git 客户端；至于 hexo 的安装则非常简单，打开 git cmd，输入下面命令即可。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
 <h1 id="hexo-简单用法"><a href="#hexo-简单用法" class="headerlink" title="hexo 简单用法"></a>hexo 简单用法</h1><p>关于 hexo 更详细的信息请参考官方文档 <a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="noopener">hexo 文档</a>。</p>

@@ -119,14 +119,14 @@
 <meta property="og:site_name" content="Welcome to Code World">
 <meta property="og:description" content="git 基础 文件状态： 未跟踪(untracked)、已提交(committed)、已修改(modified)、已暂存(staged) 工作区域： 远程仓库、工作目录、暂存区域   在工作目录修改文件 –&amp;gt; committed ot modified 将文件快照放入暂存区域 –&amp;gt; modified to staged 提交更新 –&amp;gt; staged to commited  配置">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://linjinxin.com/2019/09/05/coder/git/git/merge-fast-forward.png">
-<meta property="og:image" content="http://linjinxin.com/2019/09/05/coder/git/git/merge-advanced.png">
-<meta property="og:image" content="http://linjinxin.com/2019/09/05/coder/git/git/after-merge.png">
-<meta property="og:updated_time" content="2019-09-20T07:55:29.606Z">
+<meta property="og:image" content="http://linjinxin.com/image/coder/git/merge-fast-forward.png">
+<meta property="og:image" content="http://linjinxin.com/image/coder/git/merge-advanced.png">
+<meta property="og:image" content="http://linjinxin.com/image/coder/git/after-merge.png">
+<meta property="og:updated_time" content="2019-09-21T02:30:35.470Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Git 基础用法">
 <meta name="twitter:description" content="git 基础 文件状态： 未跟踪(untracked)、已提交(committed)、已修改(modified)、已暂存(staged) 工作区域： 远程仓库、工作目录、暂存区域   在工作目录修改文件 –&amp;gt; committed ot modified 将文件快照放入暂存区域 –&amp;gt; modified to staged 提交更新 –&amp;gt; staged to commited  配置">
-<meta name="twitter:image" content="http://linjinxin.com/2019/09/05/coder/git/git/merge-fast-forward.png">
+<meta name="twitter:image" content="http://linjinxin.com/image/coder/git/merge-fast-forward.png">
 
 
 
@@ -502,9 +502,9 @@
 <p>将 <code>other</code> 分支合并到当前分支，合并后 <code>other</code> 分支的状态就是 <code>merged</code>，可放心删除。合并时，先切换到要合并到的分支，再 merge 要合并的分支，比如要将 <code>hotfix</code> 分支合并到 <code>master</code> 分支，则</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git checkout master</span><br><span class="line">git merge hotfix</span><br></pre></td></tr></table></figure>
 <p>合并的时候有两种情况，一是要合并到的分支 <code>master</code> 是要合并的分支 <code>hotfix</code> 的直接祖先，如下图所示，这种情况 merge 的时候会出现 <code>Fast-forward</code>(快进) 的提示，这种情况的合并很简单，不需要任何额外的处理，因为不会有冲突，<code>hotfix</code> 本身就是从 <code>master</code> 分化出来的，内容只会比 <code>master</code> 新，不存在两个分支同时修改的内容。</p>
-<p><img src="git/merge-fast-forward.png" alt="fast-forward"></p>
+<p><img src="/image/coder/git/merge-fast-forward.png" alt="fast-forward"></p>
 <p>第二种情况是要合并到的分支不是要合并的分支的直接祖先，如下图一所示，把分支 <code>iss53</code> 合并到分支 <code>master</code>，这两个分支在某个时间点出现了分叉，无直接关系，只有共同的祖先 <code>C2</code> 快照。这种情况 Git 会自动拿 <code>C2, C4, C5</code> 三个快照进行合并生成一个新的快照 <code>C6</code>，然后让 <code>master</code> 分支指向 <code>C6</code> 快照，如下图二所示。</p>
-<p><img src="git/merge-advanced.png" alt="maybe-conflict"><br><img src="git/after-merge.png" alt="after-merge"></p>
+<p><img src="/image/coder/git/merge-advanced.png" alt="maybe-conflict"><br><img src="/image/coder/git/after-merge.png" alt="after-merge"></p>
 <p><code>merge</code> 操作是 Git 自动完成的，通过快照对比修改本地文件，如果没冲突则自动将修改过的文件加入到暂存区，文件状态变为 <code>staged</code>；有冲突的文件则会为 <code>conflict</code>，需要我们手动处理冲突，处理完成后标记为 <code>modified</code>，然后手动添加到暂存区变为 <code>staged</code>。merge 之后只是我们本地的文件做了修改，所以还需要执行 <code>git commit</code> 将修改提交到远程。</p>
 <h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><h2 id="检查文件状态"><a href="#检查文件状态" class="headerlink" title="检查文件状态"></a>检查文件状态</h2><ul>
 <li><code>git status</code></li>

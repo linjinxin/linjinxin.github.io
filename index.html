@@ -641,14 +641,14 @@
 <p>VS 默认会有一个 <code>附加包含目录</code>，位于 VS 安装目录下，所有 C++ 项目都会默认包含这个目录，所以如果我们把头文件放这个目录下，则所有的项目都无需再另外配置，这种方式暂且称之为 <strong>系统级配置</strong>；另外的方式就是为每个程序单独那个目录存放头文件，然后手动把这个目录包含进来，这种方式暂且称之为 <strong>程序级配置</strong>。</p>
 <h3 id="系统级配置"><a href="#系统级配置" class="headerlink" title="系统级配置"></a>系统级配置</h3><p>这种方式很简单，只需要把头文件放在系统定义的附加包含目录 <code>%VS_ROOT%\VC\include</code> 中去即可，可建子目录存放，然后使用的时候加上子目录即可，比如 <code>#include &lt;gl/glew.h&gt;</code>。</p>
 <h3 id="程序级配置"><a href="#程序级配置" class="headerlink" title="程序级配置"></a>程序级配置</h3><p>随便找个目录存放头文件，但遵循规范一般都是在工程目录下建个 <code>include</code> 目录，然后打开 <em>项目属性页</em>，在 <em>配置属性 –&gt; C/C++ –&gt; 常规 –&gt; 附加包含目录</em> 中添加我们新建的目录即可，可使用绝对路径和相对路径，推荐使用相对路径，方便项目移植。相对路径是相对于项目文件 <code>xxx.vcxproj</code> 的路径，如果 <code>include</code> 目录和项目文件同层级，则使用 <code>.\include</code>，如果在项目文件上一层，比如多个项目使用同一个头文件库，通常会这样放，则使用 <code>..\include</code>。</p>
-<p><img src="include.png" alt="include"></p>
+<p><img src="/image/coder/vs/include.png" alt="include"></p>
 <p>上图中的 <code>%(AdditionalIncludeDiretories)</code> 就是指系统定义的附加包含目录，VS 自动加上的，即使你把它删了也没关系，VS 还是会找到 <code>%VS_ROOT%\VC\include</code> 这个目录。</p>
 <h2 id="附加库目录"><a href="#附加库目录" class="headerlink" title="附加库目录"></a>附加库目录</h2><p>库文件在链接的时候使用，如果使用的是静态链接库，则是库文件本身，如果是动态链接库，则是导入库文件，即无论使用哪种库，需要包含的都是 <code>.lib</code> 文件。这些 <code>.lib</code> 文件统一放在 <code>附加库目录</code> 下，和头文件一样，VS 在安装目录下有一个系统的 <code>附加库目录</code>，所有 C++ 项目都会包含这个库目录。</p>
 <h3 id="系统级配置-1"><a href="#系统级配置-1" class="headerlink" title="系统级配置"></a>系统级配置</h3><p>和头文件不同，库文件有 32 位和 64 位之分，如果是 32 位库文件则放在 <code>%VS_ROOT%\VC\lib</code> 目录下，如果是 64 位库文件则放在 <code>%VS_ROOT\VC\lib\amd64</code> 目录下。</p>
 <h3 id="程序级配置-1"><a href="#程序级配置-1" class="headerlink" title="程序级配置"></a>程序级配置</h3><p>同样找个目录存放库文件，一般在工程目录下建个 <code>lib</code> 目录，然后打开 <em>项目属性页</em>，在 <em>配置属性 –&gt; 链接器 –&gt; 常规 –&gt; 附加库目录</em> 添加新建的目录即可。</p>
-<p><img src="lib-include.png" alt="lib-include"></p>
+<p><img src="/image/coder/vs/lib-include.png" alt="lib-include"></p>
 <h2 id="附加依赖项"><a href="#附加依赖项" class="headerlink" title="附加依赖项"></a>附加依赖项</h2><p>库文件和头文件不同，头文件只要放在 <code>附加包含目录</code> 下即可，而库文件不仅要放在 <code>附加库目录</code> 下，还要告诉 VS 这个库需要链接到程序中去，VS 不会把 <code>附加库目录</code> 下所有的库都链接到程序中去，而是指明要链接的库才会进行链接，这些要链接的库称为 <code>附加依赖项</code>。VS 同样会指明一些默认的附加依赖项，这些库是 Windows 程序必须包含的库，比如 <code>kernel32.lib, user32.lib, gdi32.lib</code> 等等。这些库 VS 默认会进行链接，但如果是我们自己添加的库，即使放在系统的 <code>附加库目录</code>，VS 也不会自动链接，而是需要手动添加到 <code>附加依赖项</code>，所以附加依赖项没有系统配置和程序级配置之分。打开 <em>项目属性页</em>，在 <em>配置属性 –&gt; 链接库 –&gt; 输入 –&gt; 附加依赖项</em> 中填入要链接的库文件名即可。</p>
-<p><img src="lib.png" alt="lib"></p>
+<p><img src="/image/coder/vs/lib.png" alt="lib"></p>
 <p><code>%(AdditionalLibraryDirectories)</code> 为系统 <code>包含库目录</code>，<code>%(AdditionalDependencies)</code> 为系统 <code>附加依赖项</code>，都是 VS 默认配置的。</p>
 <h2 id="动态链接库"><a href="#动态链接库" class="headerlink" title="动态链接库"></a>动态链接库</h2><p>如果使用的是静态链接库，则不需要这一步，因为所有库代码都被链接到可执行程序 <code>.exe</code> 中去了，单个文件即可执行。反之则需要把动态链接库 <code>.dll</code> 文件放在可执行文件能自动找到的目录下，系统目录或可执行文件所在目录。系统目录在 32 位系统和 64 位系统上有所不同，</p>
 <ul>
@@ -665,11 +665,11 @@
 <li><strong>x64-Release</strong></li>
 </ul>
 <p>在 <em>项目属性页</em> 的顶部，可选择配置版本和平台，之后我们编辑的所有配置都只对当前选中的版本和平台生效，点击 <em>配置管理器</em> 可打开配置管理器，查看所有配置项或者新建配置项。</p>
-<p><img src="platform-config.png" alt="配置版本和平台"></p>
+<p><img src="/image/coder/vs/platform-config.png" alt="配置版本和平台"></p>
 <p>生成项目的时候也需要选择对应的发布版本和发布平台，比如 <code>Debug</code> 和 <code>Win32</code>，则本次生成会使用 <code>Win32-Debug</code> 配置项的配置。</p>
-<p><img src="platform-select.png" alt="选择版本和平台"></p>
+<p><img src="/image/coder/vs/platform-select.png" alt="选择版本和平台"></p>
 <p>当前选中的版本和平台会在属性页显示 <code>活动</code>，如果想一次配置对所有版本和平台都生效，在属性页选择 <code>所有配置</code> 和 <code>所有平台</code> 即可。</p>
-<p><img src="all-platform.png" alt="全部配置"></p>
+<p><img src="/image/coder/vs/all-platform.png" alt="全部配置"></p>
 
           
         
@@ -718,7 +718,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linjinxin.com/2019/09/10/opengl/windows1/">
+    <link itemprop="mainEntityOfPage" href="http://linjinxin.com/2019/09/10/opengl/window1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="林锦新">
@@ -737,7 +737,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/09/10/opengl/windows1/" itemprop="url">创建窗口（一）</a></h2>
+                <a class="post-title-link" href="/2019/09/10/opengl/window1/" itemprop="url">创建窗口（一）</a></h2>
         
 
         <div class="post-meta">
@@ -790,8 +790,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/09/10/opengl/windows1/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/09/10/opengl/windows1/" itemprop="commentCount"></span>
+                <a href="/2019/09/10/opengl/window1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/09/10/opengl/window1/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -839,7 +839,7 @@
 <h1 id="第一个例子"><a href="#第一个例子" class="headerlink" title="第一个例子"></a>第一个例子</h1><p>新建一个 C++ 空项目，控制台或 win32 都行，然后添加一个 <code>main.c</code> 源文件。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;gl/glut.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">renderPreFrame</span><span class="params">()</span></span>;</span><br><span class="line">		</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>** argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	glutInit(&amp;argc, argv);</span><br><span class="line">	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);</span><br><span class="line"></span><br><span class="line">	glutInitWindowPosition(<span class="number">100</span>, <span class="number">100</span>);</span><br><span class="line">	glutInitWindowSize(<span class="number">400</span>, <span class="number">400</span>);</span><br><span class="line">	glutCreateWindow(<span class="string">"First Window"</span>);</span><br><span class="line"></span><br><span class="line">	glClearColor(<span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>);</span><br><span class="line">	glutDisplayFunc(renderPreFrame);</span><br><span class="line">	glutMainLoop();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">renderPreFrame</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	glClear(GL_COLOR_BUFFER_BIT);</span><br><span class="line">	glutSwapBuffers();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>运行之后可以看到一个 400x400 的黑窗口，在距离左上角 (100,100) 的位置。</p>
-<p><img src="win.png" alt="first window"></p>
+<p><img src="/image/opengl/window1/win.png" alt="first window"></p>
 <h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><ul>
 <li><strong>glutInit</strong> 函数用于初始化 glut，其参数可以直接从命令行获取，从命令行启动程序可以带一些有用的参数，比如 <code>-sync</code> 可以关闭 X 异步性质，<code>-gldebug</code> 可以检查 gl 错误并独立地显示它们；</li>
 <li><strong>glutInitDisplayMode</strong> 配置 glut 选项，<code>GLUT_DOUBLE</code> 设置双缓冲，即一个缓冲绘制，一个缓冲显示，默认是单缓冲 <code>GLUT_SINGLE</code>；<code>GLUT_RGBA</code> 指定大多数渲染结束位置（比如屏幕）的颜色模式；</li>
@@ -1449,9 +1449,9 @@
 <p>将 <code>other</code> 分支合并到当前分支，合并后 <code>other</code> 分支的状态就是 <code>merged</code>，可放心删除。合并时，先切换到要合并到的分支，再 merge 要合并的分支，比如要将 <code>hotfix</code> 分支合并到 <code>master</code> 分支，则</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git checkout master</span><br><span class="line">git merge hotfix</span><br></pre></td></tr></table></figure>
 <p>合并的时候有两种情况，一是要合并到的分支 <code>master</code> 是要合并的分支 <code>hotfix</code> 的直接祖先，如下图所示，这种情况 merge 的时候会出现 <code>Fast-forward</code>(快进) 的提示，这种情况的合并很简单，不需要任何额外的处理，因为不会有冲突，<code>hotfix</code> 本身就是从 <code>master</code> 分化出来的，内容只会比 <code>master</code> 新，不存在两个分支同时修改的内容。</p>
-<p><img src="git/merge-fast-forward.png" alt="fast-forward"></p>
+<p><img src="/image/coder/git/merge-fast-forward.png" alt="fast-forward"></p>
 <p>第二种情况是要合并到的分支不是要合并的分支的直接祖先，如下图一所示，把分支 <code>iss53</code> 合并到分支 <code>master</code>，这两个分支在某个时间点出现了分叉，无直接关系，只有共同的祖先 <code>C2</code> 快照。这种情况 Git 会自动拿 <code>C2, C4, C5</code> 三个快照进行合并生成一个新的快照 <code>C6</code>，然后让 <code>master</code> 分支指向 <code>C6</code> 快照，如下图二所示。</p>
-<p><img src="git/merge-advanced.png" alt="maybe-conflict"><br><img src="git/after-merge.png" alt="after-merge"></p>
+<p><img src="/image/coder/git/merge-advanced.png" alt="maybe-conflict"><br><img src="/image/coder/git/after-merge.png" alt="after-merge"></p>
 <p><code>merge</code> 操作是 Git 自动完成的，通过快照对比修改本地文件，如果没冲突则自动将修改过的文件加入到暂存区，文件状态变为 <code>staged</code>；有冲突的文件则会为 <code>conflict</code>，需要我们手动处理冲突，处理完成后标记为 <code>modified</code>，然后手动添加到暂存区变为 <code>staged</code>。merge 之后只是我们本地的文件做了修改，所以还需要执行 <code>git commit</code> 将修改提交到远程。</p>
 <h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><h2 id="检查文件状态"><a href="#检查文件状态" class="headerlink" title="检查文件状态"></a>检查文件状态</h2><ul>
 <li><code>git status</code></li>
@@ -1695,7 +1695,7 @@
 <h2 id="安装-node-js"><a href="#安装-node-js" class="headerlink" title="安装 node.js"></a>安装 node.js</h2><p>如果只是想搭建一个个人网站，这一步并不是必需的。但因为我们想要搭建一个个人博客，即将我们的网站设计成一个博客系统，所以需要用到前人做好的优秀博客框架，比如下面要介绍的 Hexo 博客框架（当然，前端大神完全可以自己手撸，但对于像我这种不懂前端的，还是站在巨人的肩膀上吧）。而下载 Hexo 需要用到 Node.js，所以我们需要先将 Node.js 准备好。同样，安装工作没什么好说的，直接去官网下载一个和操作系统匹配的版本安装即可。</p>
 <h1 id="创建-github-pages"><a href="#创建-github-pages" class="headerlink" title="创建 github pages"></a>创建 github pages</h1><p>github pages 就是我们在 github 展示的个人页面，github pages 其实就是一个 github repository，只是这个 respository 的命名比较特殊，要求是 <code>name.github.io</code>，只有以这个形式命名的仓库才会被当成 github pages，这里的 <code>name</code> 最好写我们的账号用户名或组织名，原因下面再讲。</p>
 <p>首先，创建一个 github 仓库。点击 <code>New repository</code> 按钮（点击右上角的加号就会弹出），然后分别填写仓库名，添加仓库描述，设置项目公开或私有，是否以 <code>readme</code> 文件初始化仓库，是否添加 <code>.gitignore</code> 文件，是否添加 <code>license</code> 文件，最后点击 <code>Create repository</code> 按钮即可。除了仓库名，其它都是可省略的，但仓库描述最好写一下。</p>
-<p><img src="new_repository.png" alt="new repository"></p>
+<p><img src="/image/coder/hexo/new_repository.png" alt="new repository"></p>
 <p>创建成功之后就可以通过 <code>https://name.github.io</code> 来访问我们的网站。 下面是几点要注意的事项：</p>
 <ul>
 <li><p>再次重复一下仓库名必须是 <code>name.github.io</code>，只有这种格式的仓库才会被 github 当成 github pages。</p>
@@ -1712,9 +1712,9 @@
 </ul>
 <p>如果仓库名是以“直接方式”命名的，则仓库自动指定了 <code>master</code> 分支为 github pages 的 source 分支，而且不能更改，所以这时候直接去访问是可以访问的；<br>如果仓库是以“间接方式”命名的，则默认是没有指定 github pages 的 source 分支的，所以这时候直接去访问就会报 404 错误。</p>
 <p>对于“间接方式”命名的仓库，需要我们手动去设置 github pages 的 source 分支；打开仓库，点击 <code>Settings</code>，找到 <code>Github Pages</code> 分页，可以看到 source 下面是一个 <code>none</code>；</p>
-<p> <img src="github_page_is_disabled.png" alt="github pages is disabled"></p>
+<p> <img src="/image/coder/hexo/github_page_is_disabled.png" alt="github pages is disabled"></p>
 <p> 这时我们手动选择一个分支，并点击 <code>Save</code> 按钮即可。注意，只能选 <code>master</code> 或 <code>gh-pages</code> 分支，其实选项里就没有别的分支可选，如果没有这两个分支，就先创建分支（默认 <code>master</code> 分支一定有的）。具体的可以看 github 的官方文档 <a href="https://help.github.com/articles/configuring-a-publishing-source-for-github-pages" target="_blank" rel="noopener">github pages</a>。保存之后，就可以看到 github pages 可用了，而且访问地址也列出来，这里也可以看到访问地址并不是直接用的仓库名，而是用户名+仓库名。</p>
-<p> <img src="github_page_enable.png" alt="enable github pages"></p>
+<p> <img src="/image/coder/hexo/github_page_enable.png" alt="enable github pages"></p>
 <h1 id="安装-hexo"><a href="#安装-hexo" class="headerlink" title="安装 hexo"></a>安装 hexo</h1><p>hexo 是一个流行的静态博客框架，安装 hexo 需要先安装 node.js 和 git 客户端；至于 hexo 的安装则非常简单，打开 git cmd，输入下面命令即可。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
 <h1 id="hexo-简单用法"><a href="#hexo-简单用法" class="headerlink" title="hexo 简单用法"></a>hexo 简单用法</h1><p>关于 hexo 更详细的信息请参考官方文档 <a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="noopener">hexo 文档</a>。</p>
