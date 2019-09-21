@@ -122,8 +122,8 @@
 <meta property="og:image" content="http://linjinxin.com/2018/10/23/coder/hexo/new_repository.png">
 <meta property="og:image" content="http://linjinxin.com/2018/10/23/coder/hexo/github_page_is_disabled.png">
 <meta property="og:image" content="http://linjinxin.com/2018/10/23/coder/hexo/github_page_enable.png">
-<meta property="og:image" content="http://linjinxin.com/2018/10/23/coder/hexo/hello-world.png">
-<meta property="og:updated_time" content="2019-09-20T07:55:45.788Z">
+<meta property="og:image" content="http://linjinxin.com/image/coder/hexo/hello-world.png">
+<meta property="og:updated_time" content="2019-09-21T02:24:43.103Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用 Github + Hexo 搭建个人博客">
 <meta name="twitter:description" content="前言作为本站的第一篇文章，当然是介绍本站是如何搭建的啦！ 和网上大部分的教程一样，本站使用 Github Pages + Hexo + Next theme 搭建。其实并没有什么工作量，都是前人做好的工具，我们无非就是把工具放在一起罢了。 准备工作注册一个 github 账号为了让别人可以访问我们的网站，必须将我们的网站部署到服务器上而不是在本地；但我们并没有自己的服务器（大部分人），所以一种很实">
@@ -458,7 +458,7 @@
 <p>建完站之后部署到我们的 github pages，就可以 github pages 生成的 url 来访问我们的网站了。<br>首先，打开 <code>_config.yml</code> 文件，添加部署相关的配置，我们使用 git 来部署，填写 git 仓库地址和要部署的分支即可（上面说过 github pages 只能使用 <code>master</code> 分支或 <code>gh-pages</code> 分支，所以这里也只能部署到这两个分支）。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: git@github.com:linjinxin/linjinxin.github.io.git</span><br><span class="line">  brance: master</span><br></pre></td></tr></table></figure>
 <p>然后，安装 <code>hexo-deploy-git</code>，如果有多个站点，每个站点都得安装一次。在站点目录下打开 git cmd，输入 <code>npm install hexo-deployer-git --save</code> 即可。<br>最后，执行 <code>hexo d -g</code> 即可部署。<br>至此，网站就部署完了，因为我们没有添加任何文章，所以 Hexo 会自动添加一篇 <code>hello-world.md</code> 文章，所以打开 <code>https://linjinxin.github.io</code>，会看到这样的网页。</p>
-<p><img src="hello-world.png" alt="hello-world"></p>
+<p><img src="/image/coder/hexo/hello-world.png" alt="hello-world"></p>
 <p>最后的最后，把网站变成我们自己想要的样子，通过换主题、修改配置，然后新增文章，修改文章，部署，不断地重复重复又重复，我们心目中理想的个人博客就有了。接下来介绍下 Hexo 的常用配置和常用命令，看看这个重复重复又重复的过程该怎么做。</p>
 <h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>打开 <code>_config.yml</code> 文件，修改或添加下面的参数：</p>
 <table>
@@ -547,7 +547,7 @@
 </li>
 </ul>
 <p>一般的工作流程是 <code>hexo init</code> –&gt; <code>hexo new</code> –&gt; [<code>hexo clean</code>] –&gt; <code>hexo g</code> –&gt; <code>hexo s(d)</code>，即 <strong>建站–&gt;添加文章–&gt;[清理]–&gt;生成–&gt;调试(部署)</strong>。其实经常操作的就是后面两步，这两步可以通过参数简写成一步，即 <code>hexo s -g</code>，生成后启动服务，<code>hexo d -g</code> 生成后部署。</p>
-<h2 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h2><p>Markdown 可以直接解析显示图片，只需要提供一个链接即可，因此我们要先将图片上传到某个服务器上，然后再把 url 拷贝到文章中。github 没有专门上传图片的功能，我们可以自己那个仓库来上传图片，但这样做并不大好，可以找专门的 CDN 服务器来上传，比如 <a href="https://cloudinary.com/" target="_blank" rel="noopener">Cloudinary</a>。另一种方式是把图片放在本地，Markdown 不仅可以解析 url，还可以解析文件路径，我们可以把图片放在本地，通过本地路径来加载图片。</p>
+<h2 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h2><p>Markdown 可以直接解析显示图片，只需要提供一个链接即可，因此我们要先将图片上传到某个服务器上，然后再把 url 拷贝到文章中。github 没有专门上传图片的功能，我们可以自己找个仓库来上传图片，也可以找专门的 CDN 服务器来上传，比如 <a href="https://cloudinary.com/" target="_blank" rel="noopener">Cloudinary</a>。另一种方式是把图片放在本地，Markdown 不仅可以解析 url，还可以解析文件路径，我们可以把图片放在本地，通过本地路径来加载图片。</p>
 <p>理论上图片可以放在本地的任意位置，只要填写正确的文件路径即可。但为了让 Hexo 能够正确解析（其实就是把图片拷贝到发布目录，并让生成的 html 文件能够正确链接到），图片的存放位置还是有要求的。</p>
 <p>第一种方式是使用绝对路径，这种方式把图片放在 <code>source</code> 目录下，然后在链接那里写 <code>/...</code>。比如可以统一把图片放在 <code>source/image</code> 目录下，则链接的写法是 <code>![text](/image/xxx.png)</code>。 这种方式的图片在首页和文章都可以显示。</p>
 <p>第二种方式是使用相对路径，这种方式创建一个和文章同名的文件夹，和文章放在同一层目录，图片则放在这个文件夹下，比如有一篇文章 <code>source/_posts/test.md</code>，则创建一个文件夹 <code>source/_posts/test/</code>，然后把图片放在这个文件夹下，通过 <code>![test](xxx.png)</code> 就能直接找到。这种方式的图片只能在文章中显示，在首页无法显示。</p>
