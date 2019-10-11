@@ -1355,7 +1355,10 @@
       
         
           
-            <h1 id="git-基础"><a href="#git-基础" class="headerlink" title="git 基础"></a>git 基础</h1><ul>
+            <blockquote>
+<p><em>你要相信，机会不来是因为你还没准备好。</em></p>
+</blockquote>
+<h1 id="git-基础"><a href="#git-基础" class="headerlink" title="git 基础"></a>git 基础</h1><ul>
 <li>文件状态： <strong>未跟踪(untracked)、已提交(committed)、已修改(modified)、已暂存(staged)</strong></li>
 <li>工作区域： <strong>远程仓库、工作目录、暂存区域</strong></li>
 </ul>
@@ -1434,10 +1437,12 @@
 <li>查看所有分支最后一次提交：<code>git branch -v</code></li>
 <li>查看所有已合并分支：<code>git branch --merged</code></li>
 <li>查看所有未合并分支：<code>git branch --no-merged</code></li>
+<li>查看所有分支包含远程分支和已删除分支： <code>git branch -a</code></li>
 </ul>
 <h2 id="删除分支"><a href="#删除分支" class="headerlink" title="删除分支"></a>删除分支</h2><ul>
 <li><code>git branch -d &lt;name&gt;</code>  只能删除那些已经合并的分支</li>
 <li><code>git branch -D &lt;name&gt;</code> 能删除已合并或未合并的分支</li>
+<li><code>git push &lt;remote&gt; --delete &lt;branch&gt;</code> 删除远程分支</li>
 </ul>
 <h2 id="重命名分支"><a href="#重命名分支" class="headerlink" title="重命名分支"></a>重命名分支</h2><ul>
 <li><code>git branch -m &lt;old-name&gt; &lt;new-name&gt;</code> 如果 <code>&lt;new-name&gt;</code> 分支已存在则重命名不成功</li>
@@ -1516,22 +1521,51 @@
 <li>跳过暂存区域直接提交 <code>git commit -a</code></li>
 </ol>
 <h2 id="查看提交日志"><a href="#查看提交日志" class="headerlink" title="查看提交日志"></a>查看提交日志</h2><p><code>git log</code></p>
+<p>默认查看所有提交日志，如果要查看某个文件的提交日志，带上文件名即可 <code>git log &lt;file&gt;</code>。</p>
 <ul>
-<li>-p 显示每次提交的内容差异</li>
-<li>-3 只显示最新的 3 次提交</li>
-<li>–stat    显示简略的统计信息</li>
-<li>–pretty 指定显示的格式</li>
+<li><code>-p</code> 显示每次提交的内容差异</li>
+<li><code>-3</code> 只显示最新的 3 次提交</li>
+<li><code>--stat</code>    显示简略的统计信息</li>
+<li><code>--pretty</code> 指定显示的格式</li>
+<li><code>--author=[xxx]</code> 按提交作者筛选</li>
 </ul>
+<p><code>git shortlog</code></p>
+<p>列出所有提交记录，只显示 commit 说明，按作者分类。<code>git shortlog --author=[xxx]</code> 只列出某位作者或某几位作者的日志，这个命令比较常用，比如查看自己的提交日志。</p>
 <h2 id="储藏文件"><a href="#储藏文件" class="headerlink" title="储藏文件"></a>储藏文件</h2><p>有时候在本地做了一些修改后，想切换到其它分支或者从远程拉取最新代码，而本地的修改暂时又不想提交，则可以将本地修改储藏起来，储藏之后本地又恢复成干净状态（即无修改状态），这时候 pull 代码或 checkout 分支都不会有冲突出现。之后需要的时候再从储藏中将文件恢复到本地，恢复的时候如果修改的文件有更新，则可能会出现冲突，所以一般是想更新远程较新文件且这些文件在本地没修改，本地修改的是远程无更新文件，才会使用储藏操作。</p>
 <ul>
 <li>储藏本地修改文件 <code>git stash</code></li>
-<li>恢复储藏的文件 <code>git stash apply</code></li>
+<li>查看储藏列表 <code>git stash list</code></li>
+<li>应用储藏 <code>git stash apply</code><blockquote>
+<p>如果要恢复指定的储藏，带上名字即可，比如 <code>git stash aaply stash@{1}</code>，默认从最近一次的储藏进行恢复，等价于 <code>git stash apply stash@{0}</code>。</p>
+</blockquote>
+</li>
+<li>取消储藏 <code>git stash show -p | git apply -R</code><blockquote>
+<p>git 没有提供 <code>stash unapply</code> 的命令，但是可以通过取消该储藏的补丁达到同样的效果，如果要取消指定的储藏，带上名字即可，<code>git stash show -p stash@{1} | git apply -R</code>。</p>
+</blockquote>
+</li>
+<li>移除储藏 <code>git stash drop</code><blockquote>
+<p><code>stash apply</code> 只是应用储藏，应用之后储藏的内容还在栈中，需要手动移除，<code>drop</code> 默认移除最近一次的储藏，<code>git stash drop stash@{1}</code> 移除上上次的储藏。</p>
+</blockquote>
+</li>
+<li>应用并移除储藏 <code>git stash pop</code><blockquote>
+<p><code>stash pop</code> 应用储藏的同时将其从栈中移除，等价于 <code>stash apply</code> + <code>stash drop</code>，<code>git stash pop stash@{1}</code> 可应用并移除上上次的储藏。</p>
+</blockquote>
+</li>
 </ul>
 <h2 id="撤销操作"><a href="#撤销操作" class="headerlink" title="撤销操作"></a>撤销操作</h2><h3 id="撤销暂存"><a href="#撤销暂存" class="headerlink" title="撤销暂存"></a>撤销暂存</h3><p><code>git reset HEAD &lt;file&gt;</code></p>
 <h3 id="撤销修改"><a href="#撤销修改" class="headerlink" title="撤销修改"></a>撤销修改</h3><p><code>git checkout -- &lt;file&gt;</code>  </p>
 <p>将文件修改为上次提交的样子或者刚放入工作目录时的样子，直接拿版本快照中的文件来覆盖本地，因此很危险。</p>
+<h3 id="撤销提交"><a href="#撤销提交" class="headerlink" title="撤销提交"></a>撤销提交</h3><p><code>git reset [--soft/--mixed/--hard] HEAD^</code></p>
+<p>恢复到当前版本状态，<code>--soft</code> 只撤销 commit，文件仍在暂存区中，<code>--mixed</code> 撤销 commit 和 add，文件恢复到工作目录，<code>--hard</code> 最粗暴，不仅撤销 commit 和 add，还将本地修改直接撤销了，即完全恢复到上次提交的状态，要慎用。默认参数是 <code>--mixed</code>，也是最常用的参数。</p>
 <h3 id="重新提交"><a href="#重新提交" class="headerlink" title="重新提交"></a>重新提交</h3><p><code>git commit --amend</code>  </p>
 <p>第二次提交会覆盖上一次的提交，如果第二次提交没有新的修改，就会使用第一次的快照，只覆盖提交信息。</p>
+<h2 id="数据恢复"><a href="#数据恢复" class="headerlink" title="数据恢复"></a>数据恢复</h2><p>有时候会丢失一些 commit 信息，比如强制删除了一个没 merge 的分支，则这个分支上的 commit 就丢失了，或者 hard-reset 到某个版本，则这个版本之后的 commit 就丢失了。这些丢失的数据是可以找回的，因为这些操作并不是真正的删除，只是从 git 仓库中移除了，数据还保留在 <code>.git</code> 目录下；git 会不定时的执行 <code>git gc</code> 命令，将不被引用且存在数月的垃圾删除，所以如果是误操作丢失了数据，不要慌，只要不是太久都可以找回的。</p>
+<p>找回 commit 其实很简单，比方在这个 commit 上创建一个新分支就把它恢复过来了，关键是得知道我们弄丢的是哪个 commit，<code>git log</code> 只会显示当前的所有 commit，不包含已删除的，这时候可以用 <code>git relog</code>，可以查看所有分支的所有操作记录，包括已删除的 commit 和 reset 的操作，relog 只显示简单的 commit 信息，这时可以再执行下 <code>git log -g</code> 来输出 relog 的正常日志，这样就能看到我们要恢复的是哪个 commit。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git relog</span><br><span class="line">git <span class="built_in">log</span> -g</span><br><span class="line">git branch recover-branch [commmit]</span><br></pre></td></tr></table></figure>
+<p>relog 数据保存在 <code>.git/logs</code> 目录下，如果这个目录被删了，则 <code>git relog</code> 就帮不了我们了，这时候可以使用 <code>git fsck</code> 命令，该命令会检查仓库的数据完整性和一致性，如果指定选项 <code>--full</code>，该命令显示所有未被其它对象引用的所有对象。通过 <code>git fsck --full</code> 也能找到被删除的 commit 信息。</p>
+<p>有时候会误删 stash，比如想应用并移除储藏的时候，脑子一热将 <code>git stash pop</code> 打成了 <code>git stash drop</code>，这时储藏没应用，却已经从栈中移除了。但别慌，只是从栈中移除了，stash 的数据还是在的，只是无法在 <code>git stash list</code> 中列出来，即没有 stash 名字而已，但我们仍可以通过 commit 信息来恢复。其实在移除储藏的时候，从移除的结果就可以看到这条储藏的 commit 信息，如果马上意识到自己误操作，这时想恢复十分简单，直接使用这条 commit 信息进行恢复即可。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ git stash list</span><br><span class="line">stash@&#123;0&#125;: WIP on mission-guide: 7c7e6fb6 <span class="comment">#feature update info</span></span><br><span class="line">$ git stash drop</span><br><span class="line">Dropped refs/stash@&#123;0&#125; (6703c50483b213a0bad3cff09ed804515ff93b78)</span><br><span class="line">$ git stash list</span><br><span class="line"></span><br><span class="line">$ git stash apply 6703c50</span><br><span class="line">On branch feature/mission-guide</span><br><span class="line">Changes not staged <span class="keyword">for</span> commit:</span><br><span class="line">  (use <span class="string">"git add &lt;file&gt;..."</span> to update what will be committed)</span><br><span class="line">  (use <span class="string">"git checkout -- &lt;file&gt;..."</span> to discard changes <span class="keyword">in</span> working directory)</span><br><span class="line"></span><br><span class="line">        modified:   scripts/data/guide.lua</span><br></pre></td></tr></table></figure>
+<p>只是在刚移除 stash 的时候恢复，这时我们知道 commit 信息，如果隔了一段时间不知道 commit 信息了，也可以通过 <code>git fsck</code> 来列出所有 commit，但列出来的 commit 是无序的，只能通过 <code>git show [commit]</code> 来一条条查看 commit 的 diff，找到需要的 commit 之后再进行恢复，相对会麻烦挺多。</p>
 
           
         
