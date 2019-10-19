@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="../../../../../lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Times New Roman:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="../../../../../lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="../../../../../css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="../../../../../images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="../../../../../images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="../../../../../images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="../../../../../images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="先定个小目标，早睡和早起！  写在前面Vi(Vim) 作为一个强大的编辑器，其强大的功能由非常多的命令支撑；这么多的命令靠死记硬背显示是不行的，而是需要在训练中强化记忆，这个帖子只是对常用命令作一个记录。首先，要了解一下 vi 编辑器的三种模式。  一般模式：这是最常见的模式，绝大部分的命令都是在这个模式下运行的；在这个模式下，我们可以随意地定位光标，删除任意多的内容，复制粘贴，撤销重做等等">
+<meta name="keywords" content="coding game">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vim 简明教程">
+<meta property="og:url" content="http://linjinxin.com/2019/10/14/coder/vim/index.html">
+<meta property="og:site_name" content="Welcome to Code World">
+<meta property="og:description" content="先定个小目标，早睡和早起！  写在前面Vi(Vim) 作为一个强大的编辑器，其强大的功能由非常多的命令支撑；这么多的命令靠死记硬背显示是不行的，而是需要在训练中强化记忆，这个帖子只是对常用命令作一个记录。首先，要了解一下 vi 编辑器的三种模式。  一般模式：这是最常见的模式，绝大部分的命令都是在这个模式下运行的；在这个模式下，我们可以随意地定位光标，删除任意多的内容，复制粘贴，撤销重做等等">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-10-19T03:41:10.143Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vim 简明教程">
+<meta name="twitter:description" content="先定个小目标，早睡和早起！  写在前面Vi(Vim) 作为一个强大的编辑器，其强大的功能由非常多的命令支撑；这么多的命令靠死记硬背显示是不行的，而是需要在训练中强化记忆，这个帖子只是对常用命令作一个记录。首先，要了解一下 vi 编辑器的三种模式。  一般模式：这是最常见的模式，绝大部分的命令都是在这个模式下运行的；在这个模式下，我们可以随意地定位光标，删除任意多的内容，复制粘贴，撤销重做等等">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://linjinxin.com/2019/10/14/coder/vim/">
+
+
+
+
+
+  <title>Vim 简明教程 | Welcome to Code World</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Welcome to Code World</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">Learning the ocean without boundaries</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="schedule" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>
+            
+            日程表
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linjinxin.com">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="林锦新">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="../../../../../images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Welcome to Code World">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Vim 简明教程</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-14T12:01:21+08:00">
+                2019-10-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="../../../../../categories/IT/" itemprop="url" rel="index">
+                    <span itemprop="name">IT</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/10/14/coder/vim/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p><em>先定个小目标，早睡和早起！</em></p>
+</blockquote>
+<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>Vi(Vim) 作为一个强大的编辑器，其强大的功能由非常多的命令支撑；这么多的命令靠死记硬背显示是不行的，而是需要在训练中强化记忆，这个帖子只是对常用命令作一个记录。<br>首先，要了解一下 vi 编辑器的三种模式。</p>
+<ul>
+<li><p>一般模式：这是最常见的模式，绝大部分的命令都是在这个模式下运行的；在这个模式下，我们可以随意地定位光标，删除任意多的内容，复制粘贴，撤销重做等等</p>
+</li>
+<li><p>编辑模式：一旦进入这个模式，vi 编辑器就与一般的编辑器没什么不同了，也是使用 backspace 或 delete 键进行删除，使用光标键进行移动</p>
+</li>
+<li><p>指令模式：在这个模式下可以执行一些指令，比如保存文件，退出 vi 编辑器等</p>
+</li>
+</ul>
+<p>最常用的模式是一般模式，另外一般模式是另外两个模式的桥梁，也就是说另外两个模式要相互转换必须经过一般模式。刚进入 vi 时就处于一般模式，如果想从另外两个模式转换到一般模式，按 ESC 键即可。在一般模式下，输入一些能够开始编辑的命令，就进入编辑模式，比如 i, o 等命令。在一般模式下，输入命令 : 或 / 或 ? 就可以进入指令模式。</p>
+<h1 id="移动定位"><a href="#移动定位" class="headerlink" title="移动定位"></a>移动定位</h1><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>h</td>
+<td>光标左移</td>
+</tr>
+<tr>
+<td>l</td>
+<td>光标右移</td>
+</tr>
+<tr>
+<td>j</td>
+<td>光标下移</td>
+</tr>
+<tr>
+<td>k</td>
+<td>光标上移</td>
+</tr>
+<tr>
+<td>+</td>
+<td>移动到下一行</td>
+<td>定位到本行首个非空白字符</td>
+</tr>
+<tr>
+<td>-</td>
+<td>移动到上一行</td>
+<td>定位到本行首个非空白字符</td>
+</tr>
+<tr>
+<td>$</td>
+<td>移动到行尾</td>
+<td>光标定位到本行第一个字符</td>
+</tr>
+<tr>
+<td>0</td>
+<td>移动到行首</td>
+<td>光标定位到本行最后一个字符</td>
+</tr>
+<tr>
+<td>w</td>
+<td>移动到下个单词的首字符</td>
+</tr>
+<tr>
+<td>e</td>
+<td>移动到下个单词的尾字符</td>
+<td>如果当前光标已经在本单词的尾字符，则移动到下个单词的尾字符，否则移动到本单词的尾字符</td>
+</tr>
+<tr>
+<td>b</td>
+<td>移动到上个单词的首字符</td>
+</tr>
+<tr>
+<td>nw</td>
+<td>移动 n 个单词</td>
+<td>光标定位在第 n 个单词的首字符</td>
+</tr>
+<tr>
+<td>ne</td>
+<td>移动 n 个单词</td>
+<td>如果当前光标在本单词的尾字符，则定位到第 n 个单词的尾字符，否则定位到第 n-1 个单词的尾字符</td>
+</tr>
+<tr>
+<td>nb</td>
+<td>向前移动 n 个单词</td>
+</tr>
+<tr>
+<td>gg</td>
+<td>移动到文件首</td>
+<td>光标定位在首行的第一个字符</td>
+</tr>
+<tr>
+<td>G</td>
+<td>移动到文件末</td>
+<td>光标定位在尾行的第一个字符</td>
+</tr>
+<tr>
+<td>n</td>
+<td>定位到第 n 行</td>
+<td>指令模式下运行，光标定位在首字符</td>
+</tr>
+<tr>
+<td>n</td>
+<td>往下移动 n 行（输入 n 之后按回车）</td>
+<td>光标定位在首字符</td>
+</tr>
+<tr>
+<td>ctrl+f</td>
+<td>往下移动一页</td>
+</tr>
+<tr>
+<td>ctrl+b</td>
+<td>住上移动一页</td>
+</tr>
+<tr>
+<td>ctrl+d</td>
+<td>往下移动半页</td>
+</tr>
+<tr>
+<td>ctrl+u</td>
+<td>往上移动半页</td>
+</tr>
+<tr>
+<td>H</td>
+<td>移动到本屏第一行</td>
+</tr>
+<tr>
+<td>M</td>
+<td>移动到本屏中间行</td>
+</tr>
+<tr>
+<td>L</td>
+<td>移动到本屏最后一行</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<ul>
+<li>hjkl 这四个命令是两对命令，hl 左右移动，jk 上下移动，这种两边成对的方式比按顺序成对更为自然。</li>
+<li>向下翻页和向上翻页分别是 forward 和 behind 的意思，一般阅读往前走都是向下走的，所以 ctrl+f 是向下翻页，ctrl+b 是向上翻页。</li>
+<li>向下翻半页和向上翻半页则是 down 和 up 的意思，这两个就比较好理解了，ctrl+d 向下翻半页，ctrl+u 向上翻半页。</li>
+</ul>
+</blockquote>
+<h1 id="退出编辑器"><a href="#退出编辑器" class="headerlink" title="退出编辑器"></a>退出编辑器</h1><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>wq</td>
+<td>保存后退出</td>
+<td>指令模式下运行</td>
+</tr>
+<tr>
+<td>q!</td>
+<td>不保存直接强制退出</td>
+<td>指令模式下运行</td>
+</tr>
+</tbody>
+</table>
+<h1 id="删除操作"><a href="#删除操作" class="headerlink" title="删除操作"></a>删除操作</h1><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>x</td>
+<td>往后删除一个字符</td>
+<td>删除当前光标所在字符</td>
+</tr>
+<tr>
+<td>X</td>
+<td>往前删除一个字符</td>
+<td>删除当前光标前面的字符</td>
+</tr>
+<tr>
+<td>dw</td>
+<td>往后删除一个单词</td>
+<td>连同单词后面的空白字符一起删除</td>
+</tr>
+<tr>
+<td>de</td>
+<td>往后删除一个单词</td>
+<td>不删除单词后面的空白字符</td>
+</tr>
+<tr>
+<td>db</td>
+<td>往前删除一个单词</td>
+<td>不删除单词前面的空白字符，不删除光标所在字符</td>
+</tr>
+<tr>
+<td>d$</td>
+<td>从当前光标位置删除到行尾</td>
+<td>包括当前光标所在字符</td>
+</tr>
+<tr>
+<td>d0</td>
+<td>从当前光标位置删除到行首</td>
+<td>不包括当前光标所在字符</td>
+</tr>
+<tr>
+<td>dG</td>
+<td>从当前光标所在行删除到文件尾</td>
+<td>包括当前行</td>
+</tr>
+<tr>
+<td>dgg</td>
+<td>从当前光标位置删除到文件头</td>
+<td>不包括光标所在字符</td>
+</tr>
+<tr>
+<td>dd</td>
+<td>删除当前行</td>
+<td>删除后光标会定位到下一行的行首</td>
+</tr>
+<tr>
+<td>ndd</td>
+<td>从当前行开始往下删除 n 行</td>
+<td>包括当前行</td>
+</tr>
+<tr>
+<td>di{</td>
+<td>把光标定位在在 { 上，然后按下 di，就可以把括号内的内容删除，括号保留</td>
+<td>di(，di[ 也同样</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>一个文本中有一个单词 pad，如果此时光标在字符 a 上，则表示当前所处位置是 a 的前面，p 的后面，所以输入 x 命令会删除字符 a，输入 X 命令会删除字符 p。如果此时进入插入模式，则新插入的内容也是在 a 的前面，p 的后面。</p>
+</blockquote>
+<h1 id="进入编辑模式"><a href="#进入编辑模式" class="headerlink" title="进入编辑模式"></a>进入编辑模式</h1><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>i</td>
+<td>在当前光标处插入文本</td>
+<td>在光标所在字符前面插入</td>
+</tr>
+<tr>
+<td>a</td>
+<td>在当前光标后面插入文本</td>
+<td>在光标所在字符后面插入</td>
+</tr>
+<tr>
+<td>I</td>
+<td>在本行第一个非空字符前面插入文本</td>
+</tr>
+<tr>
+<td>A</td>
+<td>在本行最后一个字符后面插入文本</td>
+</tr>
+<tr>
+<td>o</td>
+<td>在下一行插入新行</td>
+</tr>
+<tr>
+<td>O</td>
+<td>在上一行插入新行</td>
+</tr>
+</tbody>
+</table>
+<h1 id="多选操作"><a href="#多选操作" class="headerlink" title="多选操作"></a>多选操作</h1><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v</td>
+<td>自由选择</td>
+<td>进入可视状态之后，按任何移动键进行自由选择</td>
+</tr>
+<tr>
+<td>shift+v</td>
+<td>选择多行</td>
+<td>进入可视状态之后，按 j k 或上下翻页键进行多行选择</td>
+</tr>
+<tr>
+<td>ctrl+v</td>
+<td>选择多列</td>
+<td>进入可视状态之后，按 h l 进行多列选择，再按 j k 或翻页键选择多行</td>
+</tr>
+</tbody>
+</table>
+<h2 id="批量注释"><a href="#批量注释" class="headerlink" title="批量注释"></a>批量注释</h2><ul>
+<li>第一种方法，使用 v 或 shift+v 或 ctrl+v 的任意一种，选择要注释的行之后，进入指令模式，输入 <code>normal i 注释符</code> 即可。这种方式不要求整行选择或者必须选择某一列，只要该行被选中，就会行首进行注释。  </li>
+<li>第二种方法，使用 ctrl+v 进行多列选择，然后输入 i ，再输入注释符，最后按 esc 结束，就可以将选中的行进行注释。这种方式会在选中的列位置插入注释符，如果要在行首进行注释，则必须选中第一列。</li>
+</ul>
+<h2 id="批量取消注释"><a href="#批量取消注释" class="headerlink" title="批量取消注释"></a>批量取消注释</h2><p>按 ctrl+v 选中注释符所在列，然后选中要取消注释的列，按 d 删除注释符。这种方式其实是把注释符删掉，所以如果注释有多个的话(像//)，则必须选中所有注释符，才能完整删掉。</p>
+<h2 id="格式化代码"><a href="#格式化代码" class="headerlink" title="格式化代码"></a>格式化代码</h2><p>选中要格式化的代码，按 = 即可。</p>
+<h1 id="文件内查找"><a href="#文件内查找" class="headerlink" title="文件内查找"></a>文件内查找</h1><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/+char</td>
+<td>在一般模式下按 / 键进入指令械，然后输入要查找的字符 char，输入完成按回车键回到一般模式，这时就进入查找状态了</td>
+<td>向前查找</td>
+</tr>
+<tr>
+<td>?+char</td>
+<td>同 /+char 一样</td>
+<td>向后查找</td>
+</tr>
+<tr>
+<td>shift+8</td>
+<td>在一般模式下，光标定位在要查找的字符上，按下 shift+8 就可以查找这个字符</td>
+<td>同 /+char 一样的功能</td>
+</tr>
+<tr>
+<td>n</td>
+<td>查找下一个</td>
+<td>按定义的方向查找</td>
+</tr>
+<tr>
+<td>N</td>
+<td>查找上一个</td>
+<td>按定义的方向反方向查找</td>
+</tr>
+</tbody>
+</table>
+<h1 id="文件內替換"><a href="#文件內替換" class="headerlink" title="文件內替換"></a>文件內替換</h1><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>:s/old/new</td>
+<td>在一般模式下按 : 进入命令模式，然后输入 <code>s/{要替换的旧字符}/{要替换砀新字符}</code>，按回车键结束</td>
+<td>只替换光标所在行的第一个匹配项</td>
+</tr>
+<tr>
+<td>:s/old/new/g</td>
+<td>同上</td>
+<td>替换光标所在行的所有匹配项</td>
+</tr>
+<tr>
+<td>:m,ns/old/new/g</td>
+<td>同上，m,n 表示一个数字</td>
+<td>替换第 m 行到第 n 行的所有匹配项</td>
+</tr>
+<tr>
+<td>:%s/old/new/g</td>
+<td>同上</td>
+<td>替换整个文件的所有匹配项</td>
+</tr>
+<tr>
+<td>:%s/old/new/gc</td>
+<td>同上</td>
+<td>替换整个文件的所有匹配项，每次匹配前由用户确认</td>
+</tr>
+<tr>
+<td>r</td>
+<td>在一般模式下按 r 删除当前光标所在字符同时进入编辑状态</td>
+<td>输入一个新字符之后自动退出编辑状态，也就是 r 命令只能把单个字符替换成单个字符</td>
+</tr>
+<tr>
+<td>R</td>
+<td>在一般模式下按 R 会进入替换模式，当前光标会显示为下划线</td>
+<td>每输入一个字符就会替换当前光标所在的字符，然后光标后移一位，直到按 ESC 退出编辑模式为止，如果替换到行尾，还是可以继续输入字符，则相当于变成插入模式，R 命令可以连续替换多个字符</td>
+</tr>
+<tr>
+<td>ce</td>
+<td>往后删除一个单词之后进入编辑状态</td>
+<td>等价于 de + i</td>
+</tr>
+<tr>
+<td>cw</td>
+<td>同 ce</td>
+<td>cw 和 ce 完全一样，也是等价于 de + i，而不是 dw + i，de 会保留单词后面的空格，dw 则会连同后面的空格一起删除</td>
+</tr>
+<tr>
+<td>cb</td>
+<td>往前删除一个单词后进入编辑状态</td>
+<td>等价于 db + i</td>
+</tr>
+</tbody>
+</table>
+<h1 id="全局搜索"><a href="#全局搜索" class="headerlink" title="全局搜索"></a>全局搜索</h1><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>vim /char /% \</td>
+<td>copen</td>
+<td>只查找本文件</td>
+<td>vim 是 vimgrep 的缩写，使用 vim 或 vimgrep 都可以，管道 copen 命令会打开一个新的分页，查找的结果显示在分页中</td>
+</tr>
+<tr>
+<td>vim /char /* \</td>
+<td>copen</td>
+<td>查找本目录下的所有文件</td>
+<td>使用 /* 或 /** 都可以</td>
+</tr>
+</tbody>
+</table>
+<h1 id="显示行号"><a href="#显示行号" class="headerlink" title="显示行号"></a>显示行号</h1><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>:set nu</td>
+<td>在一般模式按 : 进入命令模式</td>
+<td>显示行号</td>
+</tr>
+<tr>
+<td>:set nonu</td>
+<td>同上</td>
+<td>隐藏行号</td>
+</tr>
+</tbody>
+</table>
+<h1 id="缓冲区跳转"><a href="#缓冲区跳转" class="headerlink" title="缓冲区跳转"></a>缓冲区跳转</h1><p>每个打开的文件都会有一个缓冲区，通过切换缓冲区可在不同文件之间切换查看。</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>{:ls} or {:buffers}</td>
+<td>列出所有缓冲区</td>
+<td>列出缓冲区编号、文件名、当前定位行数</td>
+</tr>
+<tr>
+<td>{:bn} or {:bnext}</td>
+<td>切换到下一个缓冲区</td>
+<td>含义：buffer next</td>
+</tr>
+<tr>
+<td>{:bp} or {:bprevious}</td>
+<td>切换到上一个缓冲区</td>
+<td>含义：buffer previous</td>
+</tr>
+<tr>
+<td>{:b[n]} or {:b [n]}</td>
+<td>切换到指定缓冲区</td>
+<td>n 为缓冲区编号</td>
+</tr>
+<tr>
+<td>:b [exp]</td>
+<td>切换到指定缓冲区</td>
+<td>exp 为表达式，用于模糊匹配文件名</td>
+</tr>
+<tr>
+<td>&lt;ctrl+^&gt;</td>
+<td>切换到上一个活跃缓冲区</td>
+<td>在当前缓冲区和上一个缓冲区来回切换</td>
+</tr>
+</tbody>
+</table>
+<h2 id="高级用法"><a href="#高级用法" class="headerlink" title="高级用法"></a>高级用法</h2><p>要查看所有缓冲区，除了使用 <code>:ls</code> 或 <code>:buffers</code> 来列出之外，还可以借助快捷键 <tab> 在跳转的时候列出所有缓冲区文件名，再次按 <tab> 可以在不同文件之间预选，当选中要跳转的文件后，按回车执行命令即可跳转到相应的缓冲区。</tab></tab></p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>:b <tab></tab></td>
+<td>列出缓冲区列表，再次按 <tab> 预选文件，按回车执行命令</tab></td>
+<td><code>:b</code> 与 <tab> 之间要有空格</tab></td>
+</tr>
+<tr>
+<td>:b exp<tab></tab></td>
+<td>进行模糊匹配，只列出与 <code>exp</code> 匹配的文件</td>
+</tr>
+</tbody>
+</table>
+<h1 id="分屏显示"><a href="#分屏显示" class="headerlink" title="分屏显示"></a>分屏显示</h1><p>一个缓冲区对应一个文件，屏幕上只能显示一个缓冲区的内容，即只能显示一个文件；如果要同时显示多个文件，就需要分屏显示，通过把屏幕分隔成多个窗口，每个窗口显示一个缓冲区，就能做到在屏幕上同时显示多个文件。</p>
+<p>水平分屏：以水平线进行分割，将屏幕分为上、中、下等多个窗口；<br>垂直分屏：以垂直线进行分割，将屏幕分为左、中、右等多个窗口。</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>vim -o file1 file2</td>
+<td>水平分屏打开多个文件</td>
+<td>打开几个文件就开几个窗口，如果只有一个文件则不分屏</td>
+</tr>
+<tr>
+<td>vim -O file1 file2</td>
+<td>垂直分屏打开多个文件</td>
+</tr>
+<tr>
+<td>{sp} or {split} or {new}</td>
+<td>新增水平分屏，新窗口在最顶端且为当前活跃窗口</td>
+<td>如果带文件名则打开该文件，否则打开当前窗口的文件，如果当前窗口也没打开文件，则新窗口也无文件</td>
+</tr>
+<tr>
+<td>{vs} or {vsp} or {vsplit}</td>
+<td>新增垂直分屏，新窗口在最左边且为当前活跃窗口</td>
+<td>同水平分屏</td>
+</tr>
+<tr>
+<td>{clo} or {close}</td>
+<td>关闭当前窗口</td>
+<td></td>
+</tr>
+<tr>
+<td>&lt;ctrl+w&gt; s</td>
+<td>水平分屏</td>
+<td>以当前文件打开</td>
+</tr>
+<tr>
+<td>&lt;ctrl+w&gt; v</td>
+<td>垂直分屏</td>
+<td>以当前文件打开</td>
+</tr>
+<tr>
+<td>&lt;ctrl+w&gt; n</td>
+<td>水平分屏</td>
+<td>新窗口，无打开文件</td>
+</tr>
+<tr>
+<td>&lt;ctrl+w&gt; q</td>
+<td>关闭当前窗口</td>
+</tr>
+<tr>
+<td>&lt;ctrl+w&gt; o</td>
+<td>关闭当前窗口之外的所有窗口</td>
+</tr>
+</tbody>
+</table>
+<h1 id="外部命令"><a href="#外部命令" class="headerlink" title="外部命令"></a>外部命令</h1><p>在一般模式下输入 <code>:![cmd]</code> 即可执行外部命令，<code>:</code> 进入指令模式，<code>!</code> 表示接下来的命令是外部命令；执行成功之后会临时跳出 vim 回到终端，在终端显示执行结果，并提示 <em>请按 ENTER 或其它命令继续</em>，按下回车键或其它命令键就会回到 vim 界面。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="../../../../09/20/opengl/point/" rel="next" title="绘制一个点">
+                <i class="fa fa-chevron-left"></i> 绘制一个点
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="../../../../../images/avatar.png" alt="林锦新">
+            
+              <p class="site-author-name" itemprop="name">林锦新</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="../../../../../archives">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="../../../../../categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="../../../../../tags/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/linjinxin" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#写在前面"><span class="nav-number">1.</span> <span class="nav-text">写在前面</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#移动定位"><span class="nav-number">2.</span> <span class="nav-text">移动定位</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#退出编辑器"><span class="nav-number">3.</span> <span class="nav-text">退出编辑器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#删除操作"><span class="nav-number">4.</span> <span class="nav-text">删除操作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进入编辑模式"><span class="nav-number">5.</span> <span class="nav-text">进入编辑模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#多选操作"><span class="nav-number">6.</span> <span class="nav-text">多选操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#批量注释"><span class="nav-number">6.1.</span> <span class="nav-text">批量注释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#批量取消注释"><span class="nav-number">6.2.</span> <span class="nav-text">批量取消注释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#格式化代码"><span class="nav-number">6.3.</span> <span class="nav-text">格式化代码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#文件内查找"><span class="nav-number">7.</span> <span class="nav-text">文件内查找</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#文件內替換"><span class="nav-number">8.</span> <span class="nav-text">文件內替換</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#全局搜索"><span class="nav-number">9.</span> <span class="nav-text">全局搜索</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#显示行号"><span class="nav-number">10.</span> <span class="nav-text">显示行号</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#缓冲区跳转"><span class="nav-number">11.</span> <span class="nav-text">缓冲区跳转</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#高级用法"><span class="nav-number">11.1.</span> <span class="nav-text">高级用法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#分屏显示"><span class="nav-number">12.</span> <span class="nav-text">分屏显示</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#外部命令"><span class="nav-number">13.</span> <span class="nav-text">外部命令</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">林锦新</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="../../../../../lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../../lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../../lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../../lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../../lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../../lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="../../../../../js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="../../../../../js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="../../../../../js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="../../../../../js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="../../../../../js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="../../../../../js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="../../../../../js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://ljx.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://linjinxin.com/2019/10/14/coder/vim/';
+          this.page.identifier = '2019/10/14/coder/vim/';
+          this.page.title = 'Vim 简明教程';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://ljx.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
