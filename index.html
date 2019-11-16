@@ -305,6 +305,210 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linjinxin.com2019/11/16/python/init/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="林锦新">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Welcome to Code World">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="2019/11/16/python/init/" itemprop="url">基础知识</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-16T17:22:33+08:00">
+                2019-11-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="2019/11/16/python/init/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/11/16/python/init/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h1><h2 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h2><p>python 是一门很高级的脚本语言，不用编译，解释运行。python 使用简单，有很多封装好的库，但运行效率很慢。python 主要应用于网站后台，游戏后台，还有很多系统工具，python 是程序员日常开发自动化工具首选的脚本语言。</p>
+<p>python 目前有两个大版本，python2.x 和 python3.x，这两个版本的差别挺大的，<strong>本系列文章基于 python3</strong>。</p>
+<p>安装 python 很简单，从官网下载之后安装，把安装根目录添加到环境变量 path，就可以在命令行直接运行 python 命令。</p>
+<p>安装完 python 还需要安装一个 python 的自动包管理工具 pip。从 <a href="https://bootstrap.pypa.io/get-pip.py" target="_blank" rel="noopener">这个地址</a> 下载 pip 的官方安装脚本 <code>get-pip.py</code>，然后打开命令行，输入 <code>python get-pip.py</code>，这个过程会自动下载并安装，除了 pip 还会自动下载并安装 setuptools 和 wheel 这两个包。pip 安装完成之后会在 python 的安装目录下创建一个 Scripts 文件夹，pip 和其它安装的包都在这个目录下，把 Scripts 这个路径添加到环境变量，就可以直接在命令行运行 pip 命令或其它命令。</p>
+<h2 id="配置开发环境"><a href="#配置开发环境" class="headerlink" title="配置开发环境"></a>配置开发环境</h2><p>开发环境因人而异，比较流行的 python ide 是 pycharm，但我不想装太多 ide，所以想用文本编辑器来做开发。我个人比较喜欢 visual studio code，它像其它编辑器一样轻量，又可以通过不同的插件来实现 ide 一样的功能，代码提示和断点调试。首先装一个 python 的调试插件，在扩展工具那里搜 python，安装第一项即可，这是微软官方提供的一个插件，也可以通过 <a href="https://marketplace.visualstudio.com/items?itemName=ms-python.python" target="_blank" rel="noopener">这个地址</a> 下载。</p>
+<p>接下来通过 pip 工具安装三个常用的包，</p>
+<ul>
+<li><code>pip install pylint</code> 安装 pylint 工具，这个工具用于检查源代码中的错误和不符合规范的地方；</li>
+<li><code>pip install flake8</code> 安装 flake8 插件，也用于检查代码中的错误或不规范的地方。要开启或关闭这个插件，只需要在用户配置或工作区配置中进行设置即可；输入 ctrl+shift+p 打开 vs code 的命令窗口，然后输入 workspace settings 可以打开工作区设置，输入 user settings 可以打开用户设置，工作区设置只针对当前的工作区（打开的文件夹），用户设置针对所有工作区，这几个设置的优先级是工作区设置会覆盖用户设置，用户设置覆盖默认设置。打开工作区设置或用户设置之后，添加 <code>&quot;python.linting.flake8Enabled&quot;: true</code> 就可以开启 flake8，如果要关闭改为 false 即可，或者删掉（因为默认设置就是关闭的）；</li>
+<li><code>pip install yapf</code> 安装 yapf 插件，用于格式化代码，安装完 yapf 并启用之后，就可以使用 vs code 默认的快捷键 alt+shift+f 来格式化代码。打开工作区设置或用户设置，添加 <code>&quot;python.formatting.provider&quot;: &quot;yapf&quot;</code> 就可以启用 yapf，要关闭则改为 none 或者其它的格式化插件。</li>
+</ul>
+<h2 id="Python-解释器"><a href="#Python-解释器" class="headerlink" title="Python 解释器"></a>Python 解释器</h2><p>python 解释器用于解释执行 python 源代码，在命令行中输入 <code>python xx.py</code> 就可以解释执行某个 python 源文件，这个 python.exe 就是 python 的解释器。python 安装完之后默认会有一个 GUI 工具 Python IDLE 和一个命令行工具 Python Comand Line，运行 GUI 工具或者命令行工具，或者在 cmd 中输入 python 命令，都可以打开 python 解释器的交互环境。解释器交互环境以 &gt;&gt;&gt; 为标志，在交互环境下每输入一条语句都会被立即解释执行，每条语句如果有返回结果都会输出，可以将 python 解释器当作一个简单的计算器。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; <span class="built_in">print</span> <span class="string">"hello world"</span></span><br><span class="line">hello world</span><br><span class="line">&gt;&gt;&gt; 3 * 5</span><br><span class="line">15</span><br><span class="line">&gt;&gt;&gt; 4 &amp; 5 | 10</span><br><span class="line">14</span><br><span class="line">&gt;&gt;&gt; a = 1024 * 1024</span><br><span class="line">&gt;&gt;&gt; <span class="built_in">print</span> a</span><br><span class="line">1048576</span><br><span class="line">&gt;&gt;&gt; a + 1</span><br><span class="line">1048577</span><br><span class="line">&gt;&gt;&gt; import math</span><br><span class="line">&gt;&gt;&gt; math.pow(2, 10)</span><br><span class="line">1024.0</span><br></pre></td></tr></table></figure>
+<p>退出 python 交互环境使用 exit 函数即可，输入 <code>exit()</code> 即可返回到命令行或者关闭 Python IDLE 或 Python Command Line。</p>
+<h1 id="输入与输出"><a href="#输入与输出" class="headerlink" title="输入与输出"></a>输入与输出</h1><h2 id="输出-print"><a href="#输出-print" class="headerlink" title="输出 print"></a>输出 print</h2><p>和大多数语言一样，python 使用 print 作为输出的关键字，在 2.x 中 print 只是一个关键字，但到了 3.x print 是一个函数了，所以 2.x 的 print 的用法是 <code>print message</code>，而 3.x 的用法是 <code>print(message)</code>，当然 2.x 加上括号也可以，但这个括号不是函数调用的意思，只是单纯的把一个表达式括起来而已，但 3.x 必须有括号，这个括号表示这是一个函数调用。</p>
+<h3 id="基本输出"><a href="#基本输出" class="headerlink" title="基本输出"></a>基本输出</h3><p>print 可直接输出字符串、数字、布尔值、列表、字典等所有数据类型，也可以在参数里写上表达式，print 会输出表达式计算后的结果。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#output all datatype</span></span><br><span class="line">print(<span class="string">"hello world"</span>)</span><br><span class="line">print(<span class="number">500</span>)</span><br><span class="line">print(<span class="keyword">True</span>)</span><br><span class="line">print((<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>))</span><br><span class="line">print([<span class="string">'x'</span>, <span class="string">'y'</span>, <span class="string">'z'</span>])</span><br><span class="line">print(&#123;<span class="string">'a'</span>: <span class="number">10</span>, <span class="string">'b'</span>: <span class="number">20</span>&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># output expression</span></span><br><span class="line">print(<span class="number">16</span> * <span class="number">16</span>)</span><br><span class="line">print(<span class="number">100</span> == <span class="string">'100'</span>)</span><br><span class="line">print(<span class="number">100</span> == <span class="number">100</span>)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">hello world</span><br><span class="line">500</span><br><span class="line">True</span><br><span class="line">(1, 2, 3)</span><br><span class="line">[&apos;x&apos;, &apos;y&apos;, &apos;z&apos;]</span><br><span class="line">&#123;&apos;a&apos;: 10, &apos;b&apos;: 20&#125;</span><br><span class="line">256</span><br><span class="line">False</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
+<h3 id="输出参数"><a href="#输出参数" class="headerlink" title="输出参数"></a>输出参数</h3><p>print 可以一次性输出多个数据，用逗号隔开即可，如 <code>print(1, 2)</code>；print 输出多个数据时默认用空格隔开，也可以使用 sep 自定义间隔符，如 <code>print(1, 2, sep = &#39;-&#39;)</code>；print 默认以回车为结束符，即打印完数据之后都会换行，可以使用 end 参数自定义结束符，如 <code>print(1, end = &#39;&#39;)</code>。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># output param</span></span><br><span class="line">print(<span class="string">'a'</span>, <span class="string">'b'</span>, end=<span class="string">' | '</span>)</span><br><span class="line">print(<span class="keyword">True</span>, <span class="keyword">False</span>, sep=<span class="string">'-&gt;'</span>)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a b | True-&gt;False</span><br></pre></td></tr></table></figure>
+<h3 id="格式化输出"><a href="#格式化输出" class="headerlink" title="格式化输出"></a>格式化输出</h3><p>python 的 print 不像 c 语言中的 printf 一样死板，而是像 c++ 中的 cout 一样智能，无论什么数据类型的数据都可以直接输出；但 python 的 print 也可以像 c 语言中的 printf 一样格式化输出，用法基本与 c 语言一样，只是写法不大一样，python 格式化输出的变量必须放在 %() 里面，如 <code>print(&quot;%d %d&quot; %(var1, var2))</code>。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># format output</span></span><br><span class="line">var = <span class="number">0x101</span></span><br><span class="line">print(<span class="string">"%d, %i, %u, %o, %x, %X, %f, %F, %g, %G, %e, %E"</span> %</span><br><span class="line">      (var, var, var, var, var, var, var, var, var, var, var, var))</span><br><span class="line">var = <span class="number">3.14</span></span><br><span class="line">print(<span class="string">"%-10.3f,%010.5f"</span> % (var, var))</span><br></pre></td></tr></table></figure>
+<p>%d、%i 以有符号十进制数输出，%u 以无符号十进制数输出，%o 以八进制数输出，%x(X) 以十六进制输出，%f(F) 以浮点数输出，%e(E) 以科学计数法输出浮点数，%g(G) 为自动格式判断。以浮点数输出时，<em>%m.nf</em> 的格式表示输出宽度为 m 位，保留 n 位小数，如果数据长度不足 m 位，则默认在前面补上空格；使用 <em>%0m.nf</em> 可修改补位符为 ‘0’，也可以修改成其它补位符；默认为右对齐，即补位符加在数据的前面，使用 <em>%-m.nf</em> 可修改为左对齐。运行结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">257, 257, 257, 401, 101, 101, 257.000000, 257.000000, 257, 257, 2.570000e+02, 2.570000E+02</span><br><span class="line">3.140     ,0003.14000</span><br></pre></td></tr></table></figure>
+<p><code>print(&quot;%d %d&quot; %(var1, var2))</code> 这是 2.x 的写法，3.x 兼容了这种写法，也提供了一种更好的写法，使用格式化输出函数 format() 将输出数据括起来，然后参数占位符使用和 c# 类似的 <em>{0}</em>，当然也可以使用上面的这些格式，如 <em>{0:%f}</em>。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">VAR = <span class="number">3.1414926</span></span><br><span class="line">print(<span class="string">"&#123;0:0.3f&#125;,&#123;1:0.4f&#125;"</span>.format(VAR, VAR))</span><br><span class="line">print(<span class="string">"&#123;0&#125;,&#123;1&#125;"</span>.format(<span class="string">"hello"</span>, <span class="string">"world"</span>))</span><br><span class="line">print(<span class="string">"&#123;0[0]&#125;,&#123;0[1]&#125;,&#123;1&#125;"</span>.format([<span class="string">"hello"</span>, <span class="string">"world"</span>], <span class="string">"!"</span>))</span><br></pre></td></tr></table></figure>
+<p>占位符使用 {下标}，如果要有格式则使用 {下标:格式}，后面使用 .format(数据)，记住不能少了这个点。运行结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">3.141,3.1415</span><br><span class="line">hello,world</span><br><span class="line">hello,world,!</span><br></pre></td></tr></table></figure>
+<h2 id="输入-input"><a href="#输入-input" class="headerlink" title="输入 input"></a>输入 input</h2><p>python2.x 中有两个函数用于接收用户收入，<strong>raw_input 和 input</strong>；raw_input 将所有输入都当作字符串处理，因此任何输入它都能全盘接收，而 input 希望读取到一个合法的表达式，所以字符串要加上引号。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; raw_input(<span class="string">"raw_input:"</span>)</span><br><span class="line">raw_input:hello</span><br><span class="line"><span class="string">'hello'</span></span><br><span class="line">&gt;&gt;&gt; raw_input(<span class="string">"raw_input:"</span>)</span><br><span class="line">raw_input:100</span><br><span class="line"><span class="string">'100'</span></span><br><span class="line">&gt;&gt;&gt; input(<span class="string">"input:"</span>)</span><br><span class="line">input:100</span><br><span class="line">100</span><br><span class="line">&gt;&gt;&gt; input(<span class="string">"input:"</span>)</span><br><span class="line">input:<span class="string">'hello'</span></span><br><span class="line"><span class="string">'hello'</span></span><br><span class="line">&gt;&gt;&gt; input(<span class="string">"input:"</span>)</span><br><span class="line">input:hello</span><br><span class="line">NameError: name <span class="string">'hello'</span> is not defined</span><br><span class="line">&gt;&gt;&gt; hello = <span class="string">'hello'</span></span><br><span class="line">&gt;&gt;&gt; input(<span class="string">"input:"</span>)</span><br><span class="line">input:hello</span><br><span class="line"><span class="string">'hello'</span></span><br></pre></td></tr></table></figure>
+<p>可以看到，raw_input 无论接收到的输入是字符串还是数字，都会保存为字符串；而 input 则根据输入的数据的类型来保存，所以输入数字得到的结果就是数字，而输入字符串时要加上引号，不加引号 input 会将其识别为表达式，在这里的 hello 也就是被识别成变量名了。input 其实是对 raw_input 的二次封装，它可以输入一个表达式，结果是表达式计算后的结果；官方的建议是除非有特别的需求，否则不要使用 input，而是要使用 raw_input，因此到了 3.x 就把 input 去掉了，只保留了 raw_input 并改名为 input，也就是说 3.x 的 input 其实就是 2.x 的 raw_input。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; input(<span class="string">"please input a string:"</span>)</span><br><span class="line">please input a string:hello</span><br><span class="line"><span class="string">'hello'</span></span><br><span class="line">&gt;&gt;&gt; raw_input()</span><br><span class="line">NameError: name <span class="string">'raw_input'</span> is not defined</span><br></pre></td></tr></table></figure>
+<h1 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h1><h2 id="行与缩进"><a href="#行与缩进" class="headerlink" title="行与缩进"></a>行与缩进</h2><p>python 的每条语句独占一行，不需要分号或其它标点符号作为结束符，如果想在同一行写多条语句，就需要用分号将每条语句隔开；虽然将多条语句写成一行不会有语法错误，但很不规范，最好不要这么写。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#print("hello") print(" world") #wrong</span></span><br><span class="line">print(<span class="string">"hello"</span>, end=<span class="string">''</span>); print(<span class="string">" world"</span>, end=<span class="string">''</span>)</span><br></pre></td></tr></table></figure>
+<p>有时候一条语句太长写在一行太难看，可以分成几行来写，使用反斜杠 \ 就可以实现。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">total = <span class="number">10</span> + \</span><br><span class="line"> <span class="number">11</span> + \</span><br><span class="line"> <span class="number">12</span></span><br><span class="line">print(total)</span><br></pre></td></tr></table></figure>
+<p>在 () [] {} 中的多行语句，则不需要 \。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">t = &#123;<span class="string">"apple"</span>, <span class="string">"pear"</span>, </span><br><span class="line">      <span class="string">"banana"</span>, <span class="string">"orange"</span>&#125;</span><br><span class="line">print(t)</span><br></pre></td></tr></table></figure>
+<p>python 不使用花括号 {} 或者 end 等关键字来定义代码块，而是使用缩进，所以 python 里面的缩进不仅是为了代码整洁好看，而是有语法要求的，缩进不正确是会报语法错误的。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#if True:</span></span><br><span class="line"><span class="comment">#print("done") #error</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">True</span>:</span><br><span class="line">      print(<span class="string">"done"</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="注释与字符串"><a href="#注释与字符串" class="headerlink" title="注释与字符串"></a>注释与字符串</h2><ul>
+<li>单行注释使用 #，多行注释使用三引号 ‘’’ 或 “””</li>
+<li>字符串可以使用单引号、双引号和三引号，三引号用于多行字符串</li>
+<li>python 字符串变量的值不能修改，操作字符串会创建一个新的字符串</li>
+<li>在字符串前面加 r 或 R，表示这是一个原始(raw)字符串，即不解析转义字符</li>
+</ul>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#string</span></span><br><span class="line">str1 = <span class="string">'word'</span></span><br><span class="line">str2 = <span class="string">"this is a word"</span></span><br><span class="line">str3 = <span class="string">"""this is a very</span></span><br><span class="line"><span class="string">      very very long word"""</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">raw string</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line">print(<span class="string">"hello\nworld"</span>)</span><br><span class="line">print(<span class="string">r"hello\nworld"</span>)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在字符串前面加 u 或 U，表示这是一个 Unicon 字符串</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://linjinxin.com2019/10/14/coder/vim/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -359,8 +563,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="categories/IT/" itemprop="url" rel="index">
-                    <span itemprop="name">IT</span>
+                  <a href="categories/IT-日常/" itemprop="url" rel="index">
+                    <span itemprop="name">IT 日常</span>
                   </a>
                 </span>
 
@@ -2236,6 +2440,9 @@
 <h2 id="查看-diff"><a href="#查看-diff" class="headerlink" title="查看 diff"></a>查看 diff</h2><ol>
 <li>查看未暂存文件的修改信息 <code>git diff</code></li>
 <li>查看已暂存文件的修改信息 <code>git diff -cached</code> or <code>git diff -staged</code></li>
+<li>查看距离某次 commit 的修改信息 <code>git diff &lt;commit&gt;</code></li>
+<li>查看单个文件的修改信息 <code>git diff -- &lt;file&gt;</code></li>
+<li>查看单个距离某次 commit 的修改信息 <code>git diff &lt;commit&gt; -- &lt;file&gt;</code></li>
 </ol>
 <ul>
 <li>如果要查看某个文件的修改信息，直接带上文件名即可 <code>git diff &lt;file&gt;</code>，不带文件名则查看所有有更改文件的 diff；</li>
@@ -2247,7 +2454,6 @@
 <li>跳过暂存区域直接提交 <code>git commit -a</code></li>
 </ol>
 <h2 id="查看提交日志"><a href="#查看提交日志" class="headerlink" title="查看提交日志"></a>查看提交日志</h2><p><code>git log</code></p>
-<p>默认查看所有提交日志，如果要查看某个文件的提交日志，带上文件名即可 <code>git log &lt;file&gt;</code>。</p>
 <ul>
 <li><code>-p</code> 显示每次提交的内容差异</li>
 <li><code>-3</code> 只显示最新的 3 次提交</li>
@@ -2255,8 +2461,11 @@
 <li><code>--pretty</code> 指定显示的格式</li>
 <li><code>--author=[xxx]</code> 按提交作者筛选</li>
 </ul>
-<p><code>git shortlog</code></p>
-<p>列出所有提交记录，只显示 commit 说明，按作者分类。<code>git shortlog --author=[xxx]</code> 只列出某位作者或某几位作者的日志，这个命令比较常用，比如查看自己的提交日志。</p>
+<p>默认查看所有提交日志，如果要查看某个文件的提交日志，带上文件名即可 <code>git log -- &lt;file&gt;</code>。</p>
+<ul>
+<li><code>git shortlog</code> 列出所有提交记录，只显示 commit 说明，按作者分类；</li>
+<li><code>git shortlog --author=[xxx]</code> 只列出某位作者或某几位作者的日志，这个命令比较常用，比如查看自己的提交日志。</li>
+</ul>
 <h2 id="储藏文件"><a href="#储藏文件" class="headerlink" title="储藏文件"></a>储藏文件</h2><p>有时候在本地做了一些修改后，想切换到其它分支或者从远程拉取最新代码，而本地的修改暂时又不想提交，则可以将本地修改储藏起来，储藏之后本地又恢复成干净状态（即无修改状态），这时候 pull 代码或 checkout 分支都不会有冲突出现。之后需要的时候再从储藏中将文件恢复到本地，恢复的时候如果修改的文件有更新，则可能会出现冲突，所以一般是想更新远程较新文件且这些文件在本地没修改，本地修改的是远程无更新文件，才会使用储藏操作。</p>
 <ul>
 <li>储藏本地修改文件 <code>git stash</code></li>
@@ -2293,6 +2502,18 @@
 <p>有时候会误删 stash，比如想应用并移除储藏的时候，脑子一热将 <code>git stash pop</code> 打成了 <code>git stash drop</code>，这时储藏没应用，却已经从栈中移除了。但别慌，只是从栈中移除了，stash 的数据还是在的，只是无法在 <code>git stash list</code> 中列出来，即没有 stash 名字而已，但我们仍可以通过 commit 信息来恢复。其实在移除储藏的时候，从移除的结果就可以看到这条储藏的 commit 信息，如果马上意识到自己误操作，这时想恢复十分简单，直接使用这条 commit 信息进行恢复即可。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ git stash list</span><br><span class="line">stash@&#123;0&#125;: WIP on mission-guide: 7c7e6fb6 <span class="comment">#feature update info</span></span><br><span class="line">$ git stash drop</span><br><span class="line">Dropped refs/stash@&#123;0&#125; (6703c50483b213a0bad3cff09ed804515ff93b78)</span><br><span class="line">$ git stash list</span><br><span class="line"></span><br><span class="line">$ git stash apply 6703c50</span><br><span class="line">On branch feature/mission-guide</span><br><span class="line">Changes not staged <span class="keyword">for</span> commit:</span><br><span class="line">  (use <span class="string">"git add &lt;file&gt;..."</span> to update what will be committed)</span><br><span class="line">  (use <span class="string">"git checkout -- &lt;file&gt;..."</span> to discard changes <span class="keyword">in</span> working directory)</span><br><span class="line"></span><br><span class="line">        modified:   scripts/data/guide.lua</span><br></pre></td></tr></table></figure>
 <p>这是在刚移除 stash 的时候恢复，这时我们知道 commit 信息，如果隔了一段时间不知道 commit 信息了，也可以通过 <code>git fsck</code> 来列出所有 commit，但列出来的 commit 是无序的，只能通过 <code>git show [commit]</code> 来一条条查看 commit 的 diff，找到需要的 commit 之后再进行恢复，相对会麻烦挺多。</p>
+<h1 id="规范"><a href="#规范" class="headerlink" title="规范"></a>规范</h1><h2 id="commit-规范"><a href="#commit-规范" class="headerlink" title="commit 规范"></a>commit 规范</h2><p><strong>标题：</strong><code>#[type] message</code></p>
+<p>一般使用 <code>#[type]</code> 来表示这次提交内容的类型，比如 <code>#feature</code> 代码功能开发，<code>#bugfix</code> 代表 bug 修复，或者在一个博客系统中， <code>#newpost</code> 代表新文章，<code>#newpage</code> 代表新页面，<code>#newdraft</code> 代表新草稿，<code>#amend</code> 代表文章修改，<code>#feature</code> 代表其它修改。</p>
+<blockquote>
+<p>默认 <code>#</code> 为 commit 信息的注释符号，通过配置 <code>git config core.commentchar *</code> 将其设置为 <code>*</code> 或其它符号。</p>
+</blockquote>
+<p><strong>单一职责</strong>，一次 commit 只处理一件事，方便查看和回退，多提交几次 commit 并没有不好的。</p>
+<h2 id="分支命名规范"><a href="#分支命名规范" class="headerlink" title="分支命名规范"></a>分支命名规范</h2><ul>
+<li><code>master</code> 主干分支，一般不在这个分支上直接改东西；</li>
+<li><code>feature/xxx</code> 功能开发分支；</li>
+<li><code>bugfix/xxx</code> bug 修复分支；</li>
+<li><code>release/xxx</code> 发行分支。</li>
+</ul>
 
           
         
@@ -2818,7 +3039,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2840,7 +3061,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="tags/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
