@@ -305,6 +305,201 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linjinxin.com/2019/11/23/sfml/window/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="林锦新">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Welcome to Code World">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/11/23/sfml/window/" itemprop="url">【SFML】窗口管理</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-23T20:17:24+08:00">
+                2019-11-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SFML/" itemprop="url" rel="index">
+                    <span itemprop="name">SFML</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/11/23/sfml/window/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/11/23/sfml/window/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>**</p>
+</blockquote>
+<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>SFML 的全称是 <code>Simple and Fast Multimedia Library</code>，即简单快速的多媒体库，顾名思义就是一个用于开发多媒体应用的库，包含 <strong>系统、窗口、图形、音频、网络</strong> 五个模块。SFML 为 PC 各个组件提供简单的接口，简化游戏及多媒体应用的开发，目前适用于 PC 的多个平台，包括 Windows，Linux，MacOS，未来可能会拓展到 Android 和 IOS，SFML 是使用 C++ 编写的库，同时官方也绑定了 C，Java，Pyhton，.Net，Go 等多种语言。另外，SFML 内嵌了 OpenGL 模块，很容易用来开发 OpenGL 程序，OpenGL 只是一个底层的图形库，本身没有窗口管理模块，所以需要借助第三方库，常用的库有 <code>glut(freeglut), glfw, qt, sfml</code>，而 SFML 除了窗口管理，还有系统图形、音频、网络模块，具备了一个完整多媒体应用所需的各个模块，无疑是一个比较好的选择，当然 QT 也是。</p>
+<p>SFML 官网地址：<a href="https://www.sfml-dev.org，官方有各个操作系统和各个版本的下载地址，以及" target="_blank" rel="noopener">https://www.sfml-dev.org，官方有各个操作系统和各个版本的下载地址，以及</a> github 源码，以及清晰明了的 API 文档和教程。</p>
+<h1 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h1><p>本文基于 Windows 系统，C++ 语言，Visual Studio 2019 IDE。</p>
+<p>SFML 包括 <code>system, window, graphics, audio, network</code> 5 个模块，对应的 Windows 编译库就有下面 5 个库：</p>
+<ul>
+<li><code>sfml-system.lib</code>：系统库，最基础的库，是其它库的基础依赖；</li>
+<li><code>sfml-window.lib</code>：窗口管理库，依赖于 <code>sfml-system.lib</code>；</li>
+<li><code>sfml-graphics.lib</code>：图形库，依赖于 <code>sfml-system.lib</code> 和 <code>sfml-window.lib</code>；</li>
+<li><code>sfml-audio.lib</code>：音频库，依赖于 <code>sfml-system.lib</code>；</li>
+<li><code>sfml-network.lib</code>：网络库，依赖于 <code>sfml-system.lib</code>。</li>
+</ul>
+<p>和 Windows 上的其它库一样，这五个库都区分 32 位和 64 位，debug 版本和 release 版本，动态库和静态库，以系统库为例，32 位版本和 64 位版本各有 <code>sfml-system.lib, sfml-system-d.lib, sfml-system-s.lib, sfml-system-s-d.lib</code> 这 4 个 lib 文件，另外还有 <code>sfml-system.dll, sfml-system-d.dll</code> 这 2 个 dll 文件，所以一个库就有 (4 + 2) * 2 = 12 个文件，5 个库就是 60 个文件，emm，是有点多。</p>
+<p>可以看到所有库都依赖于系统库，图形库额外还要依赖于窗口库；如果只是想利用 SFML 来创建和管理窗口，则引用 <code>sfml-system, sfml-window</code> 这两个库，如果要使用其内置接口来绘制图形，则再加个 <code>sfml-graphics</code> 库；如果只是单纯的播放音频，则引入 <code>sfml-system, sfml-audio</code> 这两个库，只是单纯是使用网络功能，则引入 <code>sfml-system, sfml-network</code> 这两个库，当然如果使用音频或网络的时候是个 GUI 应用（非控制台应用），那 <code>sfml-window</code> 也是必不可少的。当然除了这五个库，还有其它基础库需要引入，<code>gdi32.lib, opengl32.lib, ogg.lib</code>，不过这些库 Visual Studio 都会自动帮我们引入，所以不用管，详细的可看官方文档 <a href="https://www.sfml-dev.org/tutorials/2.5/start-vc.php" target="_blank" rel="noopener">SFML and Visual Studio</a>，关于 Visual Studio 配置的详细内容，也可看我<a href>这篇文章</a>。</p>
+<h1 id="创建窗口"><a href="#创建窗口" class="headerlink" title="创建窗口"></a>创建窗口</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;SFML/Window.hpp&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// sf::Window window(sf::VideoMode(800, 600), "My window");</span></span><br><span class="line"></span><br><span class="line">    sf:Window window;</span><br><span class="line">    window.create(sf::VideoMode(<span class="number">800</span>, <span class="number">600</span>), <span class="string">"My window"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先包含两个库 <code>sfml-system.lib</code> 和 <code>sfml-window.lib</code>，引入头文件 <code>&lt;sfml/window.hpp&gt;</code>。使用 <code>sf::Window</code> 类来创建一个窗口，有两种方式，一是在构造函数中直接传入参数，二是先创建一个无数据的对象，再调用 <code>create</code> 静态方法来初始化参数，二者的效果是一样的。窗口接收 4 个参数，</p>
+<ul>
+<li>arg1 的类型为 sf::VideoMode，表示窗口的显示模式；</li>
+<li>arg2 为窗口的标题；</li>
+<li>arg3 为窗口样式，不传则为默认值 <code>sf::Style::Default</code>；</li>
+<li>arg4 为 OpenGL 的具体选项，不传则为空。</li>
+</ul>
+<h2 id="VideoMode"><a href="#VideoMode" class="headerlink" title="VideoMode"></a>VideoMode</h2><p><code>VideoMode</code> 包括三个属性 <code>width, height, bitsPerPixel</code>，分别表示窗口的宽度、高度和深度（每个像素多少 bit），深度不传的话则默认为 32，宽高则必须传。</p>
+<p><code>VideoMode</code> 主要用途是“全屏模式”，它提供一个非常实用的静态方法 <code>getFullscreenModes</code>，用于获取当前操作系统下可用的全屏显示模式列表（显卡和显示器是否支持），只有使用这个列表里的显示模式，才能正常显示一个全屏窗口。我们玩主机游戏的时候会有一个选择分辨率的窗口，上面列出的分辨率不是随便列的，而是当前系统支持的显示模式。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;sf::VideoMode&gt; modes = sf::VideoMode::getFullscreenModes();</span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">std</span>::<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; modes.size(); ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        sf::VideoMode mode = modes[i];</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Mode #"</span> &lt;&lt; i &lt;&lt; <span class="string">": "</span></span><br><span class="line">                &lt;&lt; mode.width &lt;&lt; <span class="string">"x"</span> &lt;&lt; mode.height &lt;&lt; <span class="string">" - "</span></span><br><span class="line">                &lt;&lt; mode.bitsPerPixel &lt;&lt; <span class="string">" bpp"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    sf::<span class="function">Window <span class="title">window2</span><span class="params">(modes[<span class="number">0</span>], <span class="string">"Window2"</span>, sf::Style::Fullscreen)</span></span>;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面例子打印出所有可用的显示模式，并使用其中一个显示模式创建一个全屏窗口。</p>
+<p><code>VideoMode</code> 还提供另一个静态方法 <code>getDesktopMode</code>，用于获取当前桌面使用的显示模式，这样就能拿到桌面的分辨率和显示深度，从而创建一个和桌面一样分辨率和显示深度的窗口或其它操作。</p>
+<h2 id="窗口样式"><a href="#窗口样式" class="headerlink" title="窗口样式"></a>窗口样式</h2><p>SFML 提供五种窗口样式，有些样式可以组合，有些则与其它样式互斥。</p>
+<ul>
+<li><code>sfml::Style::None</code>：无任何装饰，不能与其它样式组合，在一些特殊场合很有用，比如启动界面；</li>
+<li><code>sfml::Style:Fullscreen</code>：全屏样式，全屏显示且无任何装饰，不能与其它样式组合，必须使用系统支持的显示模式；</li>
+<li><code>sfml::Style::Titlebar</code>：带一个标题栏，可与其它样式组合使用；</li>
+<li><code>sfml::Style:Resize</code>：可缩放且提供最大化按钮，可与其它样式组合使用；</li>
+<li><code>sfml:Style:Close</code>：可关闭，提供关闭按钮，可与其它样式组合使用。</li>
+</ul>
+<p>默认为第六种样式 <code>sfml:Style:Default</code>，它是后面三种样式的组合，即 <code>sfml::Style::Titlebar | sfml::Style::Resize | sfml::Style::Close</code>，有标题栏、最大化按钮和关闭按钮，可调整大小和关闭，统称为窗口样式；因此，SFML 的窗口样式可大致分为三种，无样式、全屏样式和窗口样式。</p>
+<h2 id="OpenGL-上下文"><a href="#OpenGL-上下文" class="headerlink" title="OpenGL 上下文"></a>OpenGL 上下文</h2><p>创建一个窗口完整的代码如下，</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sf::ContextSettings settings;</span><br><span class="line">sf::Window window(sf::VideoMode(400, 400), "Hello SFML", sf::Style::Default, settings);</span><br></pre></td></tr></table></figure>
+<p><code>VideoMode</code> 和 <code>Style</code> 分别表示显示模式和窗口样式，而最后一个参数 <code>sf::ContextSettings</code> 则是专门为 OpenGL 定制的，用于定义 OpenGL context 的配置，比如 OpenGL 主版本、次版本、深度缓冲区的位数、模块缓冲区的位数、抗锯齿等级，具体的这里先不说，后面讲到 OpenGL 的时候再详细讲，现在只需要知道这个参数可省略就行。</p>
+<h1 id="主循环"><a href="#主循环" class="headerlink" title="主循环"></a>主循环</h1><p>上面的代码只创建一个“死窗口”，首先在 <code>main</code> 函数创建完窗口之后马上就结束了，所以你会看到一个窗口闪一下就没了，然后程序就退出了，所以需要在创建窗口之后让程序停在某个地方而不是直接退出，即定义一个程序主循环。光让程序停住还不行，这时窗口虽然看到了，但还是个“死窗口”，无法移动、关闭、缩放，因为没有把窗口加入到程序主循环中去。把窗口加入到主循环，其实就是实时监听并处理窗口事件，对窗口的所有操作都是基于事件。</p>
+<p>程序主循环最容易想到的就是在 <code>main</code> 方法中加入一个死循环 <code>while(true){ ... }</code>，唯一要处理的就是什么时候跳出循环，这里我们关闭窗口的时候退出程序，自然是窗口关闭的时候退出主循环，所以主循环的写法为 <code>while(window.isOpen()){ ... }</code>，而循环内则处理窗口事件。创建一个“活窗口”的完整代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;SFML/Window.hpp&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    sf::Window window(sf::VideoMode(800, 600), "My window");</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (window.isOpen())</span><br><span class="line">    &#123;</span><br><span class="line">        sf::Event event;</span><br><span class="line">        <span class="keyword">while</span> (window.pollEvent(event))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (event.type == sf::Event::Closed)</span><br><span class="line">                window.close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://linjinxin.com/2019/11/16/python/init/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -3039,7 +3234,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3050,7 +3245,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -3061,7 +3256,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
