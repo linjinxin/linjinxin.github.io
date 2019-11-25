@@ -100,7 +100,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="sfml,sfml 事件管理,">
 
 
 
@@ -111,17 +111,18 @@
 
 
 
-<meta name="description" content="学海无涯">
-<meta name="keywords" content="coding game">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Welcome to Code World">
-<meta property="og:url" content="http://linjinxin.com/archives/2019/09/index.html">
+<meta name="description" content="**  事件SFML 的事件使用联合(union)实现，即所有类型的事件使用同一个数据类型，使用的时候先通过 event.type 拿到事件类型，再去拿相应的成员数据，去拿不属于当前事件类型的成员数据是非法的，通常会拿到一个随机值或非法值。事件由窗口的 pollEvent 或 waitEvent 生产，通常是在主循环中迭代处理每一个事件。下面是一个典型的事件循环， 123456789101112">
+<meta name="keywords" content="sfml,sfml 事件管理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【SFML】事件管理">
+<meta property="og:url" content="http://linjinxin.com/2019/11/25/sfml/event/index.html">
 <meta property="og:site_name" content="Welcome to Code World">
-<meta property="og:description" content="学海无涯">
+<meta property="og:description" content="**  事件SFML 的事件使用联合(union)实现，即所有类型的事件使用同一个数据类型，使用的时候先通过 event.type 拿到事件类型，再去拿相应的成员数据，去拿不属于当前事件类型的成员数据是非法的，通常会拿到一个随机值或非法值。事件由窗口的 pollEvent 或 waitEvent 生产，通常是在主循环中迭代处理每一个事件。下面是一个典型的事件循环， 123456789101112">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-11-25T07:44:55.233Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Welcome to Code World">
-<meta name="twitter:description" content="学海无涯">
+<meta name="twitter:title" content="【SFML】事件管理">
+<meta name="twitter:description" content="**  事件SFML 的事件使用联合(union)实现，即所有类型的事件使用同一个数据类型，使用的时候先通过 event.type 拿到事件类型，再去拿相应的成员数据，去拿不属于当前事件类型的成员数据是非法的，通常会拿到一个随机值或非法值。事件由窗口的 pollEvent 或 waitEvent 生产，通常是在主循环中迭代处理每一个事件。下面是一个典型的事件循环， 123456789101112">
 
 
 
@@ -151,13 +152,13 @@
 
 
 
-  <link rel="canonical" href="http://linjinxin.com/archives/2019/09/">
+  <link rel="canonical" href="http://linjinxin.com/2019/11/25/sfml/event/">
 
 
 
 
 
-  <title>归档 | Welcome to Code World</title>
+  <title>【SFML】事件管理 | Welcome to Code World</title>
   
 
 
@@ -176,7 +177,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -290,212 +291,185 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
+  <div id="posts" class="posts-expand">
+    
 
-      <span class="archive-page-counter">
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linjinxin.com/2019/11/25/sfml/event/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="林锦新">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Welcome to Code World">
+    </span>
+
+    
+      <header class="post-header">
+
         
         
+          <h2 class="post-title" itemprop="name headline">【SFML】事件管理</h2>
         
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-25T15:19:43+08:00">
+                2019-11-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-        
-        嗯..! 目前共计 10 篇日志。 继续努力。
-      </span>
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SFML/" itemprop="url" rel="index">
+                    <span itemprop="name">SFML</span>
+                  </a>
+                </span>
 
-      
-
-        
-        
-        
-
-        
+                
+                
+              
+            </span>
           
-          <div class="collection-title">
-            <h2 class="archive-year" id="archive-year-2019">2019</h2>
-          </div>
-        
-        
 
-        
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/11/25/sfml/event/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/11/25/sfml/event/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+          
+          
 
-      <h3 class="post-title">
-        
-            <a class="post-title-link" href="/2019/09/20/opengl/point/" itemprop="url">
-              
-                <span itemprop="name">【OpenGL】绘制一个点</span>
-              
-            </a>
-        
-      </h3>
+          
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-09-20T15:53:21+08:00" content="2019-09-20">
-          09-20
-        </time>
-      </div>
+          
 
-    </header>
-  </article>
+          
 
+        </div>
+      </header>
+    
 
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-            <a class="post-title-link" href="/2019/09/10/coder/vs/" itemprop="url">
-              
-                <span itemprop="name">Visual Studio 环境配置</span>
-              
-            </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-09-10T18:05:35+08:00" content="2019-09-10">
-          09-10
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-            <a class="post-title-link" href="/2019/09/10/opengl/window1/" itemprop="url">
-              
-                <span itemprop="name">【OpenGL】创建窗口（一）</span>
-              
-            </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-09-10T17:42:47+08:00" content="2019-09-10">
-          09-10
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-            <a class="post-title-link" href="/2019/09/07/coder/win-sofware/" itemprop="url">
-              
-                <span itemprop="name">Windows 常用软件汇总</span>
-              
-            </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-09-07T10:10:21+08:00" content="2019-09-07">
-          09-07
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+      
+        <blockquote>
+<p>**</p>
+</blockquote>
+<h1 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h1><p>SFML 的事件使用联合(union)实现，即所有类型的事件使用同一个数据类型，使用的时候先通过 <code>event.type</code> 拿到事件类型，再去拿相应的成员数据，去拿不属于当前事件类型的成员数据是非法的，通常会拿到一个随机值或非法值。事件由窗口的 <code>pollEvent</code> 或 <code>waitEvent</code> 生产，通常是在主循环中迭代处理每一个事件。下面是一个典型的事件循环，</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dealEvent</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	sf::Event evt;</span><br><span class="line">	<span class="keyword">while</span> (window.pollEvent(evt))</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">switch</span> (evt.type)</span><br><span class="line">		&#123;</span><br><span class="line">		<span class="keyword">case</span> sf::Event::Closed:</span><br><span class="line">			window.close();</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> sf::Event::Resized:</span><br><span class="line">			window.display();</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> sf::Event::KeyPressed:</span><br><span class="line">			<span class="comment">//...</span></span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		<span class="comment">//...</span></span><br><span class="line">		<span class="keyword">default</span>:</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-            <a class="post-title-link" href="/2019/09/05/coder/git/" itemprop="url">
-              
-                <span itemprop="name">Git 基础用法</span>
-              
-            </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-09-05T18:20:33+08:00" content="2019-09-05">
-          09-05
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/sfml/" rel="tag"># sfml</a>
+          
+            <a href="/tags/sfml-事件管理/" rel="tag"># sfml 事件管理</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/11/23/sfml/window/" rel="next" title="【SFML】窗口管理">
+                <i class="fa fa-chevron-left"></i> 【SFML】窗口管理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -503,6 +477,20 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -523,8 +511,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -596,6 +593,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#事件"><span class="nav-number">1.</span> <span class="nav-text">事件</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -736,6 +749,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -753,6 +770,18 @@
       <script id="dsq-count-scr" src="https://ljx.disqus.com/count.js" async></script>
     
 
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://linjinxin.com/2019/11/25/sfml/event/';
+          this.page.identifier = '2019/11/25/sfml/event/';
+          this.page.title = '【SFML】事件管理';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://ljx.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
     
 
   
