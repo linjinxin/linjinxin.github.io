@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Times New Roman:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Python,Python 数据类型,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="**  简单数据类型特殊类型：空值为 None，如果要使一个变量为空值，得手动设置 var = None，未定义的变量不是空值，而是非法变量；空值可以使用，比如作为参数传给函数，而未定义变量则不能使用。 整数、浮点数、布尔值、字符串分别对应的数据类型是 int, float, bool, str。 整数支持二进制、八进制、十进制、十六进制。 12&amp;gt;&amp;gt;&amp;gt; print(0b111,">
+<meta name="keywords" content="Python,Python 数据类型">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Python】数据类型">
+<meta property="og:url" content="http://linjinxin.com/2019/11/25/python/type/index.html">
+<meta property="og:site_name" content="Welcome to Code World">
+<meta property="og:description" content="**  简单数据类型特殊类型：空值为 None，如果要使一个变量为空值，得手动设置 var = None，未定义的变量不是空值，而是非法变量；空值可以使用，比如作为参数传给函数，而未定义变量则不能使用。 整数、浮点数、布尔值、字符串分别对应的数据类型是 int, float, bool, str。 整数支持二进制、八进制、十进制、十六进制。 12&amp;gt;&amp;gt;&amp;gt; print(0b111,">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-12-02T01:48:36.712Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【Python】数据类型">
+<meta name="twitter:description" content="**  简单数据类型特殊类型：空值为 None，如果要使一个变量为空值，得手动设置 var = None，未定义的变量不是空值，而是非法变量；空值可以使用，比如作为参数传给函数，而未定义变量则不能使用。 整数、浮点数、布尔值、字符串分别对应的数据类型是 int, float, bool, str。 整数支持二进制、八进制、十进制、十六进制。 12&amp;gt;&amp;gt;&amp;gt; print(0b111,">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://linjinxin.com/2019/11/25/python/type/">
+
+
+
+
+
+  <title>【Python】数据类型 | Welcome to Code World</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Welcome to Code World</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">Learning the ocean without boundaries</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>
+            
+            日程表
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linjinxin.com/2019/11/25/python/type/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="林锦新">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Welcome to Code World">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">【Python】数据类型</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-25T20:36:56+08:00">
+                2019-11-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/11/25/python/type/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/11/25/python/type/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>**</p>
+</blockquote>
+<h1 id="简单数据类型"><a href="#简单数据类型" class="headerlink" title="简单数据类型"></a>简单数据类型</h1><p>特殊类型：空值为 <code>None</code>，如果要使一个变量为空值，得手动设置 <code>var = None</code>，未定义的变量不是空值，而是非法变量；空值可以使用，比如作为参数传给函数，而未定义变量则不能使用。</p>
+<p>整数、浮点数、布尔值、字符串分别对应的数据类型是 <code>int, float, bool, str</code>。</p>
+<p>整数支持二进制、八进制、十进制、十六进制。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; <span class="built_in">print</span>(0b111, 0o111, 111, 0x111)</span><br><span class="line">(7, 73, 111, 273)</span><br></pre></td></tr></table></figure>
+<p>浮点数可以用科学计数法。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; <span class="built_in">print</span>(3.14, 3.14e2, -3.14e-2)</span><br><span class="line">(3.14, 314.0, -0.0314)</span><br></pre></td></tr></table></figure>
+<p>布尔类型只有 <code>True, False</code> 两个取值，注意首字母大写。</p>
+<p>字符串可以使用单引号、双引号括起来，\ 表示转义字符，使用单引号括起来的字符串可以直接用 “ 表示双引号不需要转义，同样的使用双引号括起来的字符串可以直接使用 ‘ 表示单引号不需要转义，即单引号和双引号是平等的，意义一样的。三引号同样表示字符串，一般用于表示多行字符串，使用三引号不需要使用 <code>\n</code> 来换行，而是在代码里直接换行，三引号可以是三对单引号，也可以是三对双引号，意义是一样的。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/user/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">'"string"\n\'str\''</span>)</span><br><span class="line">print(<span class="string">"\"string\"\n'str'"</span>)</span><br><span class="line">print(<span class="string">'''"hello\tworld, 'ljx'"'''</span>)</span><br><span class="line">print(<span class="string">"""line1</span></span><br><span class="line"><span class="string">line2</span></span><br><span class="line"><span class="string">line3"""</span>)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ python test.py</span><br><span class="line"><span class="string">"string"</span></span><br><span class="line"><span class="string">'str'</span></span><br><span class="line"><span class="string">"string"</span></span><br><span class="line"><span class="string">'str'</span></span><br><span class="line"><span class="string">"hello  world, 'ljx'"</span></span><br><span class="line">line1</span><br><span class="line">line2</span><br><span class="line">line3</span><br></pre></td></tr></table></figure>
+<h1 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h1><p>变量必须先定义再使用，使用未定义的变量会报错，Python 没有显式定义变量的语句，给变量赋值就是定义变量的过程。Python 是动态语言，即一个变量可以保存任意类型的值，可以使用赋值传递给多个变量赋值，也可以使用逗号隔开同时为多个变量分别赋值。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/user/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line">a, b, c = <span class="number">10</span>, <span class="keyword">True</span>, <span class="number">3.14</span></span><br><span class="line">d = e = a</span><br><span class="line">a = <span class="string">'str'</span></span><br><span class="line">print(a, b, c, d, e) <span class="comment"># ('str', True, 3.14, 10, 10)</span></span><br></pre></td></tr></table></figure>
+<p>Python 没有真正意义上的常量，全大写的变量名表示这是一个常量，但也只是一个约定而已，这个“常量”的值还是可以修改的。</p>
+<h1 id="高级数据类型"><a href="#高级数据类型" class="headerlink" title="高级数据类型"></a>高级数据类型</h1><p>Python 的高级数据类型，也是 Python 最重要的特性，就是它的容器类，包括列表(List)、元组(Tuple)、字典(Dict)、集合(Set)。</p>
+<h2 id="List"><a href="#List" class="headerlink" title="List"></a>List</h2><p>列表，即数组，有序的集合，使用一对中括号 [] 来表示，下标从 0 开始，也可以使用负数来从后往前索引，这时下标从 -1 开始。List 可以随时增删查改，其常用接口如下：</p>
+<ul>
+<li><code>list[inx]</code> 拿到某个位置的元素；</li>
+<li><code>list.append(val)</code> 往列表最后插入元素；</li>
+<li><code>list.insert(inx, val)</code> 往指定位置插入元素；</li>
+<li><code>list.pop()</code> 删除末尾元素；</li>
+<li><code>list.pop(i)</code> 删除指定位置元素；</li>
+<li><code>list.remove(val)</code> 删除第一个值为 val 的元素；</li>
+<li><code>list.clear()</code> 清空列表，删除所有元素；</li>
+<li><code>list.index(val[,start[,end]]</code> 返回第一个值为 val 的下标，start, end 限制在特定子序列中查找；</li>
+<li><code>list.count(val)</code> 返回 val 在列表中出现的次数；</li>
+<li><code>list.reverse()</code> 反转列表；</li>
+<li><code>list.copy()</code> 浅拷贝，这里的浅拷贝指的是元素浅拷贝，拷贝之后的列表和源列表是两个独立的列表了。</li>
+</ul>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/user/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line">arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="keyword">True</span>, <span class="string">"name"</span>, [<span class="number">3</span>, <span class="number">4</span>], <span class="number">3.14</span>]</span><br><span class="line">arr2 = arr.copy()</span><br><span class="line">print(arr)</span><br><span class="line">arr[<span class="number">0</span>] = <span class="number">0</span></span><br><span class="line">print(arr[<span class="number">0</span>], arr[<span class="number">-1</span>])</span><br><span class="line"></span><br><span class="line">arr.pop()</span><br><span class="line">arr.pop(<span class="number">-2</span>)</span><br><span class="line">sub_list = arr[<span class="number">-1</span>]</span><br><span class="line">sub_list[<span class="number">0</span>], sub_list[<span class="number">1</span>] = sub_list[<span class="number">1</span>], sub_list[<span class="number">0</span>]</span><br><span class="line">arr.insert(<span class="number">0</span>, <span class="number">666</span>)</span><br><span class="line">arr.append(<span class="number">777</span>)</span><br><span class="line">print(arr)</span><br><span class="line">print(arr2)</span><br></pre></td></tr></table></figure>
+<p>运行结果如下，重点看一下最后两句的输出，列表可以嵌套子列表，arr[-2] 就是一个子列表，arr 只是保存着这个子列表的一个引用，而 <code>list.copy</code> 的浅拷贝就体现在这里，arr 和 arr2 是两个完全独立的列表，修改其中一个列表不会影响到另一个列表，从列表层面上来讲是“深拷贝”的；但拷贝的时候，每个元素的值是浅拷贝的，所以 arr[-2] 和 arr2[-2] 保存的是同一个引用，任何一个的元素改了另一个也会跟着改。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ python test.py</span><br><span class="line">[1, 2, True, <span class="string">'name'</span>, [3, 4], 3.14]</span><br><span class="line">0 3.14</span><br><span class="line">[666, 0, 2, True, [4, 3], 777]</span><br><span class="line">[1, 2, True, <span class="string">'name'</span>, [4, 3], 3.14]</span><br></pre></td></tr></table></figure>
+<h3 id="栈和队列"><a href="#栈和队列" class="headerlink" title="栈和队列"></a>栈和队列</h3><p>List 本身就可以当作栈使用，使用其 <code>append</code> 函数进栈，<code>pop</code> 函数出栈。</p>
+<p>List 也可以当成队列使用，<code>list.append()</code> 进队列，<code>list.pop(0)</code> 出队列；反向队列则 <code>list.append(0)</code> 进队列，<code>list.pop()</code> 出队列。但无论是正向队列还是反向队列，总有一个操作效率特别低，正向队列出队的时候特别慢，反向队列进队的时候特别慢，所以使用列表来表示队列不是最佳选择。</p>
+<h1 id="类型判断"><a href="#类型判断" class="headerlink" title="类型判断"></a>类型判断</h1><h1 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h1><p>类型判断有 <code>type</code> 和 <code>isinstance</code> 两个函数，<br>UnicodeEncodeError: ‘gbk’ codec can’t encode character u’\xa5’ in position 0: illegal multibyte sequence<br>UnicodeEncodeError: ‘ascii’ codec can’t encode characters in position 0-3: ordinal not in range(128)</p>
+<p>  1.将字符串全都转成byte string。<br>            self.response.out.write(“你好”+self.request.get(“argu”).encode(“utf-8”))<br>        2.将字符串全都转成unicode string。<br>           self.response.out.write(u”你好”+self.request.get(“argu”))<br>            byte string转换成unicode string可以这样转unicode(unicodestring, “utf-8”)</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/Python-数据类型/" rel="tag"># Python 数据类型</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/11/25/sfml/event/" rel="next" title="【SFML】事件管理">
+                <i class="fa fa-chevron-left"></i> 【SFML】事件管理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/12/03/cocos2dx/tolua1/" rel="prev" title="【Cocos2d-x】使用 tolua++ 导出 C++ 类（2.x版本）">
+                【Cocos2d-x】使用 tolua++ 导出 C++ 类（2.x版本） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="林锦新">
+            
+              <p class="site-author-name" itemprop="name">林锦新</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/linjinxin" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#简单数据类型"><span class="nav-number">1.</span> <span class="nav-text">简单数据类型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#变量"><span class="nav-number">2.</span> <span class="nav-text">变量</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#高级数据类型"><span class="nav-number">3.</span> <span class="nav-text">高级数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#List"><span class="nav-number">3.1.</span> <span class="nav-text">List</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#栈和队列"><span class="nav-number">3.1.1.</span> <span class="nav-text">栈和队列</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#类型判断"><span class="nav-number">4.</span> <span class="nav-text">类型判断</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#类型转换"><span class="nav-number">5.</span> <span class="nav-text">类型转换</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">林锦新</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://ljx.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://linjinxin.com/2019/11/25/python/type/';
+          this.page.identifier = '2019/11/25/python/type/';
+          this.page.title = '【Python】数据类型';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://ljx.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Times New Roman:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="tolua++,cocos2dx lua,cocos2dx tolua,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="版本之痛，痛中之痛；环境之难，难中之难。  cocos2d-x3.x 与 2.x 很不一样，关于 Lua 绑定也不同。在 2.x 版本，引擎目录下有个 tolua++.exe 文件，通过包描述文件 *.tolua，执行脚本 build.bat 来一键导出。而在 3.x 版本，描述文件换成了 *.ini，然后编写 python 脚本 generator.py，使用 python 来导出。 工程结构">
+<meta name="keywords" content="tolua++,cocos2dx lua,cocos2dx tolua">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Cocos2d-x】使用 tolua++ 导出 C++ 类（3.x版本）">
+<meta property="og:url" content="http://linjinxin.com/2019/12/03/cocos2dx/tolua2/index.html">
+<meta property="og:site_name" content="Welcome to Code World">
+<meta property="og:description" content="版本之痛，痛中之痛；环境之难，难中之难。  cocos2d-x3.x 与 2.x 很不一样，关于 Lua 绑定也不同。在 2.x 版本，引擎目录下有个 tolua++.exe 文件，通过包描述文件 *.tolua，执行脚本 build.bat 来一键导出。而在 3.x 版本，描述文件换成了 *.ini，然后编写 python 脚本 generator.py，使用 python 来导出。 工程结构">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTcwOTI5MjExNDEzMjQ2?x-oss-process=image/format,png">
+<meta property="og:updated_time" content="2019-12-07T09:35:01.253Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【Cocos2d-x】使用 tolua++ 导出 C++ 类（3.x版本）">
+<meta name="twitter:description" content="版本之痛，痛中之痛；环境之难，难中之难。  cocos2d-x3.x 与 2.x 很不一样，关于 Lua 绑定也不同。在 2.x 版本，引擎目录下有个 tolua++.exe 文件，通过包描述文件 *.tolua，执行脚本 build.bat 来一键导出。而在 3.x 版本，描述文件换成了 *.ini，然后编写 python 脚本 generator.py，使用 python 来导出。 工程结构">
+<meta name="twitter:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTcwOTI5MjExNDEzMjQ2?x-oss-process=image/format,png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://linjinxin.com/2019/12/03/cocos2dx/tolua2/">
+
+
+
+
+
+  <title>【Cocos2d-x】使用 tolua++ 导出 C++ 类（3.x版本） | Welcome to Code World</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Welcome to Code World</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">Learning the ocean without boundaries</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>
+            
+            日程表
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linjinxin.com/2019/12/03/cocos2dx/tolua2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="林锦新">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Welcome to Code World">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">【Cocos2d-x】使用 tolua++ 导出 C++ 类（3.x版本）</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-03T22:12:41+08:00">
+                2019-12-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Cocos2d-x/" itemprop="url" rel="index">
+                    <span itemprop="name">Cocos2d-x</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/12/03/cocos2dx/tolua2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/12/03/cocos2dx/tolua2/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p><em>版本之痛，痛中之痛；环境之难，难中之难。</em></p>
+</blockquote>
+<p>cocos2d-x3.x 与 2.x 很不一样，关于 Lua 绑定也不同。在 2.x 版本，引擎目录下有个 <code>tolua++.exe</code> 文件，通过包描述文件 <code>*.tolua</code>，执行脚本 <code>build.bat</code> 来一键导出。而在 3.x 版本，描述文件换成了 <code>*.ini</code>，然后编写 python 脚本 <code>generator.py</code>，使用 python 来导出。</p>
+<h1 id="工程结构"><a href="#工程结构" class="headerlink" title="工程结构"></a>工程结构</h1><p>首先来看一下 cocos2d-x3.x 的源码目录结构，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">|-cocos2d-x-3.x</span><br><span class="line">    |-build</span><br><span class="line">    |-docs</span><br><span class="line">    |-tests</span><br><span class="line">    |-templates</span><br><span class="line">    |-extensions</span><br><span class="line">    |-external</span><br><span class="line">    |-tools</span><br><span class="line">        |-tolua</span><br><span class="line">            |-genbindings.py</span><br><span class="line">            |-cocos2dx.ini</span><br><span class="line">            |-cocos2dx_ui.ini</span><br><span class="line">            |-...</span><br><span class="line">            |-README.mdown</span><br><span class="line">        |-bindings-generator</span><br><span class="line">            |-libclang</span><br><span class="line">                |-libclang.dll</span><br><span class="line">                |-libclang.so</span><br><span class="line">                |-libclang.dylib</span><br><span class="line">            |-clang</span><br><span class="line">                |-cindex.py</span><br><span class="line">            |-generator.py</span><br><span class="line">    |-cocos</span><br><span class="line">        |-2d</span><br><span class="line">        |-...</span><br><span class="line">        |scripting</span><br><span class="line">            |-js-bindings</span><br><span class="line">            |-lua-bindings</span><br><span class="line">                |-auto</span><br><span class="line">                    |-api</span><br><span class="line">                        |-Action.lua</span><br><span class="line">                        |-...</span><br><span class="line">                    |-lua_cocos2dx_auto.hpp</span><br><span class="line">                    |-lua_cocos2dx_auto.cpp</span><br><span class="line">                    |-lua_cocos2dx_ui_auto.hpp</span><br><span class="line">                    |-lua_cocos2dx_ui_auto.cpp</span><br><span class="line">                    |-...</span><br><span class="line">                |-scripting</span><br><span class="line">                    |-init.lua</span><br><span class="line">                    |-...</span><br></pre></td></tr></table></figure>
+<p><code>build</code> 为工程目录，<code>docs</code> 帮助文档，<code>tests</code> 官方示例，<code>templates</code> 为创建项目时使用的模板，<code>extensions</code> 为源码的一些扩展，<code>external</code> 为外部库，主要是一些第三方的基础库，比如物理引擎、md5、json 等等。重点要介绍的是 <code>tools</code> 和 <code>cocos</code> 这两个文件夹。</p>
+<ul>
+<li><code>cocos</code> 目录是 cocos2d-x 引擎的 C++ 源码，其中 <code>cocos/scripting</code> 为导出的脚本，包括 js 和 lua，分别放在 <code>cocos/scripting/lua-bindings</code> 和 <code>cocos/scripting/js-bindings</code> 目录下；<code>cocos/scripting/lua-bindings/auto</code> 为 tolua 生成文件存放的地方。</li>
+<li><code>tools</code> 目录下是 cocos2d-x 非常实用的一些工具，包括创建项目、编译项目、运行项目的控制台命令等，这里我们要看的是 <code>tolua</code> 和 <code>bindings-generator</code> 这两个文件夹；<code>tolua</code> 下是包描述文件和可执行脚本 <code>genbindings.py</code>，<code>binding-generator</code> 目录下则是需要用到的一些库或脚本。</li>
+</ul>
+<h1 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h1><p>在开始之前需要做一个准备工作，就是配置环境，主要配置的是 python 环境，在 <code>tools/tolua/README.mdown</code> 中其实已经有关于环境配置的说明：</p>
+<ul>
+<li>首先，安装 ndk 并配置环境变量 <strong>NDK_ROOT</strong>；</li>
+<li>然后，下载安装 python2.7，注意必须安装 32 位版本，下载地址：<a href="http://www.python.org/ftp/python/2.7.3/python-2.7.3.msi" target="_blank" rel="noopener">python2.7.3</a>；</li>
+<li>配置 python 环境变量 <strong>PYTHON_BIN</strong>；</li>
+<li>下载安装 python 库 pyyaml，下载地址：<a href="http://pyyaml.org/download/pyyaml/PyYAML-3.11.win32-py2.7.exe" target="_blank" rel="noopener">pyyaml</a>，pyyaml 安装的时候会读取 python 安装路径并将结果安装在 <strong>%PYTHON_BIN%\Lib\site-packages</strong> 目录下；</li>
+<li>下载 python 库 pyCheetah，下载地址：<a href="https://raw.github.com/dumganhar/my_old_cocos2d-x_backup/download/downloads/Cheetah.zip" target="_blank" rel="noopener">pyCheetah</a>，下载之后解压到  <strong>%PYTHON_BIN%\Lib\site-packages</strong> 目录下即可。</li>
+</ul>
+<h1 id="Lua-绑定"><a href="#Lua-绑定" class="headerlink" title="Lua 绑定"></a>Lua 绑定</h1><p>首先，跟写普通 C++ 程序一样，我们先写一个要导出的 C++ 类 <code>MyClass</code>。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//MyClass.h</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyClass</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	MyClass(<span class="keyword">int</span> a, <span class="keyword">int</span> b);</span><br><span class="line">	~MyClass();</span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">excute</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">int</span> a;</span><br><span class="line">	<span class="keyword">int</span> b;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//MyClass.cpp</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"MyClass.h"</span></span></span><br><span class="line"></span><br><span class="line">MyClass::MyClass(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">this</span>-&gt;a = a;</span><br><span class="line">    <span class="keyword">this</span>-&gt;b = b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">MyClass::~MyClass()</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> MyClass::excute()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> a + b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接下来就可以准备导出这个类了，使用的是 <code>tools/tolua/genbindings.py</code> 以及每个类对应的 <code>ini</code> 文件，这个 python 脚本可以导出 cocos2d-x 中的所有类，我们可以修改这个脚本，添加我们自定义的类，也可以模仿这个脚本另外写一个脚本，然后执行我们自己写的这个脚本。为了防止破坏源代码，我们使用第二种，把 <code>genbindings.py</code> 复制一份，命名为 <code>genbindings_myclass.py</code>，再把 <code>cocos2dx.ini</code> 复制一份，命名为 <code>myclass.ini</code>。在引擎源码下创建一个 <code>custom</code> 目录，然后把 <code>myclass.ini</code> 和 C++ 源文件统一放在这个目录下，而 <code>genbindings_myclass.py</code> 则仍放在 <code>tools/tolua</code> 目录下，这样改动最小。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">|-cocos2d-x-3.x</span><br><span class="line">    |-cocos</span><br><span class="line">        |-custom</span><br><span class="line">            |-MyClass.h</span><br><span class="line">            |-MyClass.cpp</span><br><span class="line">            |-myclass.ini</span><br><span class="line">            |-auto</span><br><span class="line">    |-tools</span><br><span class="line">        |-tolua</span><br><span class="line">            |-genbindings_myclass.py</span><br></pre></td></tr></table></figure>
+<p>修改 <code>genbindings_myclass.py</code>：</p>
+<ul>
+<li><code>tolua_root</code> 为包描述文件 <code>myclass.ini</code> 的路径，即 <code>project_root/cocos/custom</code>；</li>
+<li><code>output_dir</code> 为生成文件的路径，我们放在 <code>project_root/cocos/custom/auto</code> 目录下；</li>
+<li><code>cmd_args</code> 指定我们要导出的 C++ 类，key 是一个 ini 配置文件，value 指定源文件名和导出文件名；这是一个 table，可以指定多个 ini 配置文件，一个配置文件可以配置一个类或多个类；这里我们只需要一个 <code>myclass.ini</code>，源文件名为 <code>myclass</code>，这个源文件名在 <code>myclass.ini</code> 的第一行定义，不是真正的源码的文件名，导出的文件名为 <code>lua_myclass_auto</code>。</li>
+</ul>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># genbindings_myclass.py</span></span><br><span class="line">tolua_root = <span class="string">'%s/tools/tolua'</span> % project_root</span><br><span class="line">output_dir = <span class="string">'%s/tests/custom/auto'</span> % project_root </span><br><span class="line">cmd_args = &#123;<span class="string">'myclass.ini'</span> : (<span class="string">'myclass'</span>, <span class="string">'lua_myclass_auto'</span>)&#125;</span><br></pre></td></tr></table></figure>
+<p>修改 <code>myclass.ini</code>：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 源文件名，与上面 cmd_args 配置的一致</span></span><br><span class="line"><span class="section">[myclass]</span></span><br><span class="line"><span class="attr">prefix</span> = myclass</span><br><span class="line">  </span><br><span class="line"><span class="comment"># 导出的类所在命名空间，在 lua 层使用时需要用到，不写也行，表示在全局空间</span></span><br><span class="line"><span class="attr">target_namespace</span> = cc</span><br><span class="line">  </span><br><span class="line"><span class="comment"># 要导出的 c++ 类头文件路径</span></span><br><span class="line"><span class="attr">headers</span> = %(cocosdir)s/tests/custom/MyClass.h</span><br><span class="line">  </span><br><span class="line"><span class="comment"># 要导出的类名</span></span><br><span class="line"><span class="attr">classes</span> = MyClass</span><br><span class="line"></span><br><span class="line"><span class="attr">skip</span> =</span><br><span class="line"><span class="attr">abstract_classes</span> =</span><br></pre></td></tr></table></figure>
+<p>总结一下就是创建了 <code>genbindings_myclass.py</code> 和 <code>myclass.ini</code> 这两个文件，接下来在 <code>tools/tolua</code> 文件夹下打开命令行，输入 <code>python genbindings_myclass.py</code>。 如果没错误，将在 <code>tests/custom/auto</code> 目录生成相应的文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">|-cocos2d-x-3.x</span><br><span class="line">    |-cocos</span><br><span class="line">        |-custom</span><br><span class="line">            |-MyClass.h</span><br><span class="line">            |-MyClass.cpp</span><br><span class="line">            |-myclass.ini</span><br><span class="line">            |-auto</span><br><span class="line">                |-lua_myclass_auto.hpp</span><br><span class="line">                |-lua_myclass_auto.cpp</span><br><span class="line">                |-api</span><br><span class="line">                    |-MyClass.lua</span><br><span class="line">                    |-lua_myclass_auto.lua</span><br></pre></td></tr></table></figure>
+<p>如果报错，检查一下 <code>genbindings_myclass.py</code> 和 <code>myclass.ini</code> 有没有写错，特别是源文件路径 <em>headers</em> 和 目标文件 <em>output_dir</em>。还有就是 python，pyyaml 和 pyCheetah 是不是全装的 32 位，还有 python 环境变量是否配置对，当然 <code>MyClass.h</code> 和 <code>MyClass.cpp</code> 肯定也不能有错误。</p>
+<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><p>新建一个 lua 项目，把 <code>MyClass.h, MyClass.cpp, lua_myclass_auto.hpp, lua_myclass_auto.cpp</code> 这四个文件拷到项目中，然后打开 <code>AppDelegate.cpp</code>，添加下面内容。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"lua_myclass_auto.hpp"</span></span></span><br><span class="line"><span class="comment">//...</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">bool</span> AppDelegate::applicationDidFinishLaunching()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    lua_State* L = engine-&gt;getLuaStack()-&gt;getLuaState();</span><br><span class="line">    lua_module_register(L);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//register custom function</span></span><br><span class="line">    register_all_myclass(<span class="built_in">stack</span>-&gt;getLuaState());</span><br><span class="line"></span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>register_all_myclass</code> 在 <code>lua_myclass_auto.hpp</code> 中声明，所以要引入这个头文件，在 <code>lua_myclass_auto.cpp</code> 中实现，我们可以看看这个函数，</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">TOLUA_API <span class="keyword">int</span> <span class="title">register_all_myclass</span><span class="params">(lua_State* tolua_S)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	tolua_open(tolua_S);</span><br><span class="line">	</span><br><span class="line">	tolua_module(tolua_S,<span class="string">"cc"</span>,<span class="number">0</span>);</span><br><span class="line">	tolua_beginmodule(tolua_S,<span class="string">"cc"</span>);</span><br><span class="line"></span><br><span class="line">	lua_register_myclass_MyClass(tolua_S);</span><br><span class="line"></span><br><span class="line">	tolua_endmodule(tolua_S);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>总的来说就是打开 tolua，把 c++ 层的函数注册到 lua 环境中，之后就可以在 lua 中直接使用这些函数了。具体的可以看我这篇文章<a href="http://blog.csdn.net/xingxinmanong/article/details/78137514" target="_blank" rel="noopener">tolua 用法</a>。</p>
+<p>接下来打开 src/app/views/MainScene.lua，开始测试我们的例子，</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> MainScene = class(<span class="string">"MainScene"</span>, cc.<span class="built_in">load</span>(<span class="string">"mvc"</span>).ViewBase)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">MainScene:onCreate</span><span class="params">()</span></span></span><br><span class="line">	<span class="keyword">local</span> test = cc.MyClass:new(<span class="number">10</span>, <span class="number">20</span>)</span><br><span class="line">	<span class="keyword">local</span> num = test:excute()</span><br><span class="line">	<span class="keyword">local</span> str = <span class="string">"Hello World"</span> .. num</span><br><span class="line">	cc.Label:createWithSystemFont(str, <span class="string">"Arial"</span>, <span class="number">40</span>)</span><br><span class="line">	:move(display.cx, display.cy)</span><br><span class="line">	:addTo(self)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> MainScene</span><br></pre></td></tr></table></figure>
+<p>这里我们创建 MyClass 的一个实例，然后调用其 excute 方法；注意我们前面导出的时候定义其命名空间为 cc，所以这里要写 cc.MyClass，否则会报错。接下来就是见证成果的时候了，编译运行项目，看到下面结果就表示大功告成了。</p>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTcwOTI5MjExNDEzMjQ2?x-oss-process=image/format,png" alt="tolua 应用"></p>
+<h1 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h1><p><strong>1. NDK 版本不对</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">====</span><br><span class="line">Errors <span class="keyword">in</span> parsing headers:</span><br><span class="line">1. &lt;severity = Fatal,</span><br><span class="line">    location = &lt;SourceLocation file <span class="string">'/home/xxx/NDK/platforms/android-14/arch-arm/usr/include/android/log.h'</span>, line 70, column 10&gt;,</span><br><span class="line">    details = <span class="string">"'stdarg.h' file not found"</span>&gt;</span><br><span class="line">====</span><br></pre></td></tr></table></figure>
+<p>如果出现这个错误，是因为 NDK 工具链 <code>llvm</code> 匹配不上，最简单直接的办法就是换一个版本的 NDK，通常是使用了版本太高的 NDK 才会出现，比如我之前电脑上装了 r10 和 r20 两个版本，不知道什么时候环境变量设成了 <code>NDK_ROOT = D:\Android\android-ndk-r20</code>，把它换成 <code>NDK_ROOT = D:\Android\android-ndk-r10e</code> 就行了。注意要删掉 <code>tools/tolua/userconfi.ini</code>，然后重启终端再执行就可以了。</p>
+<p>to be continue…</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/tolua/" rel="tag"># tolua++</a>
+          
+            <a href="/tags/cocos2dx-lua/" rel="tag"># cocos2dx lua</a>
+          
+            <a href="/tags/cocos2dx-tolua/" rel="tag"># cocos2dx tolua</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/12/03/cocos2dx/tolua1/" rel="next" title="【Cocos2d-x】使用 tolua++ 导出 C++ 类（2.x版本）">
+                <i class="fa fa-chevron-left"></i> 【Cocos2d-x】使用 tolua++ 导出 C++ 类（2.x版本）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/12/07/cocos2dx/lua/" rel="prev" title="Lua 与 C++ 交互及 Lua 绑定简单原理">
+                Lua 与 C++ 交互及 Lua 绑定简单原理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="林锦新">
+            
+              <p class="site-author-name" itemprop="name">林锦新</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/linjinxin" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#工程结构"><span class="nav-number">1.</span> <span class="nav-text">工程结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#环境配置"><span class="nav-number">2.</span> <span class="nav-text">环境配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Lua-绑定"><span class="nav-number">3.</span> <span class="nav-text">Lua 绑定</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#测试"><span class="nav-number">4.</span> <span class="nav-text">测试</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#常见问题"><span class="nav-number">5.</span> <span class="nav-text">常见问题</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">林锦新</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://ljx.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://linjinxin.com/2019/12/03/cocos2dx/tolua2/';
+          this.page.identifier = '2019/12/03/cocos2dx/tolua2/';
+          this.page.title = '【Cocos2d-x】使用 tolua++ 导出 C++ 类（3.x版本）';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://ljx.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

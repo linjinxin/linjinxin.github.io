@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Times New Roman:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="tolua++,cocos2dx lua,cocos2dx tolua,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="**  Cocos2dx 版本非常乱，主要有 2.x 和 3.x 两个版本，另外还是 lua 版本还有 quick 分支。本文主要介绍低版本(2.x)cocos2d-x 对应的 quick 版本，如何使用 tolua++ 来导出自定义的 C++ 类，因为没找到 cocos2d-x 的 2.x 版本，所以不知道 2dx 和 quick 是不是一样。 工程结构先来看一下 quick-cocos2d-">
+<meta name="keywords" content="tolua++,cocos2dx lua,cocos2dx tolua">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Cocos2d-x】使用 tolua++ 导出 C++ 类（2.x版本）">
+<meta property="og:url" content="http://linjinxin.com/2019/12/03/cocos2dx/tolua1/index.html">
+<meta property="og:site_name" content="Welcome to Code World">
+<meta property="og:description" content="**  Cocos2dx 版本非常乱，主要有 2.x 和 3.x 两个版本，另外还是 lua 版本还有 quick 分支。本文主要介绍低版本(2.x)cocos2d-x 对应的 quick 版本，如何使用 tolua++ 来导出自定义的 C++ 类，因为没找到 cocos2d-x 的 2.x 版本，所以不知道 2dx 和 quick 是不是一样。 工程结构先来看一下 quick-cocos2d-">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-12-04T07:08:41.026Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【Cocos2d-x】使用 tolua++ 导出 C++ 类（2.x版本）">
+<meta name="twitter:description" content="**  Cocos2dx 版本非常乱，主要有 2.x 和 3.x 两个版本，另外还是 lua 版本还有 quick 分支。本文主要介绍低版本(2.x)cocos2d-x 对应的 quick 版本，如何使用 tolua++ 来导出自定义的 C++ 类，因为没找到 cocos2d-x 的 2.x 版本，所以不知道 2dx 和 quick 是不是一样。 工程结构先来看一下 quick-cocos2d-">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://linjinxin.com/2019/12/03/cocos2dx/tolua1/">
+
+
+
+
+
+  <title>【Cocos2d-x】使用 tolua++ 导出 C++ 类（2.x版本） | Welcome to Code World</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Welcome to Code World</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">Learning the ocean without boundaries</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>
+            
+            日程表
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linjinxin.com/2019/12/03/cocos2dx/tolua1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="林锦新">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Welcome to Code World">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">【Cocos2d-x】使用 tolua++ 导出 C++ 类（2.x版本）</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-03T20:28:40+08:00">
+                2019-12-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Cocos2d-x/" itemprop="url" rel="index">
+                    <span itemprop="name">Cocos2d-x</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/12/03/cocos2dx/tolua1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/12/03/cocos2dx/tolua1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>**</p>
+</blockquote>
+<p>Cocos2dx 版本非常乱，主要有 2.x 和 3.x 两个版本，另外还是 lua 版本还有 quick 分支。本文主要介绍低版本(2.x)cocos2d-x 对应的 quick 版本，如何使用 tolua++ 来导出自定义的 C++ 类，因为没找到 cocos2d-x 的 2.x 版本，所以不知道 2dx 和 quick 是不是一样。</p>
+<h1 id="工程结构"><a href="#工程结构" class="headerlink" title="工程结构"></a>工程结构</h1><p>先来看一下 quick-cocos2d-x-2.x 的工程结构，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">|-quick-cocos2d-x</span><br><span class="line">    |-bin</span><br><span class="line">        |-win32</span><br><span class="line">            |-lua51.dll</span><br><span class="line">            |-luac.exe</span><br><span class="line">            |-luajit.exe</span><br><span class="line">            |-php.exe</span><br><span class="line">            |-tolua++.exe</span><br><span class="line">    |-framework</span><br><span class="line">        |-display.lua</span><br><span class="line">    |-lib</span><br><span class="line">        |-cocos2d-x</span><br><span class="line">            |-scripting</span><br><span class="line">                |-lua</span><br><span class="line">                    |-cocosdx_support</span><br><span class="line">                        |-LuaCocos2d.h</span><br><span class="line">                        |-LuaCocos2d.cpp</span><br><span class="line">        |-framework_precompiled</span><br><span class="line">        |-luabinding</span><br><span class="line">            |-cocos2dx</span><br><span class="line">                |-Cocos2d.tolua</span><br><span class="line">            |-Cocos2d.tolua</span><br><span class="line">            |-build.bat</span><br><span class="line">            |-build.sh</span><br><span class="line">        |-proj.win32</span><br><span class="line">        |-proj.android</span><br><span class="line">    |-player</span><br><span class="line">        |-sources</span><br><span class="line">        |-proj.win32</span><br><span class="line">        |-proj.mac</span><br></pre></td></tr></table></figure>
+<p>最重要的就是上面列出的 <code>bin, framework, lib, player</code> 四个文件夹，另外还有几个不那么重要的文件夹，<code>docs</code> 是帮助文档，<code>samples</code> 是官方例子，<code>template</code> 是创建工程的默认模板，<code>tool</code> 貌似没什么用。</p>
+<ul>
+<li><code>bin</code> 保存了引擎用到的一些工具和可执行脚本，其中 <code>bin/win32</code> 下有跟 Lua 相关的工具，包括 Lua 编译器 <code>luac</code> 和 <code>luajit</code>，还有我们马上要用到的 <code>tolua++</code>；</li>
+<li><code>framework</code> 为引擎的基础框架，即封装好的一些代码库集合，里面全是 Lua 文件，因为 quick 是纯 Lua 版本，引擎源码已经被编成一个“播放器”了，对项目而言，这些上层封装的 Lua 代码才是 framework；</li>
+<li><code>lib</code> 是引擎源码存放的地方，包括 <code>cocos2d-x</code> 目录下的源码和 <code>proj.win32, proj.android</code> 等源码工程，以及用于将 C++ 导出到 Lua 的相关文件 <code>luabinding</code>；</li>
+<li><code>player</code> 则是一个播放器工程，用于生成一个可直接运行的播放器，之后使用 quick 创建项目就只需要把这个编好的播放器拷过去就行，然后直接开撸 Lua 代码，不需要引擎的 C++ 源码；在 <code>player/proj.win32</code> 下有个解决方案 <code>player.sln</code>，它包含自身的播放器项目 <code>player.vcxproj</code> 和源码项目 <code>lib/proj.win32/cocos2dx.vcxproj</code>。</li>
+</ul>
+<h1 id="Lua-绑定"><a href="#Lua-绑定" class="headerlink" title="Lua 绑定"></a>Lua 绑定</h1><p>引擎的目录结构已经很清楚了，<code>lib</code> 是引擎源码，<code>framework</code> 是 quick 封装的上层 Lua 库，<code>player</code> 是播放器工程，<code>bin</code> 则是常用工具。进行 Lua 绑定需要用到 <code>bin</code> 和 <code>lib</code> 这两个文件夹，</p>
+<ul>
+<li><code>bin</code> 目录下有 Lua 绑定工具 <code>tolua++.exe</code>；</li>
+<li><code>lib/luabinding</code> 为 Lua 绑定的工作目录，包括每个类的包描述文件 <code>*.tolua</code>、定制脚本 <code>basic.lua</code> 和可执行脚本 <code>build.bat/build.sh</code>；</li>
+<li><code>lib/framework_precompiled</code> 目录下 Lua framework 的预编译文件，下面只有 <code>framework_precompiled.zip</code> 一个文件；</li>
+<li><code>lib/cocos2d-x</code> 则为引擎的源码目录，tolua 导出的文件自然也是源码的一部分，所以也在这个目录下，其完整路径为 <code>lib/cocos2d-x/scripting/lua/cocos2dx_support</code>。</li>
+</ul>
+<p><strong>进行 Lua 绑定只需要一步，执行 <code>lib/luabinding/build.bat/build.sh</code> 即可</strong>，这个脚本的内容如下，</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@<span class="built_in">echo</span> off</span><br><span class="line"><span class="built_in">set</span> <span class="built_in">DIR</span>=%~dp0</span><br><span class="line"><span class="built_in">set</span> TOLUA=<span class="variable">%QUICK_COCOS2DX_ROOT%</span>\bin\win32\tolua++.exe</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> /d "<span class="variable">%DIR%</span>"</span><br><span class="line"><span class="variable">%TOLUA%</span> -L "<span class="variable">%DIR%</span>basic.lua" -o "<span class="variable">%QUICK_COCOS2DX_ROOT%</span>\lib\cocos2d-x\scripting\lua\cocos2dx_support\LuaCocos2d.cpp" Cocos2d.tolua</span><br></pre></td></tr></table></figure>
+<p>其实就只做一件事，调用 <code>bin/win32/tolua++.exe</code>，根据包描述文件 <code>lib/luabinding/Cocos2d.tolua</code> 和定制脚本 <code>lib/luabinding/basic.lua</code>，生成文件 <code>lib/cocos2d-x/scripting/lua/cocos2dx_support/LuaCocos2d.cpp</code>。</p>
+<p>描述文件以 <code>.tolua</code> 为后缀(本来的后缀名应该是 <code>*.pkg</code>，不过这不重要)，语法和 C++ 头文件差不多，其作用是描述要导出的函数，每个 C++ 类都需要一个描述文件，但我们执行脚本的时候只指定了一个描述文件，这是因为描述文件和头文件一样，可以包含其它文件，下面是 <code>Cocos2d.tolua</code> 的内容，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$#include &quot;LuaCocos2d.h&quot;</span><br><span class="line">$pfile &quot;cocos2dx/include/ccTypes.tolua&quot;</span><br><span class="line">$pfile &quot;cocos2dx/cocoa/CCObject.tolua&quot;</span><br><span class="line">$pfile &quot;cocos2dx/cocoa/CCString.tolua&quot;</span><br><span class="line">//...</span><br></pre></td></tr></table></figure>
+<p>在运行标准的 tolua++ 之前，还加载了额外的脚本 <code>basic.lua</code>，这是由于 cocos2dx 在 Lua 绑定方面并未完全遵照 tolua++ 的默认做法，因此需要对其进行定制，<code>basic.lua</code> 主要做的事情是：</p>
+<ol>
+<li>将所有导出的 CCXXXX 类的 <code>push</code> 函数（也就是将 cpp obj h传进 lua 时调用的函数）修改为自己的 <code>toluafix_pushusertype_ccobject</code>；</li>
+<li>将 <code>function</code> 和 <code>table</code> 两种类型的 <code>to</code> 和 <code>is</code> 函数（分别是指将 lua obj 传进 cpp 时调的函数、判断一个变量是否为本类型时调的函数）修改为 <code>toluafix_is/to_funtion/table</code>。</li>
+</ol>
+<h1 id="自定义类导出"><a href="#自定义类导出" class="headerlink" title="自定义类导出"></a>自定义类导出</h1><ul>
+<li>第一步，编写自己的 C++ 类 <code>MyClass</code>，放在源码目录 <code>lib/cocos2d-x</code> 下即可，无具体要求；</li>
+<li>第二步，编写包描述文件 <code>MyClass.tolua</code>，放在 Lua 绑定工作目录 <code>lib/luabinding</code> 下即可，无具体要求；</li>
+<li>第三步，在 <code>Cocos2d.tolua</code> 中包含 <code>MyClass.tolua</code>；</li>
+<li>第四步，在 <code>cocos2d.h</code> 中包含 <code>MyClass.h</code>；</li>
+<li>第五步，重新执行 <code>lib/luabinding/build.bat</code>，这样就会将自定义类 <code>MyClass</code> 也导出到 <code>LuaCocos2d</code> 库中去，所以使用的时候不需要自己去导入库。</li>
+</ul>
+<p>在 <code>basic.lua</code> 中定义了一个 table <code>CCObjectTypes</code>，放在这个 table 里的类表示是 cocos2d-x 对象类，需要对其进行定制；如果我们的自定义继承自 cocos2d-x 的对象，则需要把我们的自定义类也加入到 <code>CCObjectTypes</code> 中去，否则不能加进去，cocos2d-x 的对象类会修改 <code>toluafix_pushusertype_ccobject</code>，会使用到 <code>m_uID</code> 和 <code>m_nLuaID</code>，而我们自定义的类没有这两个字段，将其当作 cocos2d-x 对象处理是编译不过去的。</p>
+<p>第二步和第三步是编写包描述文件，仿照着已有文件写就行，这两步做好之后通常就可以进行导出了，通常容易忽略的是第四步。这里要讲一下 Lua 绑定的原理，就是在原来 C++ 类的基础上封装一层，为每个需要导出的方法都封装一个静态函数，然后 C++ 程序打开 Lua 环境的时候将这些静态函数全部注册到 Lua 环境中去，生成一个全局的 Lua 变量，Lua 代码通过这个全局变量访问到 C++ 静态函数，而这个静态函数内部才调用真正的类方法。所以，<strong>Lua 绑定的结果是根据原来的 C++ 文件，再生成一个 C++ 文件</strong>，新生成的文件需要包含原来的头文件，因为新文件定义的静态方法做的事情就是访问原来的类方法。因此才有了第四步，引用头文件 <code>MyClass.h</code>，因为生成的文件 <code>LuaCocos2d.cpp</code> 默认会包含 <code>cocos2d.h</code>，所以这里才在 <code>cocos2d.h</code> 中包含 <code>MyClass.h</code>，当然也可以在其它地方包含，比如直接在 <code>LuaCocos2d.cpp</code> 中直接包含 <code>MyClass.h</code> 也行，或者在定制脚本 <code>basic.lua</code> 中写也行。</p>
+<p>下面是一个导出方法的示例，是为 <code>MyClass</code> 的构造函数生成的一个静态函数，这个函数使用 C API 创建一个 <code>MyClass</code> 对象，注册到 Lua 环境中去。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> TOLUA_DISABLE_tolua_Cocos2d_MyClass_new00</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">tolua_Cocos2d_MyClass_new00</span><span class="params">(lua_State* tolua_S)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    <span class="keyword">int</span> a = ((<span class="keyword">int</span>)  tolua_tonumber(tolua_S,<span class="number">2</span>,<span class="number">0</span>));</span><br><span class="line">    <span class="keyword">int</span> b = ((<span class="keyword">int</span>)  tolua_tonumber(tolua_S,<span class="number">3</span>,<span class="number">0</span>));</span><br><span class="line">    &#123;</span><br><span class="line">    MyClass* tolua_ret = (MyClass*)  Mtolua_new((MyClass)(a,b));</span><br><span class="line">    tolua_pushusertype(tolua_S,(<span class="keyword">void</span>*)tolua_ret,<span class="string">"MyClass"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">//#ifndef TOLUA_DISABLE</span></span></span><br></pre></td></tr></table></figure>
+<h1 id="单独导出"><a href="#单独导出" class="headerlink" title="单独导出"></a>单独导出</h1><p>上面的做法是将自定义跟着系统库一起导出，另外一种做法是单独导出我们的自定义类，只需要模仿着系统导出写一套文件即可。最终的文件结构如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">|-quick-cocos2d-x</span><br><span class="line">    |-lib</span><br><span class="line">        |-custom</span><br><span class="line">            |-luabinding</span><br><span class="line">                |-basic.lua</span><br><span class="line">                |-build.bat</span><br><span class="line">                |-MyClass.tolua</span><br><span class="line">            |-MyClass.h</span><br><span class="line">            |-MyClass.cpp</span><br><span class="line">            |-LuaMyClass.hpp</span><br></pre></td></tr></table></figure>
+<p>创建一个独立的目录 <code>lib/custom</code>，不干扰引擎原来的文件结构，然后第一步和第二步和原来一样，编写自定义的 C++ 类和包描述文件 <code>MyClass.tolua</code>；之后编写自己的定制脚本 <code>basic.lua</code> 和可执行脚本 <code>build.bat</code>，最终生成文件 <code>LuaMyClass.hpp</code>，默认不会生成头文件，所以这里将生成的文件命名为 <code>*.hpp</code>，这样使用的时候就直接包含就行了，如果生成 <code>*.cpp</code>，则需要自己再手动写一个头文件。</p>
+<p><code>build.bat</code> 基本和原来一样，只是改一下包描述文件和生成文件，代码如下：</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@<span class="built_in">echo</span> off</span><br><span class="line"><span class="built_in">set</span> <span class="built_in">DIR</span>=%~dp0</span><br><span class="line"><span class="built_in">set</span> TOLUA=<span class="variable">%QUICK_COCOS2DX_ROOT%</span>\bin\win32\tolua++.exe</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> /d "<span class="variable">%DIR%</span>"</span><br><span class="line"><span class="variable">%TOLUA%</span> -L "<span class="variable">%DIR%</span>basic.lua" -o "<span class="variable">%DIR%</span>/../LuaMyClass.cpp" MyClass.tolua</span><br></pre></td></tr></table></figure>
+<p>定制脚本 <code>basic.lua</code> 也和原来差不多，直接从 <code>lib/luabinding/basic.lua</code> 拷一份出来，然后做一下删减即可。首先，我们的自定义不是 cocos2d-x 对象，所以 <code>CCObjectTypes</code> 部分直接删掉；然后改一下 <code>replace</code> 部分的代码，简化头文件的引入，不需要引入 <code>cocos2d.h</code>，还有一些不必要的替换也去掉，最终的效果如下：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- usage: (use instead of ant)</span></span><br><span class="line"><span class="comment">-- tolua++ "-L" "basic.lua" "-o" "../../scripting/lua/cocos2dx_support/LuaCocos2d.cpp" "Cocos2d.pkg"</span></span><br><span class="line"></span><br><span class="line">_is_functions = _is_functions <span class="keyword">or</span> &#123;&#125;</span><br><span class="line">_to_functions = _to_functions <span class="keyword">or</span> &#123;&#125;</span><br><span class="line">_push_functions = _push_functions <span class="keyword">or</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- register LUA_FUNCTION, LUA_TABLE, LUA_HANDLE type</span></span><br><span class="line">_to_functions[<span class="string">"LUA_FUNCTION"</span>] = <span class="string">"toluafix_ref_function"</span></span><br><span class="line">_is_functions[<span class="string">"LUA_FUNCTION"</span>] = <span class="string">"toluafix_isfunction"</span></span><br><span class="line">_to_functions[<span class="string">"LUA_TABLE"</span>] = <span class="string">"toluafix_totable"</span></span><br><span class="line">_is_functions[<span class="string">"LUA_TABLE"</span>] = <span class="string">"toluafix_istable"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">local</span> toWrite = &#123;&#125;</span><br><span class="line"><span class="keyword">local</span> currentString = <span class="string">''</span></span><br><span class="line"><span class="keyword">local</span> out</span><br><span class="line"><span class="keyword">local</span> WRITE, OUTPUT = <span class="built_in">write</span>, <span class="built_in">output</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">output</span><span class="params">(s)</span></span></span><br><span class="line">    <span class="comment">-- ...</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">write</span><span class="params">(a)</span></span></span><br><span class="line">    <span class="comment">-- ...</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">post_output_hook</span><span class="params">(package)</span></span></span><br><span class="line">    <span class="keyword">local</span> result = <span class="built_in">table</span>.<span class="built_in">concat</span>(toWrite)</span><br><span class="line">    <span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">replace</span><span class="params">(pattern, replacement)</span></span></span><br><span class="line">        <span class="comment">-- ...</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">    replace(<span class="string">[[#ifndef __cplusplus</span></span><br><span class="line"><span class="string">#include "stdlib.h"</span></span><br><span class="line"><span class="string">#endif</span></span><br><span class="line"><span class="string">#include "string.h"</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">#include "tolua++.h"]]</span>,</span><br><span class="line">      <span class="string">[[extern "C" &#123;</span></span><br><span class="line"><span class="string">#include "tolua_fix.h"</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">#include &lt;map&gt;</span></span><br><span class="line"><span class="string">#include &lt;string&gt;</span></span><br><span class="line"><span class="string">#include "MyClass.h"</span></span><br><span class="line"><span class="string">#include "CCLuaEngine.h"]]</span>)</span><br><span class="line"></span><br><span class="line">    replace(<span class="string">[[/* Exported function */</span></span><br><span class="line"><span class="string">TOLUA_API int  tolua_Cocos2d_open (lua_State* tolua_S);]]</span>, <span class="string">[[]]</span>)</span><br><span class="line"></span><br><span class="line">    replace(<span class="string">[[*((LUA_FUNCTION*)]]</span>, <span class="string">[[(]]</span>)</span><br><span class="line"></span><br><span class="line">    replace(<span class="string">[[tolua_usertype(tolua_S,"LUA_FUNCTION");]]</span>, <span class="string">[[]]</span>)</span><br><span class="line"></span><br><span class="line">    replace(<span class="string">[[toluafix_pushusertype_ccobject(tolua_S,(void*)tolua_ret]]</span>,</span><br><span class="line">        <span class="string">[[int nID = (tolua_ret) ? (int)tolua_ret-&gt;m_uID : -1;</span></span><br><span class="line"><span class="string">    int* pLuaID = (tolua_ret) ? &amp;tolua_ret-&gt;m_nLuaID : NULL;</span></span><br><span class="line"><span class="string">    toluafix_pushusertype_ccobject(tolua_S, nID, pLuaID, (void*)tolua_ret]]</span>)</span><br><span class="line"></span><br><span class="line">    replace(<span class="string">'\t'</span>, <span class="string">'    '</span>)</span><br><span class="line"></span><br><span class="line">    WRITE(result)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<h2 id="注册"><a href="#注册" class="headerlink" title="注册"></a>注册</h2><p>因为是单独导出，所以使用的时候要先进行注册，在生成的 <code>LuaMyClass.hpp</code> 中有一个 export function，</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">TOLUA_API <span class="keyword">int</span>  <span class="title">tolua_MyClass_open</span> <span class="params">(lua_State* tolua_S)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>调用这个函数就可以一键注册 <code>MyClass</code> 的所有方法到 Lua 环境中去。</p>
+<p>首先，将 <code>MyClass.h, MyClass.cpp, LuaMyClass.hpp</code> 拷贝到项目中去，然后包含 <code>LuaMyClass.hpp</code>，再调用函数 <code>tolua_MyClass_open</code>。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"cocos2d.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"LuaMyClass.hpp"</span></span></span><br><span class="line"><span class="comment">//#include ...</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">bool</span> AppDelegate::applicationDidFinishLaunching()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// ... </span></span><br><span class="line">    lua_State *L = pStack-&gt;getLuaState();</span><br><span class="line"></span><br><span class="line">    tolua_MyClass_open(L);</span><br><span class="line">    <span class="comment">// ... </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/tolua/" rel="tag"># tolua++</a>
+          
+            <a href="/tags/cocos2dx-lua/" rel="tag"># cocos2dx lua</a>
+          
+            <a href="/tags/cocos2dx-tolua/" rel="tag"># cocos2dx tolua</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/11/25/python/type/" rel="next" title="【Python】数据类型">
+                <i class="fa fa-chevron-left"></i> 【Python】数据类型
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/12/03/cocos2dx/tolua2/" rel="prev" title="【Cocos2d-x】使用 tolua++ 导出 C++ 类（3.x版本）">
+                【Cocos2d-x】使用 tolua++ 导出 C++ 类（3.x版本） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="林锦新">
+            
+              <p class="site-author-name" itemprop="name">林锦新</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/linjinxin" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#工程结构"><span class="nav-number">1.</span> <span class="nav-text">工程结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Lua-绑定"><span class="nav-number">2.</span> <span class="nav-text">Lua 绑定</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#自定义类导出"><span class="nav-number">3.</span> <span class="nav-text">自定义类导出</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#单独导出"><span class="nav-number">4.</span> <span class="nav-text">单独导出</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#注册"><span class="nav-number">4.1.</span> <span class="nav-text">注册</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">林锦新</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://ljx.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://linjinxin.com/2019/12/03/cocos2dx/tolua1/';
+          this.page.identifier = '2019/12/03/cocos2dx/tolua1/';
+          this.page.title = '【Cocos2d-x】使用 tolua++ 导出 C++ 类（2.x版本）';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://ljx.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
