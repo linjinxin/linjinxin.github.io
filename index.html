@@ -468,12 +468,12 @@
 <li>宏定义是预处理语句，编译的时候处理，结尾无分号；类型重定义是代码语句，结尾必须分号。</li>
 <li>定义宏 A 表示 B，给类型 B 起别名 A，宏定义是宏在前面，值在后面；类型重定义是值在前面，别名在后面。</li>
 </ol>
-<p><code>typedef</code> 可以给数据类型起一个别名，还可以用于定义函数指针，用一个简短的名字表示一个函数原型，其语法为 <code>typedef void(*FUNC)(int, float)</code>，这么一看很难理解，调整一下顺序就好理解多了，<code>typedef void(int, float) (*FUNC)</code>，<code>void(int, float)</code> 是一个函数原型，给其起个别名 <code>FUNC</code>，<em> 表示这是一个指针类型，即 <code>FUNC</code> 是一个函数指针类型，这个函数指针只能赋值原型为 <code>void(int, float)</code> 的函数地址。只是语法要求把别名 <code>FUNC</code> 放在返回值 <code>void</code> 和参数列表 <code>(int, float)</code> 之间，所以最后的形式为 `typedef void(</em>FUNC)(int, float)`。</p>
+<p><code>typedef</code> 可以给数据类型起一个别名，还可以用于定义函数指针，用一个简短的名字表示一个函数原型，其语法为 <code>typedef void(*FUNC)(int, float)</code>，这么一看很难理解，调整一下顺序就好理解多了，<code>typedef void(int, float) (*FUNC)</code>，<code>void(int, float)</code> 是一个函数原型，给其起个别名 <code>FUNC</code>，<code>*</code> 表示这是一个指针类型，即 <code>FUNC</code> 是一个函数指针类型，这个函数指针只能赋值原型为 <code>void(int, float)</code> 的函数地址。只是语法要求把别名 <code>FUNC</code> 放在返回值 <code>void</code> 和参数列表 <code>(int, float)</code> 之间，所以最后的形式为 <code>typedef void(*FUNC)(int, float)</code>。</p>
 <p><code>FUNC</code> 现在是一个数据类型了，直接用其定义变量即可，直接赋值一个函数地址即可，看下面例子：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">float</span> b)</span> </span>&#123; <span class="built_in">cout</span> &lt;&lt; <span class="string">"foo  "</span> &lt;&lt; a + b &lt;&lt; <span class="built_in">endl</span>; &#125;</span><br><span class="line"><span class="function"><span class="keyword">typedef</span> <span class="title">void</span><span class="params">(*FUNC)</span><span class="params">(<span class="keyword">int</span>, <span class="keyword">float</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test2</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    FUNC f = foo;</span><br><span class="line">    f(<span class="number">3</span>, <span class="number">3.14</span>); <span class="comment">// foo  6.14</span></span><br><span class="line">    foo(<span class="number">3</span>, <span class="number">3.14</span>); <span class="comment">// foo  6.14</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>除了全局函数，<code>typedef</code> 定义函数指针同样适用于类成员函数，只需要在类型前面加上类名，<code>typedef void(DemoClass::*FUNC2)(int, float)</code>，这样只有类 <code>DemoClass</code> 和其子类的原型为 <code>void(float, int)</code> 的方法才能赋值给函数指针类型 <code>FUNC2</code>。类静态函数指针和全局函数指针一样，不需要类名，如果函数原型一样，则一个函数指针类型既可以接收全局函数，也可以接收类静态方法。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DemoClass</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">float</span> b)</span> </span>&#123; <span class="built_in">cout</span> &lt;&lt; <span class="string">"foo  "</span> &lt;&lt; a + b &lt;&lt; <span class="built_in">endl</span>; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">foo2</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">float</span> b)</span> </span>&#123; <span class="built_in">cout</span> &lt;&lt; <span class="string">"static foo  "</span> &lt;&lt; a + b &lt;&lt; <span class="built_in">endl</span>; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">typedef</span> <span class="title">void</span> <span class="params">(DemoClass::*FUNC2)</span><span class="params">(<span class="keyword">int</span>, <span class="keyword">float</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test2</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    FUNC fc = &amp;DemoClass::foo2;</span><br><span class="line">    fc(<span class="number">1</span>, <span class="number">3.14</span>);</span><br><span class="line"></span><br><span class="line">    FUNC2 f = &amp;DemoClass::foo;</span><br><span class="line"></span><br><span class="line">    DemoClass *demo = <span class="keyword">new</span> DemoClass();</span><br><span class="line">    (demo-&gt;*f)(<span class="number">1</span>, <span class="number">3.14</span>);</span><br><span class="line"></span><br><span class="line">    DemoClass demo2 = DemoClass();</span><br><span class="line">    (demo2.*f)(<span class="number">1</span>, <span class="number">3.14</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><code>FUNC</code> 是前面定义的一个函数指针类型，用于赋值全局函数，在这里赋值一个类全局函数也是可以的。<code>FUNC2</code> 是用于赋值 <code>DemoClass</code> 成员函数的函数指针类型，要注意的是类成员函数，执行的时候需要一个类实例对象，指针也好，对象也好，然后函数指针前面需要加上一个 <em>，比如 `demo-&gt;</em>f()<code>，</code>demo.<em>f()`。还有一点，无论是类静态方法还是成员方法，赋值给函数指针的时候都需要在前面加上 &amp;，用于取其地址，而全局函数加不加都行，对应的全局函数调用的时候前面加不加 </em> 都行。</p>
+<p><code>FUNC</code> 是前面定义的一个函数指针类型，用于赋值全局函数，在这里赋值一个类全局函数也是可以的。<code>FUNC2</code> 是用于赋值 <code>DemoClass</code> 成员函数的函数指针类型，要注意的是类成员函数，执行的时候需要一个类实例对象，指针也好，对象也好，然后函数指针前面需要加上一个 <code>*</code>，比如 <code>demo-&gt;*f()</code>，<code>demo.*f()</code>。还有一点，无论是类静态方法还是成员方法，赋值给函数指针的时候都需要在前面加上 <code>&amp;</code>，用于取其地址，而全局函数加不加都行，对应的全局函数调用的时候前面加不加 <code>*</code> 都行。</p>
 <p>准备工作完了，接下来看看 <code>SEL_SCHEDULE</code> 的定义：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">typedef</span> <span class="title">void</span> <span class="params">(Ref::*SEL_SCHEDULE)</span><span class="params">(<span class="keyword">float</span>)</span></span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> CC_SCHEDULE_SELECTOR(_SELECTOR) static_cast<span class="meta-string">&lt;cocos2d::SEL_SCHEDULE&gt;(&amp;_SELECTOR)</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">schedule</span><span class="params">(SEL_SCHEDULE selector, Ref *target, <span class="keyword">float</span> interval, <span class="keyword">unsigned</span> <span class="keyword">int</span> repeat, <span class="keyword">float</span> delay, <span class="keyword">bool</span> paused)</span></span>;</span><br></pre></td></tr></table></figure>
 <p>第一行定义函数指针类型 <code>SEL_SCHEDULE</code>，表示类 <code>Ref</code> 及其子类的原型为 <code>void(float)</code> 的成员函数。<br>第二行定义一个宏 <code>CC_SCHEDULE_SELECTOR</code>，它的值是 <code>static_cast&lt;SEL_SCHEDULE&gt;(&amp;_SELECTOR)</code>，即将传进来的值强制转换成 <code>SEL_SCHEDULE</code> 类型，<code>cocos2d::</code> 是命名空间，只要引入了 <code>cocos2d</code> 这个命名空间就不用写了。之所以需要 <code>static_cast</code> 作强制类型转换，是因为传进来的函数可以是 <code>Ref</code> 子类的方法，如果是 <code>Ref</code> 的方法，这一步也是可以省的。</p>
@@ -558,7 +558,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/12/07/cocos2dx/dev-env/" itemprop="url">Cocos2d-x 开发环境</a></h2>
+                <a class="post-title-link" href="/2019/12/07/cocos2dx/dev-env/" itemprop="url">【Cocos2d-x】Cocos2d-x 开发环境</a></h2>
         
 
         <div class="post-meta">
@@ -645,39 +645,52 @@
             <blockquote>
 <p>**</p>
 </blockquote>
-<h1 id="Android-环境"><a href="#Android-环境" class="headerlink" title="Android 环境"></a>Android 环境</h1><h2 id="基础环境"><a href="#基础环境" class="headerlink" title="基础环境"></a>基础环境</h2><h3 id="Java-JDK"><a href="#Java-JDK" class="headerlink" title="Java(JDK)"></a>Java(JDK)</h3><p><strong>Java Development Kit</strong>：Java 开发工具包</p>
-<blockquote>
-<p>环境变量 %JAVA_HOME%; %CLASSPATH%; %Path%</p>
-</blockquote>
-<h3 id="Android-SDK"><a href="#Android-SDK" class="headerlink" title="Android(SDK)"></a>Android(SDK)</h3><p><strong>Android Sofeware Development Kit</strong>：Android 软件开发工具包</p>
-<blockquote>
-<p>环境变量 %ANDROID_SDK_ROOT%</p>
-</blockquote>
-<h2 id="原生编译环境"><a href="#原生编译环境" class="headerlink" title="原生编译环境"></a>原生编译环境</h2><h3 id="C-to-Java-NDK"><a href="#C-to-Java-NDK" class="headerlink" title="C++ to Java(NDK)"></a>C++ to Java(NDK)</h3><p><strong>Native Development Kit</strong>：原生开发工具包</p>
-<blockquote>
-<p>环境变量 %ANDROID_NDK_ROOT%</p>
-</blockquote>
+<h1 id="Android-环境"><a href="#Android-环境" class="headerlink" title="Android 环境"></a>Android 环境</h1><h2 id="基础环境"><a href="#基础环境" class="headerlink" title="基础环境"></a>基础环境</h2><h3 id="Java-JDK"><a href="#Java-JDK" class="headerlink" title="Java(JDK)"></a>Java(JDK)</h3><p><strong>Java Development Kit</strong>：Java 开发工具包。</p>
+<p>环境变量：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> JAVA_HOME = D:\Android\jdk8</span><br><span class="line"><span class="built_in">set</span> CLASSPATH =  .;%JAVA_HOME%\lib</span><br><span class="line"><span class="built_in">set</span> Path = %Path%;D:\Android\jdk8\bin</span><br></pre></td></tr></table></figure>
+<h3 id="Android-SDK"><a href="#Android-SDK" class="headerlink" title="Android(SDK)"></a>Android(SDK)</h3><p><strong>Android Sofeware Development Kit</strong>：Android 软件开发工具包。</p>
+<p>环境变量：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> ANDROID_SDK_ROOT = D:\Android\SDK</span><br></pre></td></tr></table></figure>
+<h2 id="原生编译环境"><a href="#原生编译环境" class="headerlink" title="原生编译环境"></a>原生编译环境</h2><h3 id="C-to-Java-NDK"><a href="#C-to-Java-NDK" class="headerlink" title="C++ to Java(NDK)"></a>C++ to Java(NDK)</h3><p><strong>Native Development Kit</strong>：原生开发工具包。</p>
+<p>环境变量：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> ANDROID_NDK_ROOT = D:\Android\android-ndk-r10e</span><br></pre></td></tr></table></figure>
 <h2 id="编译打包"><a href="#编译打包" class="headerlink" title="编译打包"></a>编译打包</h2><p>两种打包工具，<strong>ant</strong> 和 <strong>gradle</strong>，ant 比较早期，<strong>eclipse</strong> 使用；gradle 是目前主流的 android 打包工具，<strong>android studio</strong> 使用。</p>
-<h3 id="Gradle"><a href="#Gradle" class="headerlink" title="Gradle"></a>Gradle</h3><p><a href="https://www.jianshu.com/p/001abe1d8e95" target="_blank" rel="noopener">参考文档</a>,<br><a href="http://tools.android.com/tech-docs/new-build-system/user-guide" target="_blank" rel="noopener">官方文档</a></p>
-<p>一个 Gradle 框架的 multi-project 结构如下</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">project</span><br><span class="line">├── project1(app)</span><br><span class="line">│   ├── build.gradle <span class="comment">#构建脚本</span></span><br><span class="line">├── project2(module1)</span><br><span class="line">│   ├── build.gradle <span class="comment">#构建脚本</span></span><br><span class="line">├── gradle</span><br><span class="line">│   └── wrapper    <span class="comment">#gradle包装</span></span><br><span class="line">├── build.gradle   <span class="comment">#工程构建脚本</span></span><br><span class="line">├── gradlew         <span class="comment">#gradle wrapper linux shell脚本</span></span><br><span class="line">├── gradlew.bat     <span class="comment">#gradle wrapper windows bat脚本</span></span><br><span class="line">|—— settings.gradle <span class="comment">#工程配置</span></span><br><span class="line">|__ gradle.properties <span class="comment">#本地配置</span></span><br></pre></td></tr></table></figure>
-<p>这里的 project 对应 android studio 项目中的 moudle，进一步对应到 cocos2dx 的工程，app 即为工程主模块，module1 即为 libcocos2dx，一个 cocos2dx 项目在 android studio 中的基本项目结构如下</p>
+<h3 id="Gradle"><a href="#Gradle" class="headerlink" title="Gradle"></a>Gradle</h3><p><a href="https://www.jianshu.com/p/001abe1d8e95" target="_blank" rel="noopener">参考文档</a>，<a href="http://tools.android.com/tech-docs/new-build-system/user-guide" target="_blank" rel="noopener">官方文档</a>。</p>
+<p>一个 Gradle 框架的 multi-project 结构如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">project</span><br><span class="line">├── project1(app)</span><br><span class="line">│   ├── build.gradle #构建脚本</span><br><span class="line">├── project2(module1)</span><br><span class="line">│   ├── build.gradle #构建脚本</span><br><span class="line">├── gradle</span><br><span class="line">│   └── wrapper    #gradle包装</span><br><span class="line">├── build.gradle   #工程构建脚本</span><br><span class="line">├── gradlew         #gradle wrapper linux shell脚本</span><br><span class="line">├── gradlew.bat     #gradle wrapper windows bat脚本</span><br><span class="line">|—— settings.gradle #工程配置</span><br><span class="line">|__ gradle.properties #本地配置</span><br></pre></td></tr></table></figure>
+<p>这里的 project 对应 Android Studio 项目中的 moudle，进一步对应到 cocos2dx 的工程，app 即为工程主模块，module1 即为 libcocos2dx，一个 cocos2dx 项目在 Android Studio 中的基本项目结构如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">proj.gradle</span><br><span class="line">|—— projandroid</span><br><span class="line">│   ├── build.gradle</span><br><span class="line">|   |—— src</span><br><span class="line">├── libcocos2dx</span><br><span class="line">│   ├── build.gradle</span><br><span class="line">|   |—— src</span><br><span class="line">├── gradle</span><br><span class="line">│   └── wrapper</span><br><span class="line">├── build.gradle</span><br><span class="line">├── gradlew</span><br><span class="line">├── gradlew.bat</span><br><span class="line">|—— settings.gradle</span><br><span class="line">|__ local.properties</span><br></pre></td></tr></table></figure>
-<p><code>src</code> 目录为源文件目录，包括 java 源代码 <code>java</code>、android 工程资源 <code>res</code>、资源目录 <code>assets</code>(游戏的全部内容包括 lua 代码，资源、音效全放这里)、依赖的库文件 <code>jniLibs</code> 等等，结构如下</p>
+<p><code>src</code> 目录为源文件目录，包括 java 源代码 <code>java</code>、android 工程资源 <code>res</code>、资源目录 <code>assets</code>(游戏的全部内容包括 lua 代码，资源、音效全放这里)、依赖的库文件 <code>jniLibs</code> 等等，结构如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">src</span><br><span class="line">|—— main</span><br><span class="line">│   ├── java</span><br><span class="line">│   ├── res</span><br><span class="line">│   ├── assets</span><br><span class="line">│   ├── jniLibs</span><br></pre></td></tr></table></figure>
 <p>除了 <code>src</code> 目录，最重要的就是 gradle 打包需要的脚本文件 <code>build.gradle</code> 及相关的配置文件，每一个 module 都有一个 <code>build.grade</code>，主工程也需要一个 <code>build.grade</code>。</p>
-<p>主工程的 <code>build.grade</code> 定义了对所有 module 都生效的配置和动作，其中最重要的是定义了使用的 grade 工具版本</p>
+<p>主工程的 <code>build.grade</code> 定义了对所有 module 都生效的配置和动作，其中最重要的是定义了使用的 grade 工具版本。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    classpath &apos;com.android.tools.build:gradle:3.5.0&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>每个 module 各自定义自己的打包配置和动作，下面列几个主要的项</p>
+<p>每个 module 各自定义自己的打包配置和动作，下面列几个主要的项。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apply plugin: &apos;com.android.application&apos;</span><br><span class="line">apply plugin: &apos;com.android.library&apos;</span><br></pre></td></tr></table></figure>
 <p>这里配置了该模块的性质，<code>application</code> 表示是可运行的主模块，比如上面的 <code>projandroid</code>，<code>library</code> 表示不能独立运行的库，由其它模块包含使用，比如上面的 <code>libcocos2dx</code>。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    implementation project(path: &apos;:libcocos2dx&apos;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>定义模块之间的依赖性，如 <code>projandroid</code> 依赖于 <code>libcocos2dx</code>，有了这层依赖关系，<code>projandroid</code> 生成的时候就会先生成 <code>libcocos2dx</code>，然后将其生成的文件作为一个库保存在其 <code>src/main/jniLibs</code> 下，然后一起打包进 apk 包。</p>
-<p><code>settings.grade</code> 定义了该工程包括的模块</p>
+<p><code>settings.grade</code> 定义了该工程包括的模块。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">include &apos;:libcocos2dx&apos;</span><br><span class="line">include &apos;:projandroid&apos;</span><br></pre></td></tr></table></figure>
-<p><code>local.properties</code> 做一些本地配置，主要保存了 sdk 和 ndk 的路径</p>
+<p><code>local.properties</code> 做一些本地配置，主要保存了 sdk 和 ndk 的路径。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ndk.dir=D\:\\Android\\android-ndk-r10e</span><br><span class="line">sdk.dir=D\:\\Android\\SDK</span><br></pre></td></tr></table></figure>
-<h3 id="Android-Studio"><a href="#Android-Studio" class="headerlink" title="Android Studio"></a>Android Studio</h3>
+<h3 id="Android-Studio"><a href="#Android-Studio" class="headerlink" title="Android Studio"></a>Android Studio</h3><p>安装 Android Studio。</p>
+<h1 id="安装-Visual-Studio"><a href="#安装-Visual-Studio" class="headerlink" title="安装 Visual Studio"></a>安装 Visual Studio</h1><p>没啥好说的，装就是了。建议安装 2015 版本或 2017 版本，2015 以下有点老了，2019 有点太新了，当然也可以多个版本一起安装。</p>
+<h1 id="安装-Python27"><a href="#安装-Python27" class="headerlink" title="安装 Python27"></a>安装 Python27</h1><p>Python 要安装 2.x 的版本，安装完配置环境变量：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> PYTHON_BIN = C:\Python27\python.exe</span><br><span class="line"><span class="built_in">set</span> Path = %Path%;C:\Python27;C:\Python27\Scripts</span><br></pre></td></tr></table></figure>
+<h1 id="安装-Cocos2d-x3-17"><a href="#安装-Cocos2d-x3-17" class="headerlink" title="安装 Cocos2d-x3.17"></a>安装 Cocos2d-x3.17</h1><p>从官网下载最新版本的 Cocos2d-x3.17，解压之后运行 <code>setup.py</code>，这个脚本会自动检查环境变量并补全以下环境变量：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> COCOS_X_ROOT = D:\engine</span><br><span class="line"><span class="built_in">set</span> COCOS_CONSOLE_ROOT = D:\engine\cocos2d-x-3.17.2\tools\cocos2d-console\bin</span><br><span class="line"><span class="built_in">set</span> COCOS_TEMPLATES_ROOT = D:\engine\cocos2d-x-3.17.2\templates</span><br></pre></td></tr></table></figure>
+<p>引擎的目录结构：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">|-cocos2d-x-3.17</span><br><span class="line">    |-build</span><br><span class="line">    |-docs</span><br><span class="line">    |-tests</span><br><span class="line">    |-templates</span><br><span class="line">    |-extensions</span><br><span class="line">    |-external</span><br><span class="line">    |-tools</span><br><span class="line">    |-cocos</span><br></pre></td></tr></table></figure>
+<p>源码在 <code>cocos, extensions, external</code> 这三个目录下，<code>extensions</code> 为一些扩展，<code>external</code> 主要是第三方库。<code>tests</code> 目录下有官方提供的例子，<code>c++, lua, js</code> 三种语言的例子都有，可打开运行看看。</p>
+<p>创建工程的命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">usage: cocos new [-h] [-p PACKAGE_NAME] [-d DIRECTORY] [-t TEMPLATE_NAME]</span><br><span class="line">                 [--ios-bundleid IOS_BUNDLEID] [--mac-bundleid MAC_BUNDLEID]</span><br><span class="line">                 [-e ENGINE_PATH] [--portrait] -l &#123;cpp,lua,js&#125;</span><br><span class="line">                 [PROJECT_NAME]</span><br></pre></td></tr></table></figure>
+<p>打开命令行，输入 <code>cocos new -p com.xxx.game.mygame -d d:/learn/cocos -l cpp mygame</code> 即可创建一个 C++ 工程。</p>
+<h2 id="工程配置"><a href="#工程配置" class="headerlink" title="工程配置"></a>工程配置</h2><p>创建的工程默认是不开控制台，打开 <code>main.cpp</code>，添加下面代码开启控制台。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> WINAPI _tWinMain(HINSTANCE hInstance,</span><br><span class="line">                       HINSTANCE hPrevInstance,</span><br><span class="line">                       LPTSTR    lpCmdLine,</span><br><span class="line">                       <span class="keyword">int</span>       nCmdShow)</span><br><span class="line">&#123;</span><br><span class="line">    UNREFERENCED_PARAMETER(hPrevInstance);</span><br><span class="line">    UNREFERENCED_PARAMETER(lpCmdLine);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// add to open console</span></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">ifdef</span> USE_WIN32_CONSOLE</span></span><br><span class="line">        AllocConsole();</span><br><span class="line">        freopen(<span class="string">"CONIN$"</span>, <span class="string">"r"</span>, <span class="built_in">stdin</span>);</span><br><span class="line">        freopen(<span class="string">"CONOUT$"</span>, <span class="string">"w"</span>, <span class="built_in">stdout</span>);</span><br><span class="line">        freopen(<span class="string">"CONOUT$"</span>, <span class="string">"w"</span>, <span class="built_in">stderr</span>);</span><br><span class="line">    <span class="meta">#<span class="meta-keyword">endif</span> </span></span><br><span class="line"></span><br><span class="line">    AppDelegate app;</span><br><span class="line">    <span class="keyword">return</span> Application::getInstance()-&gt;run();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后定义宏 <code>USE_WIN_CONSOLE</code> 就可开启控制台，去掉这个宏就关闭控制台。在代码中定义 <code>#define USER_WIN_CONSOLE</code>，或者在 <em>项目属性-&gt;C/C++-&gt;预处理器-&gt;预处理器定义</em> 中添加 <code>USE_WIN32_CONSOLE</code>。</p>
+<p>这是 C++ 工程的做法，Lua 工程也可以这么做，但有更好的做法，定义宏 <code>#define SIMULATOR_WITH_CONSOLE_AND_MENU 1</code> 即可，不仅可以开启控制台，还开启了菜单栏，可以在运行时改变分辨率以及按 F5 刷新。这个宏在 <code>SimulatorWin.cpp</code> 中定义，默认是定义为 0，把它改成 1 即可。</p>
+
           
         
       
@@ -725,7 +738,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linjinxin.com/2019/12/07/cocos2dx/lua/">
+    <link itemprop="mainEntityOfPage" href="http://linjinxin.com/2019/12/07/lua/c++/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="林锦新">
@@ -744,7 +757,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/12/07/cocos2dx/lua/" itemprop="url">Lua 与 C++ 交互及 Lua 绑定简单原理</a></h2>
+                <a class="post-title-link" href="/2019/12/07/lua/c++/" itemprop="url">Lua 与 C++ 交互及 Lua 绑定简单原理</a></h2>
         
 
         <div class="post-meta">
@@ -779,8 +792,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Cocos2d-x/" itemprop="url" rel="index">
-                    <span itemprop="name">Cocos2d-x</span>
+                  <a href="/categories/Lua/" itemprop="url" rel="index">
+                    <span itemprop="name">Lua</span>
                   </a>
                 </span>
 
@@ -797,8 +810,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/12/07/cocos2dx/lua/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/12/07/cocos2dx/lua/" itemprop="commentCount"></span>
+                <a href="/2019/12/07/lua/c++/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/12/07/lua/c++/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -2918,7 +2931,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

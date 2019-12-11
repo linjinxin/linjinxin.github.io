@@ -115,11 +115,11 @@
 <meta name="keywords" content="Lua&amp;&amp;C++交互,Lua 绑定,tolua,tolua++">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Lua 与 C++ 交互及 Lua 绑定简单原理">
-<meta property="og:url" content="http://linjinxin.com/2019/12/07/cocos2dx/lua/index.html">
+<meta property="og:url" content="http://linjinxin.com/2019/12/07/lua/c++/index.html">
 <meta property="og:site_name" content="Welcome to Code World">
 <meta property="og:description" content="**  Lua&amp;amp;&amp;amp;CLua 是一个用 C 编写的库，但这个库不仅能编译成动态链接库和静态链接库给其它 C 程序使用，也能编译成单独的可执行文件，用于编译 Lua 源代码的 Lua编译器 和 Lua 独立运行环境 Lua解释器。有了解释器，理论上 Lua 代码是可以独立执行的，不需要嵌入到任何高级语言的程序中去，而且，反过来 Lua 代码还可以访问 C 代码编写的一些库。但是，现实">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-12-07T12:49:00.623Z">
+<meta property="og:updated_time" content="2019-12-11T08:48:12.557Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Lua 与 C++ 交互及 Lua 绑定简单原理">
 <meta name="twitter:description" content="**  Lua&amp;amp;&amp;amp;CLua 是一个用 C 编写的库，但这个库不仅能编译成动态链接库和静态链接库给其它 C 程序使用，也能编译成单独的可执行文件，用于编译 Lua 源代码的 Lua编译器 和 Lua 独立运行环境 Lua解释器。有了解释器，理论上 Lua 代码是可以独立执行的，不需要嵌入到任何高级语言的程序中去，而且，反过来 Lua 代码还可以访问 C 代码编写的一些库。但是，现实">
@@ -152,7 +152,7 @@
 
 
 
-  <link rel="canonical" href="http://linjinxin.com/2019/12/07/cocos2dx/lua/">
+  <link rel="canonical" href="http://linjinxin.com/2019/12/07/lua/c++/">
 
 
 
@@ -305,7 +305,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linjinxin.com/2019/12/07/cocos2dx/lua/">
+    <link itemprop="mainEntityOfPage" href="http://linjinxin.com/2019/12/07/lua/c++/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="林锦新">
@@ -357,8 +357,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Cocos2d-x/" itemprop="url" rel="index">
-                    <span itemprop="name">Cocos2d-x</span>
+                  <a href="/categories/Lua/" itemprop="url" rel="index">
+                    <span itemprop="name">Lua</span>
                   </a>
                 </span>
 
@@ -375,8 +375,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/12/07/cocos2dx/lua/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/12/07/cocos2dx/lua/" itemprop="commentCount"></span>
+                <a href="/2019/12/07/lua/c++/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/12/07/lua/c++/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -546,8 +546,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/12/07/cocos2dx/dev-env/" rel="prev" title="Cocos2d-x 开发环境">
-                Cocos2d-x 开发环境 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/12/07/cocos2dx/dev-env/" rel="prev" title="【Cocos2d-x】Cocos2d-x 开发环境">
+                【Cocos2d-x】Cocos2d-x 开发环境 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -648,7 +648,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -872,8 +872,8 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://linjinxin.com/2019/12/07/cocos2dx/lua/';
-          this.page.identifier = '2019/12/07/cocos2dx/lua/';
+          this.page.url = 'http://linjinxin.com/2019/12/07/lua/c++/';
+          this.page.identifier = '2019/12/07/lua/c++/';
           this.page.title = 'Lua 与 C++ 交互及 Lua 绑定简单原理';
         };
         var d = document, s = d.createElement('script');
