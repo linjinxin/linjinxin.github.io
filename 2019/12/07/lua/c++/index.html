@@ -111,18 +111,18 @@
 
 
 
-<meta name="description" content="**  Lua 是一个用 C 编写的库，但这个库不仅能编译成动态链接库和静态链接库给其它 C 程序使用，也能编译成单独的可执行文件，用于编译 Lua 源代码的 Lua编译器 和 Lua 独立运行环境 Lua解释器。有了解释器，理论上 Lua 代码是可以独立执行的，不需要嵌入到任何高级语言的程序中去，而且，反过来 Lua 代码还可以访问 C 代码编写的一些库。但是，现实中 Lua 解释器的运用场景">
+<meta name="description" content="**  Lua 是一个用 C 编写的库，但这个库不仅能编译成动态链接库和静态链接库给其它 C 程序使用，也能编译成单独的可执行文件，比如用于编译 Lua 源代码的 Lua编译器 和 Lua 独立运行环境 Lua解释器。有了解释器，理论上 Lua 代码是可以独立执行的，不需要嵌入到任何高级语言的程序中去，而且，反过来 Lua 代码还可以访问 C 代码编写的一些库。但是，现实中 Lua 解释器的运用">
 <meta name="keywords" content="tolua++,Lua&amp;&amp;C++交互,Lua 绑定,tolua">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【Lua】Lua 与 C++ 交互及 Lua 绑定">
 <meta property="og:url" content="http://linjinxin.com/2019/12/07/lua/c++/index.html">
 <meta property="og:site_name" content="Welcome to Code World">
-<meta property="og:description" content="**  Lua 是一个用 C 编写的库，但这个库不仅能编译成动态链接库和静态链接库给其它 C 程序使用，也能编译成单独的可执行文件，用于编译 Lua 源代码的 Lua编译器 和 Lua 独立运行环境 Lua解释器。有了解释器，理论上 Lua 代码是可以独立执行的，不需要嵌入到任何高级语言的程序中去，而且，反过来 Lua 代码还可以访问 C 代码编写的一些库。但是，现实中 Lua 解释器的运用场景">
+<meta property="og:description" content="**  Lua 是一个用 C 编写的库，但这个库不仅能编译成动态链接库和静态链接库给其它 C 程序使用，也能编译成单独的可执行文件，比如用于编译 Lua 源代码的 Lua编译器 和 Lua 独立运行环境 Lua解释器。有了解释器，理论上 Lua 代码是可以独立执行的，不需要嵌入到任何高级语言的程序中去，而且，反过来 Lua 代码还可以访问 C 代码编写的一些库。但是，现实中 Lua 解释器的运用">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-12-12T03:55:20.698Z">
+<meta property="og:updated_time" content="2019-12-12T12:02:40.721Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【Lua】Lua 与 C++ 交互及 Lua 绑定">
-<meta name="twitter:description" content="**  Lua 是一个用 C 编写的库，但这个库不仅能编译成动态链接库和静态链接库给其它 C 程序使用，也能编译成单独的可执行文件，用于编译 Lua 源代码的 Lua编译器 和 Lua 独立运行环境 Lua解释器。有了解释器，理论上 Lua 代码是可以独立执行的，不需要嵌入到任何高级语言的程序中去，而且，反过来 Lua 代码还可以访问 C 代码编写的一些库。但是，现实中 Lua 解释器的运用场景">
+<meta name="twitter:description" content="**  Lua 是一个用 C 编写的库，但这个库不仅能编译成动态链接库和静态链接库给其它 C 程序使用，也能编译成单独的可执行文件，比如用于编译 Lua 源代码的 Lua编译器 和 Lua 独立运行环境 Lua解释器。有了解释器，理论上 Lua 代码是可以独立执行的，不需要嵌入到任何高级语言的程序中去，而且，反过来 Lua 代码还可以访问 C 代码编写的一些库。但是，现实中 Lua 解释器的运用">
 
 
 
@@ -407,12 +407,10 @@
         <blockquote>
 <p>**</p>
 </blockquote>
-<p>Lua 是一个用 C 编写的库，但这个库不仅能编译成动态链接库和静态链接库给其它 C 程序使用，也能编译成单独的可执行文件，用于编译 Lua 源代码的 <strong>Lua编译器</strong> 和 Lua 独立运行环境 <strong>Lua解释器</strong>。有了解释器，理论上 Lua 代码是可以独立执行的，不需要嵌入到任何高级语言的程序中去，而且，反过来 Lua 代码还可以访问 C 代码编写的一些库。但是，现实中 Lua 解释器的运用场景并不多，更多的还是将 Lua 代码嵌入到高级语言程序中去，同时 Lua 也会调用高级程序语言的一些库，也就是 <strong>Lua 和 C 相互调用</strong>。比如在使用 cocos2dx 引擎实现的游戏中，游戏引擎使用 C++ 实现，游戏逻辑使用 Lua 实现，然后引擎执行 Lua 代码(C++调用Lua)，而 Lua 代码又会使用到引擎库的功能(Lua调用C++)。</p>
+<p>Lua 是一个用 C 编写的库，但这个库不仅能编译成动态链接库和静态链接库给其它 C 程序使用，也能编译成单独的可执行文件，比如用于编译 Lua 源代码的 <strong>Lua编译器</strong> 和 Lua 独立运行环境 <strong>Lua解释器</strong>。有了解释器，理论上 Lua 代码是可以独立执行的，不需要嵌入到任何高级语言的程序中去，而且，反过来 Lua 代码还可以访问 C 代码编写的一些库。但是，现实中 Lua 解释器的运用场景并不多，更多的还是将 Lua 代码嵌入到高级语言程序中去，同时 Lua 也会调用高级程序语言的一些库，也就是 <strong>Lua 和 C 相互调用</strong>。比如在使用 cocos2dx 引擎实现的游戏中，游戏引擎使用 C++ 实现，游戏逻辑使用 Lua 实现，然后引擎执行 Lua 代码(C++调用Lua)，而 Lua 代码又会使用到引擎库的功能(Lua调用C++)。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">cocos2dx引擎 --&gt; |执行| game[游戏逻辑]</span><br><span class="line">game --&gt; |调用| cocos2dx库</span><br><span class="line">C++程序 --&gt; |执行| lua[Lua代码]</span><br><span class="line">lua --&gt; |调用| C++库</span><br></pre></td></tr></table></figure>
-<h1 id="C-调-Lua"><a href="#C-调-Lua" class="headerlink" title="C 调 Lua"></a>C 调 Lua</h1><font color="red">以下讨论基于 C 程序，即在 C 程序中嵌入 Lua 代码。</font>
-
-<p>Lua 源码是用 C 语言写的，可以把 Lua 源码看成是一个 C 语言库，C 程序只要包含了这个库，就具备了与 Lua 交互的条件。C 程序通过这个 C 语言编写的 Lua 库中定义的 C API 创建 Lua 执行环境、执行 Lua 代码、访问 Lua 变量和函数。</p>
-<h2 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h2><p>首先，C 程序会创建一个 Lua 执行环境 <code>lua_State</code>，这个执行环境会维护一个栈，所有交互都基于这个栈。</p>
+<h1 id="C-调-Lua"><a href="#C-调-Lua" class="headerlink" title="C 调 Lua"></a>C 调 Lua</h1><p>Lua 源码是用 C 语言写的，可以把 Lua 源码看成是一个 C 语言库，C 程序只要包含了这个库，就具备了与 Lua 交互的条件。C 程序通过 C API 创建 Lua 执行环境、执行 Lua 代码、访问 Lua 变量和函数。</p>
+<h2 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h2><p>首先，C 程序会创建一个 Lua 执行环境 <code>lua_State</code>，这个执行环境会维护一个栈，所有的 Lua&amp;C 交互都基于这个栈。</p>
 <p>栈的索引有两种，栈底为 1，然后往栈顶递增，栈顶索引未知，即从栈底到栈顶索引为 1,2,3,…；栈顶为 -1，然后往栈底递减，栈底索引未知，即从栈顶到栈底索引为 -1,-2,-3,…。</p>
 <h2 id="C-API"><a href="#C-API" class="headerlink" title="C API"></a>C API</h2><p>基础操作</p>
 <ul>
@@ -469,14 +467,14 @@
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Lua 作为 C 语言实现的一个库，使得 C 程序调用 Lua 非常简单。首先，环境配置十分简单，只需要将 Lua 库包含到项目中即可，无论是源代码的形式，还是动态链接库或静态链接库的形式。然后，通过 <code>luaL_newstate</code> 创建一个 Lua 执行环境，加载标准库或其它自定义库。最后，通过 C API 执行 Lua 代码或随意的操作 Lua 环境中的全局变量和全局函数。</p>
 <h1 id="Lua-调-C"><a href="#Lua-调-C" class="headerlink" title="Lua 调 C"></a>Lua 调 C</h1><h2 id="注册-C-函数"><a href="#注册-C-函数" class="headerlink" title="注册 C 函数"></a>注册 C 函数</h2><p>和 C 调用 Lua 一样，Lua 调用 C 同样通过 <strong>栈和 C API</strong> 实现，C 程序调用 Lua 函数时，需要手动将函数和参数依次压入栈中，Lua 函数执行完会自动将返回值压入栈中，C 调用者再从栈中取出返回值；类似的，Lua 调用 C 函数时，会自动将参数压入栈中，C 函数再从栈中取出参数，执行完函数体之后手动将返回值压入栈中，Lua 调用者自动从栈中取出返回值。可以看出，C 调用 Lua 时，需要调用者手动压入参数和取出返回值，而 Lua 调用 C 时，需要被调用函数手动取出参数和压入返回值。其实很好理解，因为 Lua 源码是 C 编写的，只提供 C API，所有 Lua 和 C 的交互都在 C 端处理，而 Lua 只是运行在 C 程序提供的一个 Lua 环境上而已。</p>
 <p>所以，Lua 调用 C 函数不用做任何处理，像调用 Lua 函数一样简单，只是被调用的 C 函数需要遵循一定的协议：</p>
-<p> 定义 C 函数</p>
+<p> i. 定义 C 函数</p>
 <ol>
 <li>函数原型 <code>int (*lua_CFunction)(lua_State *L);</code>；</li>
 <li>函数体从 Lua 栈中取出参数；</li>
 <li>函数体执行具体操作；</li>
 <li>函数体将执行完的结果压入栈中；</li>
 <li><p>返回结果的个数，所以函数原型的返回值必须是 <code>int</code>。</p>
-<p>将 C 函数注册到 Lua 环境</p>
+<p>ii. 将 C 函数注册到 Lua 环境</p>
 </li>
 <li>使用 <code>lua_pushfunction</code> 将函数引用压入栈；</li>
 <li><p>使用 <code>lua_setglobal</code> 将函数引用从栈中取出并赋值给一个 Lua 全局变量。</p>
