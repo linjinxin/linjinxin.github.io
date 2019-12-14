@@ -6,10 +6,10 @@
 
 
 <html class="theme-next gemini use-motion" lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.9.0">
-  <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta name="theme-color" content="#222">
 
 
@@ -20,8 +20,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
 
 
@@ -40,7 +40,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
 
 
@@ -80,9 +80,9 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
@@ -100,7 +100,7 @@
 
 
 
-  <meta name="keywords" content="cocos2dx lua,tolua++,cocos2dx tolua,">
+  <meta name="keywords" content="cocos2dx lua,tolua++,cocos2dx tolua," />
 
 
 
@@ -116,7 +116,7 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="【Cocos2d-x】使用 tolua++ 导出 C++ 类（3.x版本）">
 <meta property="og:url" content="http://linjinxin.com/2019/12/03/cocos2dx/tolua2/index.html">
-<meta property="og:site_name" content="Welcome to Code World">
+<meta property="og:site_name" content="B.C. Studio">
 <meta property="og:description" content="版本之痛，痛中之痛；环境之难，难中之难。  cocos2d-x3.x 与 2.x 很不一样，关于 Lua 绑定也不同。在 2.x 版本，引擎目录下有个 tolua++.exe 文件，通过包描述文件 *.tolua，执行脚本 build.bat 来一键导出。而在 3.x 版本，描述文件换成了 *.ini，然后编写 python 脚本 generator.py，使用 python 来导出。 工程结构">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTcwOTI5MjExNDEzMjQ2?x-oss-process=image/format,png">
@@ -154,13 +154,13 @@
 
 
 
-  <link rel="canonical" href="http://linjinxin.com/2019/12/03/cocos2dx/tolua2/">
+  <link rel="canonical" href="http://linjinxin.com/2019/12/03/cocos2dx/tolua2/"/>
 
 
 
 
 
-  <title>【Cocos2d-x】使用 tolua++ 导出 C++ 类（3.x版本） | Welcome to Code World</title>
+  <title>【Cocos2d-x】使用 tolua++ 导出 C++ 类（3.x版本） | B.C. Studio</title>
   
 
 
@@ -188,9 +188,9 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
+      <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Welcome to Code World</span>
+        <span class="site-title">B.C. Studio</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -218,7 +218,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
             首页
           </a>
@@ -228,7 +228,7 @@
         <li class="menu-item menu-item-about">
           <a href="/about" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
             关于
           </a>
@@ -238,7 +238,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
             标签
           </a>
@@ -248,7 +248,7 @@
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
             分类
           </a>
@@ -258,7 +258,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
             归档
           </a>
@@ -268,7 +268,7 @@
         <li class="menu-item menu-item-schedule">
           <a href="/schedule" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
             
             日程表
           </a>
@@ -311,12 +311,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="林锦新">
-      <meta itemprop="description" content>
+      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Welcome to Code World">
+      <meta itemprop="name" content="B.C. Studio">
     </span>
 
     
@@ -347,7 +347,7 @@
           </span>
 
           
-            <span class="post-category">
+            <span class="post-category" >
             
               <span class="post-meta-divider">|</span>
             
@@ -378,7 +378,8 @@
                   <i class="fa fa-comment-o"></i>
                 </span>
                 <a href="/2019/12/03/cocos2dx/tolua2/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/12/03/cocos2dx/tolua2/" itemprop="commentCount"></span>
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/12/03/cocos2dx/tolua2/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -576,7 +577,9 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
-              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="林锦新">
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="林锦新" />
             
               <p class="site-author-name" itemprop="name">林锦新</p>
               <p class="site-description motion-element" itemprop="description"></p>
@@ -589,7 +592,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -696,6 +699,14 @@
 
 
 
+
+
+  <script src='https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js'></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({theme: 'forest'});
+    }
+  </script>
 
         
 

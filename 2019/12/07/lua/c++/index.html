@@ -6,10 +6,10 @@
 
 
 <html class="theme-next gemini use-motion" lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.9.0">
-  <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta name="theme-color" content="#222">
 
 
@@ -20,8 +20,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
 
 
@@ -40,7 +40,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
 
 
@@ -80,9 +80,9 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
@@ -100,7 +100,7 @@
 
 
 
-  <meta name="keywords" content="tolua++,Lua&&C++交互,Lua 绑定,tolua,">
+  <meta name="keywords" content="tolua++,Lua&&C++交互,Lua 绑定,tolua," />
 
 
 
@@ -116,10 +116,10 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="【Lua】Lua 与 C++ 交互及 Lua 绑定">
 <meta property="og:url" content="http://linjinxin.com/2019/12/07/lua/c++/index.html">
-<meta property="og:site_name" content="Welcome to Code World">
+<meta property="og:site_name" content="B.C. Studio">
 <meta property="og:description" content="**  Lua 是一个用 C 编写的库，但这个库不仅能编译成动态链接库和静态链接库给其它 C 程序使用，也能编译成单独的可执行文件，比如用于编译 Lua 源代码的 Lua编译器 和 Lua 独立运行环境 Lua解释器。有了解释器，理论上 Lua 代码是可以独立执行的，不需要嵌入到任何高级语言的程序中去，而且，反过来 Lua 代码还可以访问 C 代码编写的一些库。但是，现实中 Lua 解释器的运用">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-12-12T12:26:18.068Z">
+<meta property="og:updated_time" content="2019-12-12T13:11:06.219Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【Lua】Lua 与 C++ 交互及 Lua 绑定">
 <meta name="twitter:description" content="**  Lua 是一个用 C 编写的库，但这个库不仅能编译成动态链接库和静态链接库给其它 C 程序使用，也能编译成单独的可执行文件，比如用于编译 Lua 源代码的 Lua编译器 和 Lua 独立运行环境 Lua解释器。有了解释器，理论上 Lua 代码是可以独立执行的，不需要嵌入到任何高级语言的程序中去，而且，反过来 Lua 代码还可以访问 C 代码编写的一些库。但是，现实中 Lua 解释器的运用">
@@ -152,13 +152,13 @@
 
 
 
-  <link rel="canonical" href="http://linjinxin.com/2019/12/07/lua/c++/">
+  <link rel="canonical" href="http://linjinxin.com/2019/12/07/lua/c++/"/>
 
 
 
 
 
-  <title>【Lua】Lua 与 C++ 交互及 Lua 绑定 | Welcome to Code World</title>
+  <title>【Lua】Lua 与 C++ 交互及 Lua 绑定 | B.C. Studio</title>
   
 
 
@@ -186,9 +186,9 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
+      <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Welcome to Code World</span>
+        <span class="site-title">B.C. Studio</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -216,7 +216,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
             首页
           </a>
@@ -226,7 +226,7 @@
         <li class="menu-item menu-item-about">
           <a href="/about" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
             关于
           </a>
@@ -236,7 +236,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
             标签
           </a>
@@ -246,7 +246,7 @@
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
             分类
           </a>
@@ -256,7 +256,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
             归档
           </a>
@@ -266,7 +266,7 @@
         <li class="menu-item menu-item-schedule">
           <a href="/schedule" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
             
             日程表
           </a>
@@ -309,12 +309,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="林锦新">
-      <meta itemprop="description" content>
+      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Welcome to Code World">
+      <meta itemprop="name" content="B.C. Studio">
     </span>
 
     
@@ -345,7 +345,7 @@
           </span>
 
           
-            <span class="post-category">
+            <span class="post-category" >
             
               <span class="post-meta-divider">|</span>
             
@@ -376,7 +376,8 @@
                   <i class="fa fa-comment-o"></i>
                 </span>
                 <a href="/2019/12/07/lua/c++/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/12/07/lua/c++/" itemprop="commentCount"></span>
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/12/07/lua/c++/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -408,7 +409,12 @@
 <p>**</p>
 </blockquote>
 <p>Lua 是一个用 C 编写的库，但这个库不仅能编译成动态链接库和静态链接库给其它 C 程序使用，也能编译成单独的可执行文件，比如用于编译 Lua 源代码的 <strong>Lua编译器</strong> 和 Lua 独立运行环境 <strong>Lua解释器</strong>。有了解释器，理论上 Lua 代码是可以独立执行的，不需要嵌入到任何高级语言的程序中去，而且，反过来 Lua 代码还可以访问 C 代码编写的一些库。但是，现实中 Lua 解释器的运用场景并不多，更多的还是将 Lua 代码嵌入到高级语言程序中去，同时 Lua 也会调用高级程序语言的一些库，也就是 <strong>Lua 和 C 相互调用</strong>。比如在使用 cocos2dx 引擎实现的游戏中，游戏引擎使用 C++ 实现，游戏逻辑使用 Lua 实现，然后引擎执行 Lua 代码(C++调用Lua)，而 Lua 代码又会使用到引擎库的功能(Lua调用C++)。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">cocos2dx引擎 --&gt; |执行| game[游戏逻辑]</span><br><span class="line">game --&gt; |调用| cocos2dx库</span><br><span class="line">C++程序 --&gt; |执行| lua[Lua代码]</span><br><span class="line">lua --&gt; |调用| C++库</span><br></pre></td></tr></table></figure>
+<pre class="mermaid">graph LR
+cocos2dx引擎 --> |执行| game[游戏逻辑]
+game --> |调用| cocos2dx库
+C++程序 --> |执行| lua[Lua代码]
+lua --> |调用| C++库</pre>
+
 <h1 id="C-调-Lua"><a href="#C-调-Lua" class="headerlink" title="C 调 Lua"></a>C 调 Lua</h1><p>Lua 源码是用 C 语言写的，可以把 Lua 源码看成是一个 C 语言库，C 程序只要包含了这个库，就具备了与 Lua 交互的条件。C 程序通过 C API 创建 Lua 执行环境、执行 Lua 代码、访问 Lua 变量和函数。</p>
 <h2 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h2><p>首先，C 程序会创建一个 Lua 执行环境 <code>lua_State</code>，这个执行环境会维护一个栈，所有的 Lua&amp;C 交互都基于这个栈。</p>
 <p>栈的索引有两种，栈底为 1，然后往栈顶递增，栈顶索引未知，即从栈底到栈顶索引为 1,2,3,…；栈顶为 -1，然后往栈底递减，栈底索引未知，即从栈顶到栈底索引为 -1,-2,-3,…。</p>
@@ -666,7 +672,9 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
-              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="林锦新">
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="林锦新" />
             
               <p class="site-author-name" itemprop="name">林锦新</p>
               <p class="site-description motion-element" itemprop="description"></p>
@@ -679,7 +687,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -786,6 +794,14 @@
 
 
 
+
+
+  <script src='https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js'></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({theme: 'forest'});
+    }
+  </script>
 
         
 
