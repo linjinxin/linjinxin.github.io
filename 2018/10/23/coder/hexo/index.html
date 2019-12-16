@@ -123,7 +123,7 @@
 <meta property="og:image" content="http://linjinxin.com/image/coder/hexo/github_page_is_disabled.png">
 <meta property="og:image" content="http://linjinxin.com/image/coder/hexo/github_page_enable.png">
 <meta property="og:image" content="http://linjinxin.com/image/coder/hexo/hello-world.png">
-<meta property="og:updated_time" content="2019-12-14T11:52:11.066Z">
+<meta property="og:updated_time" content="2019-12-16T01:46:36.876Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用 Github + Hexo 搭建个人博客">
 <meta name="twitter:description" content="前言作为本站的第一篇文章，当然是介绍本站是如何搭建的啦！ 和网上大部分的教程一样，本站使用 Github Pages + Hexo + Next theme 搭建。其实并没有什么工作量，都是前人做好的工具，我们无非就是把工具放在一起罢了。 准备工作注册一个 github 账号为了让别人可以访问我们的网站，必须将我们的网站部署到服务器上而不是在本地；但我们并没有自己的服务器（大部分人），所以一种很实">
@@ -704,7 +704,7 @@
 </blockquote>
 <h2 id="显示流程图"><a href="#显示流程图" class="headerlink" title="显示流程图"></a>显示流程图</h2><p>通过安装插件 <code>hexo-filter-mermaid-diagrams</code> 来使我们的博客支持 mermaid 图显示。</p>
 <ol>
-<li>进入博客所有根目录，打开控制台，输入命令 <code>npm install hexo-filter-mermaid-diagrams</code>，如果没有错误会在 <code>node_modules</code> 目录下多出一个 <code>hexo-filter-mermaid-diagrams</code> 目录，表示安装插件成功了；</li>
+<li>进入博客所在根目录，打开控制台，输入命令 <code>npm install hexo-filter-mermaid-diagrams</code>，如果没有错误会在 <code>node_modules</code> 目录下多出一个 <code>hexo-filter-mermaid-diagrams</code> 目录，表示安装插件成功了；</li>
 <li>打开站点配置 <code>_config.yaml</code>，在最后添加下面代码，</li>
 </ol>
 <figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># mermaid chart</span></span><br><span class="line">mermaid: ## mermaid url https://github.com/knsv/mermaid</span><br><span class="line">  enable: true  # default true</span><br><span class="line">  version: "7.1.2" # default v7.1.2</span><br><span class="line">  options:  # find more api options from https://github.com/knsv/mermaid/blob/master/src/mermaidAPI.js</span><br><span class="line">  <span class="comment"># startOnload: true  // default true</span></span><br></pre></td></tr></table></figure>
