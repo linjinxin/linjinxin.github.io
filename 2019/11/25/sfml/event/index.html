@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Times New Roman:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="sfml,sfml 事件管理," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="**  事件SFML 的事件使用联合(union)实现，即所有类型的事件使用同一个数据类型，使用的时候先通过 event.type 拿到事件类型，再去拿相应的成员数据，去拿不属于当前事件类型的成员数据是非法的，通常会拿到一个随机值或非法值。事件由窗口的 pollEvent 或 waitEvent 生产，通常是在主循环中迭代处理每一个事件。下面是一个典型的事件循环， 123456789101112">
+<meta name="keywords" content="sfml,sfml 事件管理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【SFML】事件管理">
+<meta property="og:url" content="http://linjinxin.com/2019/11/25/sfml/event/index.html">
+<meta property="og:site_name" content="B.C. Studio">
+<meta property="og:description" content="**  事件SFML 的事件使用联合(union)实现，即所有类型的事件使用同一个数据类型，使用的时候先通过 event.type 拿到事件类型，再去拿相应的成员数据，去拿不属于当前事件类型的成员数据是非法的，通常会拿到一个随机值或非法值。事件由窗口的 pollEvent 或 waitEvent 生产，通常是在主循环中迭代处理每一个事件。下面是一个典型的事件循环， 123456789101112">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-12-21T11:01:25.211Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【SFML】事件管理">
+<meta name="twitter:description" content="**  事件SFML 的事件使用联合(union)实现，即所有类型的事件使用同一个数据类型，使用的时候先通过 event.type 拿到事件类型，再去拿相应的成员数据，去拿不属于当前事件类型的成员数据是非法的，通常会拿到一个随机值或非法值。事件由窗口的 pollEvent 或 waitEvent 生产，通常是在主循环中迭代处理每一个事件。下面是一个典型的事件循环， 123456789101112">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://linjinxin.com/2019/11/25/sfml/event/"/>
+
+
+
+
+
+  <title>【SFML】事件管理 | B.C. Studio</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">B.C. Studio</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">Learning the ocean without boundaries</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linjinxin.com/2019/11/25/sfml/event/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="林锦新">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="B.C. Studio">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">【SFML】事件管理</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-25T15:19:43+08:00">
+                2019-11-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SFML/" itemprop="url" rel="index">
+                    <span itemprop="name">SFML</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/11/25/sfml/event/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/11/25/sfml/event/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>**</p>
+</blockquote>
+<h1 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h1><p>SFML 的事件使用联合(union)实现，即所有类型的事件使用同一个数据类型，使用的时候先通过 <code>event.type</code> 拿到事件类型，再去拿相应的成员数据，去拿不属于当前事件类型的成员数据是非法的，通常会拿到一个随机值或非法值。事件由窗口的 <code>pollEvent</code> 或 <code>waitEvent</code> 生产，通常是在主循环中迭代处理每一个事件。下面是一个典型的事件循环，</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dealEvent</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    sf::Event evt;</span><br><span class="line">    <span class="keyword">while</span> (window.pollEvent(evt))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">switch</span> (evt.type)</span><br><span class="line">        &#123;</span><br><span class="line">        <span class="keyword">case</span> sf::Event::Closed:</span><br><span class="line">            window.close();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> sf::Event::Resized:</span><br><span class="line">            window.display();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> sf::Event::KeyPressed:</span><br><span class="line">            <span class="comment">//...</span></span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="comment">//...</span></span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="窗口关闭事件"><a href="#窗口关闭事件" class="headerlink" title="窗口关闭事件"></a>窗口关闭事件</h1><p>当用户关闭窗口时，窗口关闭事件 <code>sf::Event:Closed</code> 会触发，比如点击关闭按钮，按下键盘快捷键等；这时候只是收到一个关闭请求，窗口并没有真正关闭，要在监听到关闭事件的时候手动调用 <code>window.close()</code> 才能关闭窗口。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (event.type == sf::Event::Closed)</span><br><span class="line">    window.close();</span><br></pre></td></tr></table></figure>
+<h1 id="调整大小事件"><a href="#调整大小事件" class="headerlink" title="调整大小事件"></a>调整大小事件</h1><p>当窗口大小改变时，调整大小事件 <code>sf::Event:Resized</code> 会触发，无论是用户手动去调整窗口大小或者程序通过接口 <code>window.setSize()</code> 来调整大小。这个事件通常用于调整渲染设置，比如 OpenGL 的渲染视口大小或者 SFML 图形的显示视图，即使窗口没什么显示的，也能调用 <code>window.display()</code> 来刷新视图。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (event.type == sf::Event::Resized)</span><br><span class="line">&#123;</span><br><span class="line">    glViewport(<span class="number">0</span>, <span class="number">0</span>, evt.size.width, evt.size.height);</span><br><span class="line">    window.display();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="获得-失去焦点事件"><a href="#获得-失去焦点事件" class="headerlink" title="获得/失去焦点事件"></a>获得/失去焦点事件</h1><p>当窗口获得焦点时会触发事件 <code>sf::Event::GainFocus</code>，失去焦点时会触发事件 <code>sf::Event::LostFocus</code>，这两个事件没有额外的数据，通常用于做一些暂停/恢复操作。当用户切换到其它窗口时，当前窗口会失去焦点，切换回当前窗口时会获得焦点，失去焦点的窗口将不再监听键盘事件。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (event.type == sf::Event::LostFocus)</span><br><span class="line">    myGame.pause();</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (event.type == sf::Event::GainedFocus)</span><br><span class="line">    myGame.resume();</span><br></pre></td></tr></table></figure>
+<p>有个特别的点，监听到失去焦点事件时，如果对窗口做一些操作，比如设置窗口大小，则窗口会立即重新获得焦点，相当于使用代码来自动激活窗口。</p>
+<h1 id="字符输入事件"><a href="#字符输入事件" class="headerlink" title="字符输入事件"></a>字符输入事件</h1><p>注意把这个事件和键盘事件区分开，<code>sf::Event::TextEntered</code> 不关心键盘操作，只关心键盘操作的结果，即最后产生的字符。特别是同时按下多个键的情况，比如同时按下 <code>shift+1</code>，键盘事件会产生两个 <code>KeyPressed</code> 事件，但只会产生一个 <code>TextEntered</code>，输入的结果为 <code>!</code>。这个事件能接收键盘输入的任意字符，不仅限于 ASCII 字符，所以其事件数据为一个 <code>Unicode</code> 码，如果其值小于 128，可将其转成 ASCII 字符。另外，输入不可打印的字符也会触发字符输入事件，比如在键盘上敲退格，会产生一个 <code>TextEntered</code> 事件，其数据为 <code>evt.text.unicode==8</code>，但无法转成可打印字符。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (evt.type == sf::Event::TextEntered)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; evt.text.unicode &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">if</span> (evt.text.unicode &lt; <span class="number">128</span>)</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="keyword">static_cast</span>&lt;<span class="keyword">char</span>&gt;(evt.text.unicode) &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="键盘"><a href="#键盘" class="headerlink" title="键盘"></a>键盘</h1><h2 id="键盘按下事件"><a href="#键盘按下事件" class="headerlink" title="键盘按下事件"></a>键盘按下事件</h2><p>当键盘按下一个键时，会触发键盘按下事件 <code>KeyPressed</code>，产生一个 <code>code</code>，用于标识按下的是哪个键。要注意区分这个 <code>code</code> 和字符输入事件的 <code>unicode</code>，<code>evt.key.code</code> 在 <code>sf::Keyboard::Key</code> 中定义，而 <code>evt.text.unicode</code> 是产生的字符对应的 unicode 码；键盘事件不区分大小写字母，而字符输入事件会区分大写字母和小写字母，比如分别按下键盘的 a 键和 A 键，键盘事件都只会产生 <code>code==0</code>，而字符输入事件分别会产生 <code>unicode==97</code> 和 <code>unicode==65</code>。</p>
+<p>如果按下一个键不放，会按照系统默认延迟不断地产生 <code>KeyPressed</code> 事件，如果只想产生一次，可以设置 <code>window.setKeyRepeatEnabled(false)</code>。</p>
+<p>键盘按下时可以检测修饰键(ctrl, alt, shift, system)是否有按下，如果有按下 ctrl 键 <code>evt.key.ctrl==1</code>，反之 <code>evt.key.ctrl==0</code>，注意这四个键按下时也会触发 <code>KeyPressed</code> 事件，即使我们常说同时按下多个键，但事实上手速再快也会有先后顺序。如果我们同时按下 <code>ctrl+alt+shift+system+a</code> 键，按照按下的顺序会产生五次 <code>KeyPressed</code> 事件，假设按下顺序为 <code>ctrl--&gt;shift--&gt;alt--&gt;system--&gt;a</code>，则五次事件的 code 分别为 37,38,39,40,0。</p>
+<p>另外，一些功能键可能会被系统拦截，导致 SFML 程序无法正常处理其按键事件，这是个 bug，后续版本应该会修复。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">window.setKeyRepeatEnabled(<span class="literal">false</span>);</span><br><span class="line"><span class="keyword">if</span> (evt.type == sf::Event::KeyPressed)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; evt.key.code &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; evt.key.control &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; evt.key.alt &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; evt.key.shift &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; evt.key.system &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="键盘松开事件"><a href="#键盘松开事件" class="headerlink" title="键盘松开事件"></a>键盘松开事件</h2><p>当松开一个键时，键盘松开事件 <code>KeyReleased</code> 会触发，其数据和键盘按下事件完全一样，有一个标识哪个键的 <code>code</code> 以及检测四个修饰键是否按下。很明显，不同于按下事件，同一个键是不可能会重复产生松开事件的。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (evt.type == sf::Event::Released)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; evt.key.code &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; evt.key.control &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; evt.key.alt &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; evt.key.shift &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; evt.key.system &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="键盘状态类"><a href="#键盘状态类" class="headerlink" title="键盘状态类"></a>键盘状态类</h2><p>如何访问全局输入设备：键盘？<code>sf::Keyboard</code> 提供访问全局键盘状态的方法，这个类只提供一个静态方法 <code>isKeyPressed</code>，检查某个键是否处理按下状态。</p>
+<p>长按某个键的时候，键盘按下事件虽然可以重复触发，但其触发间隔是由系统决定的，如果用键盘按下事件来实现不断移动，则移动过程是不平滑的。要实现平滑移动，一个做法是将键盘按下重复给关了，然后在键按下的时候设置一个标志，在键松开的时候取消标志，然后以自定义的间隔（比如主循环）中检查这个标志，如果是标志为按下则移动。而另一种更方便的做法就是使用键盘类的 <code>isKeyPressed</code> 接口。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))</span><br><span class="line">&#123;</span><br><span class="line">    character.move(<span class="number">1.f</span>, <span class="number">0.f</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="鼠标"><a href="#鼠标" class="headerlink" title="鼠标"></a>鼠标</h1><h2 id="鼠标按下事件"><a href="#鼠标按下事件" class="headerlink" title="鼠标按下事件"></a>鼠标按下事件</h2><p>SFML 支持鼠标的五个按钮：左键、右键、中键（滚轮）以及两个侧边按钮。<br>鼠标按钮按下事件 <code>MouseButtonPressed</code> 关联的成员是 <code>mouseButton</code>，包含三个数据，<code>button</code> 标识按下的是哪个按钮，在 <code>sf::Mouse::Button</code> 中定义，<code>x, y</code> 分别表示当前鼠标的位置，这个位置是相对窗口原点的，也就是相对于窗口左上角。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (event.type == sf::Event::MouseButtonPressed)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (event.mouseButton.button == sf::Mouse::Right)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"the right button was pressed"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"mouse x: "</span> &lt;&lt; event.mouseButton.x &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"mouse y: "</span> &lt;&lt; event.mouseButton.y &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="鼠标松开事件"><a href="#鼠标松开事件" class="headerlink" title="鼠标松开事件"></a>鼠标松开事件</h2><p>鼠标按钮松开事件 <code>MouseButtonReleased</code> 关联的成员是 <code>mouseButton</code>，同鼠标按钮按下事件。</p>
+<h2 id="鼠标进入事件"><a href="#鼠标进入事件" class="headerlink" title="鼠标进入事件"></a>鼠标进入事件</h2><p>当鼠标从窗口外移入窗口内时，鼠标进入事件 <code>MouseEntered</code> 触发，这个事件没有关联数据。有两点要注意的，一是进入窗口的内部区域才算进入窗口，也就是说标题栏和边框不算；二是即使窗口当前失去焦点，这个事件也能够正常触发。</p>
+<h2 id="鼠标离开事件"><a href="#鼠标离开事件" class="headerlink" title="鼠标离开事件"></a>鼠标离开事件</h2><p>当鼠标从窗口内部移出时，鼠标离开事件 <code>MouseLeft</code> 触发。同鼠标进入事件。</p>
+<h2 id="鼠标移动事件"><a href="#鼠标移动事件" class="headerlink" title="鼠标移动事件"></a>鼠标移动事件</h2><p>当鼠标在窗口内部移动时，鼠标移动事件 <code>MouseMoved</code> 触发，关联的成员是 <code>mouseMove</code>，包含两个数据，<code>x, y</code> 分别表示当前鼠标相对于窗口原点的位置。 同鼠标进入事件、鼠标离开事件一样，鼠标移动事件在窗口失焦的情况下也能触发，且只有在窗口内部区域移动时才触发，标题栏和边框不算。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (event.type == sf::Event::MouseMoved)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"new mouse x: "</span> &lt;&lt; event.mouseMove.x &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"new mouse y: "</span> &lt;&lt; event.mouseMove.y &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="鼠标滚动事件"><a href="#鼠标滚动事件" class="headerlink" title="鼠标滚动事件"></a>鼠标滚动事件</h2><p>当鼠标滚轮滚动时，鼠标滚动事件 <code>MouseWheelScrolled</code> 触发，关联的成员是 <code>mouseWheelScroll</code>，包括 4 个数据。<code>wheel</code> 表示滚轮滚动的方向，在 <code>sf::Mouse::Wheel</code> 中定义，包括水平滚动和垂直滚动，虽然我们平常用到的鼠标都是垂直滚动，但确实有滚轮水平滚动的鼠标。<code>delta</code> 是滚动的距离，滚轮向后滚是负值，向前滚是正值，一般是 <code>-1</code> 和 <code>1</code>。<code>x, y</code> 还是鼠标当前的位置。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (event.type == sf::Event::MouseWheelScrolled)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (event.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel)</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"wheel type: vertical"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (event.mouseWheelScroll.wheel == sf::Mouse::HorizontalWheel)</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"wheel type: horizontal"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"wheel type: unknown"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"wheel movement: "</span> &lt;&lt; event.mouseWheelScroll.delta &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"mouse x: "</span> &lt;&lt; event.mouseWheelScroll.x &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"mouse y: "</span> &lt;&lt; event.mouseWheelScroll.y &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="鼠标状态类"><a href="#鼠标状态类" class="headerlink" title="鼠标状态类"></a>鼠标状态类</h2><p>如何访问全局输入设备：鼠标？同键盘一样，SFML 提供一个类 <code>sf::Mouse</code>，用于访问全局鼠标状态，这个类提供三个静态方法：</p>
+<ul>
+<li><code>isButtonPressed</code> 用于检测鼠标某个按钮是否处于按下状态；</li>
+<li><code>getPosition</code> 获取鼠标位置，默认是相对于桌面的全局坐标，可以把窗口作为参数传入来获得相对于窗口的坐标；</li>
+<li><code>setPosition</code> 强制设置鼠标位置，设置之后会立即将鼠标光标移动到对应位置，同样默认是设置全局坐标，可以把窗口传入来设置相对于窗口的坐标。</li>
+<li>没有对应的方法来获取鼠标滚轮的状态，因为滚轮的操作都是相对的，鼠标按钮有是否按下状态，键盘有是否按下状态，鼠标自身有位置，唯独鼠标滚轮没有全局状态。注意，这里说的滚轮状态是指滚轮的滚动状态，滚轮本身也是个按钮，有是否按下状态的，归于鼠标按钮是否按下状态 <code>isButtonPressed</code>。</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (sf::Mouse::isButtonPressed(sf::Mouse::Left))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// left mouse button is pressed: shoot</span></span><br><span class="line">    gun.fire();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// get the global mouse position (relative to the desktop)</span></span><br><span class="line">sf::Vector2i globalPosition = sf::Mouse::getPosition();</span><br><span class="line"><span class="comment">// get the local mouse position (relative to a window)</span></span><br><span class="line">sf::Vector2i localPosition = sf::Mouse::getPosition(window); <span class="comment">// window is a sf::Window</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// set the mouse position globally (relative to the desktop)</span></span><br><span class="line">sf::Mouse::setPosition(sf::Vector2i(<span class="number">10</span>, <span class="number">50</span>));</span><br><span class="line"><span class="comment">// set the mouse position locally (relative to a window)</span></span><br><span class="line">sf::Mouse::setPosition(sf::Vector2i(<span class="number">10</span>, <span class="number">50</span>), window); <span class="comment">// window is a sf::Window</span></span><br></pre></td></tr></table></figure>
+<h1 id="游戏杆"><a href="#游戏杆" class="headerlink" title="游戏杆"></a>游戏杆</h1><p>SFML 支持多个游戏杆，这对于多人对战的单机游戏十分实用，最多支持 8 个游戏杆和 32 个按钮，每个游戏杆会分配到一个 id，用于唯一标识这个游戏杆，这个唯一 id 其实就是其编号，即 0-7，每个按钮也有编号，这个编号是全局的，即所有游戏杆的所有按钮放在一起编号，取值 0-31。</p>
+<h2 id="游戏杆连接事件"><a href="#游戏杆连接事件" class="headerlink" title="游戏杆连接事件"></a>游戏杆连接事件</h2><p>当游戏杆成功连接后，事件 <code>JoystickConnected</code> 触发，关联的成员为 <code>joystickConnect</code>，只有一个数据 <code>joystickId</code>，即给这个游戏杆分配的 id。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (event.type == sf::Event::JoystickConnected)</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"joystick connected: "</span> &lt;&lt; event.joystickConnect.joystickId &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="游戏杆断开连接事件"><a href="#游戏杆断开连接事件" class="headerlink" title="游戏杆断开连接事件"></a>游戏杆断开连接事件</h2><p>当游戏杆断开连接后，事件 <code>JoystickDisconnected</code> 触发，关联的成员为 <code>joystickConnect</code>，只有一个数据 <code>joystickId</code>，即给这个游戏杆分配的 id。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (event.type == sf::Event::JoystickDisconnected)</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"joystick disconnected: "</span> &lt;&lt; event.joystickConnect.joystickId &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="游戏杆按钮按下事件"><a href="#游戏杆按钮按下事件" class="headerlink" title="游戏杆按钮按下事件"></a>游戏杆按钮按下事件</h2><p>当游戏杆按钮按下时，事件 <code>JoystickButtonPressed</code> 会触发，关联的成员为 <code>joystickButton</code>，包含两个数据，<code>joystickId</code> 是游戏杆的编号，<code>button</code> 是按钮的编号。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (event.type == sf::Event::JoystickButtonPressed)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"joystick button pressed!"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"joystick id: "</span> &lt;&lt; event.joystickButton.joystickId &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"button: "</span> &lt;&lt; event.joystickButton.button &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="游戏杆按钮松开事件"><a href="#游戏杆按钮松开事件" class="headerlink" title="游戏杆按钮松开事件"></a>游戏杆按钮松开事件</h2><p>当游戏杆按钮松开时，事件 <code>JoystickButtonReleased</code> 触发，关联的成员为 <code>joystickButton</code>，同按下事件。</p>
+<h2 id="游戏杆操纵轴移动事件"><a href="#游戏杆操纵轴移动事件" class="headerlink" title="游戏杆操纵轴移动事件"></a>游戏杆操纵轴移动事件</h2><p>SFML 支持 8 个游戏杆操纵轴，<code>X, Y, Z, R, U, V, POV X, POV Y</code>，这些轴如何和游戏杆映射取决于它的驱动程序。</p>
+<p>当操作杆移动时，事件 <code>JoystickMoved</code> 触发，关联的成员为 <code>joystickMove</code>，包含三个数据，<code>joystickId</code> 游戏杆唯一标识，<code>axis</code> 是当前操纵的轴，在 <code>sf::Joystick::Axis</code> 中定义，<code>position</code> 是当前操纵杆轴的位置，其取值范围为 <code>[-100, 100]</code>。</p>
+<p>操纵杆轴通常非常敏感，所以 SFML 设置了一个阈值避免大量的 <code>JoystickMoved</code> 事件发向事件循环，小于这个阈值时将不产生 <code>JoystickMoved</code> 事件。可以通过 <code>setJoystickThreshold</code> 来调整这个阈值，默认是 0.1，可设置范围为 <code>[0, 100]</code>，阈值越大，操纵杆越不灵敏，产生的事件越少。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">window.setJoystickThreshold(<span class="number">0.1</span>);</span><br><span class="line"><span class="keyword">if</span> (event.type == sf::Event::JoystickMoved)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (event.joystickMove.axis == sf::Joystick::X)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"X axis moved!"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"joystick id: "</span> &lt;&lt; event.joystickMove.joystickId &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"new position: "</span> &lt;&lt; event.joystickMove.position &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="游戏杆状态类"><a href="#游戏杆状态类" class="headerlink" title="游戏杆状态类"></a>游戏杆状态类</h2><p>如何访问全局输入设备：游戏杆？同鼠标键盘一样，SFML 提供一个类 <code>sf::Joystick</code>，用于访问全局游戏杆状态，这个类提供三个静态方法：</p>
+<ul>
+<li><code>isConnected</code> 检查某个游戏杆有没有连接；</li>
+<li><code>getButtonCount</code> 获取某个游戏杆的按钮数；</li>
+<li><code>hasAxis</code> 检查某个游戏杆是否有某个轴；</li>
+<li><code>getAxisPosition</code> 获取某个游戏杆的某个轴的位置；</li>
+<li><code>isButtonPressed</code> 检查某个按钮是否按下。</li>
+</ul>
+<p>要注意的是，按钮是独立于游戏杆编号的，所以检查按钮的时候不需要传入游戏杆编号，而操纵轴是依赖于具体的游戏杆的，所以检查操纵轴的时候需要传入游戏杆编号。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (sf::Joystick::isConnected(<span class="number">0</span>))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// joystick number 0 is connected</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// check how many buttons joystick number 0 has</span></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> buttonCount = sf::Joystick::getButtonCount(<span class="number">0</span>);</span><br><span class="line"><span class="comment">// check if joystick number 0 has a Z axis</span></span><br><span class="line"><span class="keyword">bool</span> hasZ = sf::Joystick::hasAxis(<span class="number">0</span>, sf::Joystick::Z);</span><br><span class="line"></span><br><span class="line"><span class="comment">// is button 1 of joystick number 0 pressed?</span></span><br><span class="line"><span class="keyword">if</span> (sf::Joystick::isButtonPressed(<span class="number">0</span>, <span class="number">1</span>))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// yes: shoot!</span></span><br><span class="line">    gun.fire();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// what's the current position of the X and Y axes of joystick number 0?</span></span><br><span class="line"><span class="keyword">float</span> x = sf::Joystick::getAxisPosition(<span class="number">0</span>, sf::Joystick::X);</span><br><span class="line"><span class="keyword">float</span> y = sf::Joystick::getAxisPosition(<span class="number">0</span>, sf::Joystick::Y);</span><br><span class="line">character.move(x, y);</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/sfml/" rel="tag"># sfml</a>
+          
+            <a href="/tags/sfml-事件管理/" rel="tag"># sfml 事件管理</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/11/23/sfml/window/" rel="next" title="【SFML】窗口管理">
+                <i class="fa fa-chevron-left"></i> 【SFML】窗口管理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/11/25/python/type/" rel="prev" title="【Python】数据类型">
+                【Python】数据类型 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="林锦新" />
+            
+              <p class="site-author-name" itemprop="name">林锦新</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/linjinxin" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#事件"><span class="nav-number">1.</span> <span class="nav-text">事件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#窗口关闭事件"><span class="nav-number">2.</span> <span class="nav-text">窗口关闭事件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#调整大小事件"><span class="nav-number">3.</span> <span class="nav-text">调整大小事件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#获得-失去焦点事件"><span class="nav-number">4.</span> <span class="nav-text">获得/失去焦点事件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#字符输入事件"><span class="nav-number">5.</span> <span class="nav-text">字符输入事件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#键盘"><span class="nav-number">6.</span> <span class="nav-text">键盘</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#键盘按下事件"><span class="nav-number">6.1.</span> <span class="nav-text">键盘按下事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#键盘松开事件"><span class="nav-number">6.2.</span> <span class="nav-text">键盘松开事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#键盘状态类"><span class="nav-number">6.3.</span> <span class="nav-text">键盘状态类</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#鼠标"><span class="nav-number">7.</span> <span class="nav-text">鼠标</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#鼠标按下事件"><span class="nav-number">7.1.</span> <span class="nav-text">鼠标按下事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#鼠标松开事件"><span class="nav-number">7.2.</span> <span class="nav-text">鼠标松开事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#鼠标进入事件"><span class="nav-number">7.3.</span> <span class="nav-text">鼠标进入事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#鼠标离开事件"><span class="nav-number">7.4.</span> <span class="nav-text">鼠标离开事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#鼠标移动事件"><span class="nav-number">7.5.</span> <span class="nav-text">鼠标移动事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#鼠标滚动事件"><span class="nav-number">7.6.</span> <span class="nav-text">鼠标滚动事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#鼠标状态类"><span class="nav-number">7.7.</span> <span class="nav-text">鼠标状态类</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#游戏杆"><span class="nav-number">8.</span> <span class="nav-text">游戏杆</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#游戏杆连接事件"><span class="nav-number">8.1.</span> <span class="nav-text">游戏杆连接事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#游戏杆断开连接事件"><span class="nav-number">8.2.</span> <span class="nav-text">游戏杆断开连接事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#游戏杆按钮按下事件"><span class="nav-number">8.3.</span> <span class="nav-text">游戏杆按钮按下事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#游戏杆按钮松开事件"><span class="nav-number">8.4.</span> <span class="nav-text">游戏杆按钮松开事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#游戏杆操纵轴移动事件"><span class="nav-number">8.5.</span> <span class="nav-text">游戏杆操纵轴移动事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#游戏杆状态类"><span class="nav-number">8.6.</span> <span class="nav-text">游戏杆状态类</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">林锦新</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+
+  <script src='https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js'></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({theme: 'forest'});
+    }
+  </script>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://ljx.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://linjinxin.com/2019/11/25/sfml/event/';
+          this.page.identifier = '2019/11/25/sfml/event/';
+          this.page.title = '【SFML】事件管理';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://ljx.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
