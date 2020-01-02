@@ -111,18 +111,18 @@
 
 
 
-<meta name="description" content="**  简介SFML 的全称是 Simple and Fast Multimedia Library，即简单快速的多媒体库，顾名思义就是一个用于开发多媒体应用的库，包含 系统、窗口、图形、音频、网络 五个模块。SFML 为 PC 各个组件提供简单的接口，简化游戏及多媒体应用的开发，目前适用于 PC 的多个平台，包括 Windows，Linux，MacOS，未来可能会拓展到 Android 和 I">
+<meta name="description" content="SFML 是一个使用 C++ 编写的多媒体库，包括系统、窗口、图形、音频、网络五个模块，适用于 Windows, Linux, MacOS 等主流 PC 平台，未来还可能扩展到手机平台。SFML 用于快速构建 PC 窗口程序，很适合于开发游戏及多媒体应用，同时它本身也是一个 OpenGL 工具库，可以直接应用于 OpenGL 程序的窗口管理。">
 <meta name="keywords" content="sfml,sfml 窗口管理">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【SFML】窗口管理">
 <meta property="og:url" content="http://linjinxin.com/2019/11/23/sfml/window/index.html">
 <meta property="og:site_name" content="B.C. Studio">
-<meta property="og:description" content="**  简介SFML 的全称是 Simple and Fast Multimedia Library，即简单快速的多媒体库，顾名思义就是一个用于开发多媒体应用的库，包含 系统、窗口、图形、音频、网络 五个模块。SFML 为 PC 各个组件提供简单的接口，简化游戏及多媒体应用的开发，目前适用于 PC 的多个平台，包括 Windows，Linux，MacOS，未来可能会拓展到 Android 和 I">
+<meta property="og:description" content="SFML 是一个使用 C++ 编写的多媒体库，包括系统、窗口、图形、音频、网络五个模块，适用于 Windows, Linux, MacOS 等主流 PC 平台，未来还可能扩展到手机平台。SFML 用于快速构建 PC 窗口程序，很适合于开发游戏及多媒体应用，同时它本身也是一个 OpenGL 工具库，可以直接应用于 OpenGL 程序的窗口管理。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-12-07T09:47:25.665Z">
+<meta property="og:updated_time" content="2020-01-02T04:22:33.141Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【SFML】窗口管理">
-<meta name="twitter:description" content="**  简介SFML 的全称是 Simple and Fast Multimedia Library，即简单快速的多媒体库，顾名思义就是一个用于开发多媒体应用的库，包含 系统、窗口、图形、音频、网络 五个模块。SFML 为 PC 各个组件提供简单的接口，简化游戏及多媒体应用的开发，目前适用于 PC 的多个平台，包括 Windows，Linux，MacOS，未来可能会拓展到 Android 和 I">
+<meta name="twitter:description" content="SFML 是一个使用 C++ 编写的多媒体库，包括系统、窗口、图形、音频、网络五个模块，适用于 Windows, Linux, MacOS 等主流 PC 平台，未来还可能扩展到手机平台。SFML 用于快速构建 PC 窗口程序，很适合于开发游戏及多媒体应用，同时它本身也是一个 OpenGL 工具库，可以直接应用于 OpenGL 程序的窗口管理。">
 
 
 
@@ -405,8 +405,9 @@
       
 
       
-        <blockquote>
-<p>**</p>
+        <p>SFML 是一个使用 C++ 编写的多媒体库，包括系统、窗口、图形、音频、网络五个模块，适用于 Windows, Linux, MacOS 等主流 PC 平台，未来还可能扩展到手机平台。SFML 用于快速构建 PC 窗口程序，很适合于开发游戏及多媒体应用，同时它本身也是一个 OpenGL 工具库，可以直接应用于 OpenGL 程序的窗口管理。</p>
+<a id="more"></a>
+<blockquote>
 </blockquote>
 <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>SFML 的全称是 <code>Simple and Fast Multimedia Library</code>，即简单快速的多媒体库，顾名思义就是一个用于开发多媒体应用的库，包含 <strong>系统、窗口、图形、音频、网络</strong> 五个模块。SFML 为 PC 各个组件提供简单的接口，简化游戏及多媒体应用的开发，目前适用于 PC 的多个平台，包括 Windows，Linux，MacOS，未来可能会拓展到 Android 和 IOS，SFML 是使用 C++ 编写的库，同时官方也绑定了 C，Java，Pyhton，.Net，Go 等多种语言。另外，SFML 内嵌了 OpenGL 模块，很容易用来开发 OpenGL 程序，OpenGL 只是一个底层的图形库，本身没有窗口管理模块，所以需要借助第三方库，常用的库有 <code>glut(freeglut), glfw, qt, sfml</code>，而 SFML 除了窗口管理，还有系统图形、音频、网络模块，具备了一个完整多媒体应用所需的各个模块，无疑是一个比较好的选择，当然 QT 也是。</p>
 <p>SFML 官网地址：<a href="https://www.sfml-dev.org，" target="_blank" rel="noopener">https://www.sfml-dev.org，</a> 官方有各个操作系统和各个版本的下载地址，以及 github 源码，以及清晰明了的 API 文档和教程。</p>
@@ -420,7 +421,7 @@
 <li><code>sfml-network.lib</code>：网络库，依赖于 <code>sfml-system.lib</code>。</li>
 </ul>
 <p>和 Windows 上的其它库一样，这五个库都区分 32 位和 64 位，debug 版本和 release 版本，动态库和静态库，以系统库为例，32 位版本和 64 位版本各有 <code>sfml-system.lib, sfml-system-d.lib, sfml-system-s.lib, sfml-system-s-d.lib</code> 这 4 个 lib 文件，另外还有 <code>sfml-system.dll, sfml-system-d.dll</code> 这 2 个 dll 文件，所以一个库就有 (4 + 2) * 2 = 12 个文件，5 个库就是 60 个文件，emm，是有点多。</p>
-<p>可以看到所有库都依赖于系统库，图形库额外还要依赖于窗口库；如果只是想利用 SFML 来创建和管理窗口，则引用 <code>sfml-system, sfml-window</code> 这两个库，如果要使用其内置接口来绘制图形，则再加个 <code>sfml-graphics</code> 库；如果只是单纯的播放音频，则引入 <code>sfml-system, sfml-audio</code> 这两个库，只是单纯是使用网络功能，则引入 <code>sfml-system, sfml-network</code> 这两个库，当然如果使用音频或网络的时候是个 GUI 应用（非控制台应用），那 <code>sfml-window</code> 也是必不可少的。当然除了这五个库，还有其它基础库需要引入，<code>gdi32.lib, opengl32.lib, ogg.lib</code>，不过这些库 Visual Studio 都会自动帮我们引入，所以不用管，详细的可看官方文档 <a href="https://www.sfml-dev.org/tutorials/2.5/start-vc.php" target="_blank" rel="noopener">SFML and Visual Studio</a>，关于 Visual Studio 配置的详细内容，也可看我<a href="">这篇文章</a>。</p>
+<p>可以看到所有库都依赖于系统库，图形库额外还要依赖于窗口库；如果只是想利用 SFML 来创建和管理窗口，则引用 <code>sfml-system, sfml-window</code> 这两个库，如果要使用其内置接口来绘制图形，则再加个 <code>sfml-graphics</code> 库；如果只是单纯的播放音频，则引入 <code>sfml-system, sfml-audio</code> 这两个库，只是单纯是使用网络功能，则引入 <code>sfml-system, sfml-network</code> 这两个库，当然如果使用音频或网络的时候是个 GUI 应用（非控制台应用），那 <code>sfml-window</code> 也是必不可少的。当然除了这五个库，还有其它基础库需要引入，<code>gdi32.lib, opengl32.lib, ogg.lib</code>，不过这些库 Visual Studio 都会自动帮我们引入，所以不用管，详细的可看官方文档 <a href="https://www.sfml-dev.org/tutorials/2.5/start-vc.php" target="_blank" rel="noopener">SFML and Visual Studio</a>，关于 Visual Studio 配置的详细内容，也可看我<a href="/2019/09/10/coder/vs">这篇文章</a>。</p>
 <h1 id="创建窗口"><a href="#创建窗口" class="headerlink" title="创建窗口"></a>创建窗口</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;SFML/Window.hpp&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// sf::Window window(sf::VideoMode(800, 600), "My window");</span></span><br><span class="line"></span><br><span class="line">    sf:Window window;</span><br><span class="line">    window.create(sf::VideoMode(<span class="number">800</span>, <span class="number">600</span>), <span class="string">"My window"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>首先包含两个库 <code>sfml-system.lib</code> 和 <code>sfml-window.lib</code>，引入头文件 <code>&lt;sfml/window.hpp&gt;</code>。使用 <code>sf::Window</code> 类来创建一个窗口，有两种方式，一是在构造函数中直接传入参数，二是先创建一个无数据的对象，再调用 <code>create</code> 静态方法来初始化参数，二者的效果是一样的。窗口接收 4 个参数，</p>
 <ul>
@@ -602,7 +603,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -624,7 +625,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -687,7 +688,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

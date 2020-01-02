@@ -100,7 +100,7 @@
 
 
 
-  <meta name="keywords" content="OpenGL," />
+  <meta name="keywords" content="OpenGL,OpenGL 环境搭建,OpenGL 窗口管理,glut,freeglut," />
 
 
 
@@ -111,19 +111,19 @@
 
 
 
-<meta name="description" content="没有开始，就永远不会有结果。  使用 glutOpenGL 标准并没有提供用于创建和管理窗口的 api，各个主流操作系统都提供了支持 OpenGL 的接口，X 系统提供的接口叫做 GLX，Windows 提供的接口叫 WGL，Mac 系统提供的接口叫做 CGL。我们可以使用 OpenGL 的一个工具库 glut(opengl utility toolkit) 来管理窗口，处理事件，IO 控制和其">
-<meta name="keywords" content="OpenGL">
+<meta name="description" content="OpenGL 标准库没有提供用于创建窗口和管理窗口的 API，所以要借用其它工具来管理窗口。glut 是一个比较出名的 OpenGL 工具库，用于轻松创建窗口、处理事件、IO 控制和管理设备；可惜的是这个库很久远了，而且已经停止维护了，幸运的是有一个替代库 freeglut，其用法和 glut 基本一样。">
+<meta name="keywords" content="OpenGL,OpenGL 环境搭建,OpenGL 窗口管理,glut,freeglut">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【OpenGL】创建窗口（一）">
 <meta property="og:url" content="http://linjinxin.com/2019/09/10/opengl/window1/index.html">
 <meta property="og:site_name" content="B.C. Studio">
-<meta property="og:description" content="没有开始，就永远不会有结果。  使用 glutOpenGL 标准并没有提供用于创建和管理窗口的 api，各个主流操作系统都提供了支持 OpenGL 的接口，X 系统提供的接口叫做 GLX，Windows 提供的接口叫 WGL，Mac 系统提供的接口叫做 CGL。我们可以使用 OpenGL 的一个工具库 glut(opengl utility toolkit) 来管理窗口，处理事件，IO 控制和其">
+<meta property="og:description" content="OpenGL 标准库没有提供用于创建窗口和管理窗口的 API，所以要借用其它工具来管理窗口。glut 是一个比较出名的 OpenGL 工具库，用于轻松创建窗口、处理事件、IO 控制和管理设备；可惜的是这个库很久远了，而且已经停止维护了，幸运的是有一个替代库 freeglut，其用法和 glut 基本一样。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://linjinxin.com/image/opengl/window1/win.png">
-<meta property="og:updated_time" content="2019-12-07T09:47:25.665Z">
+<meta property="og:updated_time" content="2019-12-28T09:40:31.145Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【OpenGL】创建窗口（一）">
-<meta name="twitter:description" content="没有开始，就永远不会有结果。  使用 glutOpenGL 标准并没有提供用于创建和管理窗口的 api，各个主流操作系统都提供了支持 OpenGL 的接口，X 系统提供的接口叫做 GLX，Windows 提供的接口叫 WGL，Mac 系统提供的接口叫做 CGL。我们可以使用 OpenGL 的一个工具库 glut(opengl utility toolkit) 来管理窗口，处理事件，IO 控制和其">
+<meta name="twitter:description" content="OpenGL 标准库没有提供用于创建窗口和管理窗口的 API，所以要借用其它工具来管理窗口。glut 是一个比较出名的 OpenGL 工具库，用于轻松创建窗口、处理事件、IO 控制和管理设备；可惜的是这个库很久远了，而且已经停止维护了，幸运的是有一个替代库 freeglut，其用法和 glut 基本一样。">
 <meta name="twitter:image" content="http://linjinxin.com/image/opengl/window1/win.png">
 
 
@@ -407,11 +407,14 @@
       
 
       
-        <blockquote>
-<p><em>没有开始，就永远不会有结果。</em></p>
+        <p>OpenGL 标准库没有提供用于创建窗口和管理窗口的 API，所以要借用其它工具来管理窗口。glut 是一个比较出名的 OpenGL 工具库，用于轻松创建窗口、处理事件、IO 控制和管理设备；可惜的是这个库很久远了，而且已经停止维护了，幸运的是有一个替代库 freeglut，其用法和 glut 基本一样。</p>
+<a id="more"></a>
+<blockquote>
+<p>没有开始，就永远不会有结果。</p>
 </blockquote>
-<h1 id="使用-glut"><a href="#使用-glut" class="headerlink" title="使用 glut"></a>使用 glut</h1><p>OpenGL 标准并没有提供用于创建和管理窗口的 api，各个主流操作系统都提供了支持 OpenGL 的接口，X 系统提供的接口叫做 <code>GLX</code>，Windows 提供的接口叫 <code>WGL</code>，Mac 系统提供的接口叫做 <code>CGL</code>。我们可以使用 OpenGL 的一个工具库 <code>glut</code>(opengl utility toolkit) 来管理窗口，处理事件，IO 控制和其它设备管理。  </p>
-<p>glut 库比较久远，也已经停止维护了，可使用较新替代库 <code>freeglut</code>，两者的接口差不多，<a href="http://www.opengl.org/resources/libraries/glut/glutdlls37beta.zip" target="_blank" rel="noopener">下载 glut</a>，<a href="https://sourceforge.net/projects/freeglut/files/latest/download" target="_blank" rel="noopener">下载 freeglut</a>。下载之后得到五个文件，分别是头文件 <code>glut.h</code>，32 位动态链接库 <code>glut32.lib glut32.dll</code>，64 位动态链接库 <code>glut.lib, glut.dll</code>。接下来就是配置环境变量了，我使用的环境是 <code>Windows + Visual Studio</code>。</p>
+<h1 id="使用-glut"><a href="#使用-glut" class="headerlink" title="使用 glut"></a>使用 glut</h1><p>OpenGL 标准并没有提供用于创建和管理窗口的 api，各个主流操作系统都提供了支持 OpenGL 的接口，X 系统提供的接口叫做 <code>GLX</code>，Windows 提供的接口叫 <code>WGL</code>，Mac 系统提供的接口叫做 <code>CGL</code>。我们可以使用 OpenGL 的一个工具库 <strong>opengl utility toolkit</strong>，简称 <a href="http://www.opengl.org/resources/libraries/glut/glutdlls37beta.zip" target="_blank" rel="noopener">glut</a> 来管理窗口，处理事件，IO 控制和其它设备管理。</p>
+<p>glut 库比较久远，而已已经停止维护了，可使用较新的替代库 <a href="https://sourceforge.net/projects/freeglut/files/latest/download" target="_blank" rel="noopener">freeglut</a>，这两个库的使用方法基本一样。freeglut 下载得到的是源代码，要先使用 cmake 创建工程，然后自己进行编译。</p>
+<p>接下来就是配置环境变量了，我使用的环境是 <code>Windows + Visual Studio</code>，这里只介绍系统级的配置。</p>
 <ul>
 <li>第一步，把 <code>glut.h</code> 放在 Visual Studio 安装目录下的 <code>VC/include/gl</code> 目录中（默认如果没有 gl 文件夹，自己创建一个）;<blockquote>
 <p>基于 VS2012 版本，不同版本位置可能不一样，比如最新的 VS2019 在 <code>VC/Tools/MSVC/14.xxx/include/gl</code> 目录。</p>
@@ -420,15 +423,16 @@
 <li>第二步，把 <code>glut.lib glut32.lib</code> 放在 Visual Studio 安装目录下的 <code>VC/lib</code> 目录下；</li>
 <li>第三步，把 <code>glut.dll glut32.dll</code> 放在系统目录下。</li>
 </ul>
-<p>关于 VS 配置的详细内容，可参考 <a href="../../coder/vs">Visual Studio 环境配置</a>。</p>
-<h1 id="基础库"><a href="#基础库" class="headerlink" title="基础库"></a>基础库</h1><p>OpenGL 库有三个基础库，115 个以 <code>gl</code> 开头的函数组成的 OpenGL 核心库，43 个以 <code>glu</code> 开头的函数组成的 OpenGL 实用库，31 个以 <code>aux</code> 开头的函数组成的 OpenGL 辅助库。<br>另外在 Windows 平台下，有 6 个以 <code>wgl</code> 开头的函数是 Windows 专用库函数，还有 5 个无前缀的函数是 win32api 函数。OpenGL 核心库，实用库和辅助库，Windows 操作系统默认已经配置好了，所以这些函数都可以直接使用。我们下载的工具库函数都是以 <code>glut</code> 开头，平时最常用的函数就是核心库函数 (glFunc)，实用库函数 (gluFunc) 和工具库函数 (glutFunc)。</p>
+<p>关于 VS 配置的详细内容，可参考 <a href="/2019/09/10/coder/vs">Visual Studio 环境配置</a>。</p>
+<h1 id="基础库"><a href="#基础库" class="headerlink" title="基础库"></a>基础库</h1><p>OpenGL 主要由三个库组成，115 个以 <code>gl</code> 开头的函数组成的 OpenGL 核心库，43 个以 <code>glu</code> 开头的函数组成的 OpenGL 实用库，31 个以 <code>aux</code> 开头的函数组成的 OpenGL 辅助库。另外在 Windows 平台下，有 6 个以 <code>wgl</code> 开头的函数是 Windows 专用库函数，还有 5 个无前缀的函数是 win32api 函数。</p>
+<p>OpenGL 核心库，实用库和辅助库，一般 Windows 操作系统都是默认自带的，所以这些函数都可以直接使用。我们下载的工具库函数都是以 <code>glut</code> 开头，平时最常用的函数就是核心库函数 (glFunc)，实用库函数 (gluFunc) 和工具库函数 (glutFunc)。</p>
 <h1 id="第一个例子"><a href="#第一个例子" class="headerlink" title="第一个例子"></a>第一个例子</h1><p>新建一个 C++ 空项目，控制台或 win32 都行，然后添加一个 <code>main.c</code> 源文件。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;gl/glut.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">renderPreFrame</span><span class="params">()</span></span>;</span><br><span class="line">		</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>** argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	glutInit(&amp;argc, argv);</span><br><span class="line">	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);</span><br><span class="line"></span><br><span class="line">	glutInitWindowPosition(<span class="number">100</span>, <span class="number">100</span>);</span><br><span class="line">	glutInitWindowSize(<span class="number">400</span>, <span class="number">400</span>);</span><br><span class="line">	glutCreateWindow(<span class="string">"First Window"</span>);</span><br><span class="line"></span><br><span class="line">	glClearColor(<span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>);</span><br><span class="line">	glutDisplayFunc(renderPreFrame);</span><br><span class="line">	glutMainLoop();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">renderPreFrame</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	glClear(GL_COLOR_BUFFER_BIT);</span><br><span class="line">	glutSwapBuffers();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>运行之后可以看到一个 400x400 的黑窗口，在距离左上角 (100,100) 的位置。</p>
 <p><img src="/image/opengl/window1/win.png" alt="first window"></p>
 <h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><ul>
 <li><strong>glutInit</strong> 函数用于初始化 glut，其参数可以直接从命令行获取，从命令行启动程序可以带一些有用的参数，比如 <code>-sync</code> 可以关闭 X 异步性质，<code>-gldebug</code> 可以检查 gl 错误并独立地显示它们；</li>
-<li><strong>glutInitDisplayMode</strong> 配置 glut 选项，<code>GLUT_DOUBLE</code> 设置双缓冲，即一个缓冲绘制，一个缓冲显示，默认是单缓冲 <code>GLUT_SINGLE</code>；<code>GLUT_RGBA</code> 指定大多数渲染结束位置（比如屏幕）的颜色模式；</li>
+<li><strong>glutInitDisplayMode</strong> 配置显示模式，<code>GLUT_DOUBLE</code> 设置为双缓冲，即一个缓冲区用于绘制，另一个缓冲区准备着，然后每次渲染两个缓冲区交换，默认设置的是单缓冲 <code>GLUT_SINGLE</code>；<code>GLUT_RGBA</code> 指定大多数渲染结束位置（比如屏幕）的颜色模式；</li>
 <li><strong>glutInitWindowPosition</strong> 指定窗口的位置；</li>
 <li><strong>glutInitWindowSize</strong> 指定窗口大小；</li>
 <li><strong>glutCreateWindow</strong> 用于创建窗口，其参数是窗口的标题；</li>
@@ -440,7 +444,7 @@
 <p>这是一个核心库函数，在这里我们首次接触到 OpenGL 的状态(state)，渲染是一个复杂的过程，不能像普通函数一样接受几个参数就能完成功能，它需要指定 shaders，buffers 和其它各种属性，另外几个渲染操作可能使用同样的属性；因此 OpenGL 引入了 state，渲染命令只使用跟绘制顶点个数和初始化偏移值有关的个别属性，其它属性根据当前状态设置；修改状态后，它的值会一直维持不变直到下次修改。</p>
 </blockquote>
 </li>
-<li><strong>glutMainLoop</strong> 将程序控制权交给 glut 并开启其内部循环；在这个循环中，它监听来自窗口系统的事件并通过设置的回调函数传递给 glut，最常见的就是我们设置的渲染主函数；glutMain 只会调用一次，调用之后窗口系统就在这里阻塞，将控制权移交给 glut；</li>
+<li><strong>glutMainLoop</strong> 将程序控制权交给 glut 并开启其内部循环；在这个循环中，它监听来自窗口系统的事件并通过设置的回调函数传递给 glut，最常见的就是我们设置的渲染主函数；<code>glutMainLoop</code> 只会调用一次，调用之后窗口系统就在这里阻塞，将控制权移交给 glut；</li>
 <li><strong>glClear</strong> 使用前面设置的颜色清除帧缓冲；在每次渲染之前，都得先将之前的帧缓冲进行清除；</li>
 <li><strong>glutSwapBuffers</strong> 将前置缓冲和后置缓冲进行交换，这是双缓冲模式调用的函数，如果是单缓冲模式则使用 <strong>glFlush</strong> 函数。</li>
 </ul>
@@ -463,6 +467,14 @@
         <div class="post-tags">
           
             <a href="/tags/OpenGL/" rel="tag"># OpenGL</a>
+          
+            <a href="/tags/OpenGL-环境搭建/" rel="tag"># OpenGL 环境搭建</a>
+          
+            <a href="/tags/OpenGL-窗口管理/" rel="tag"># OpenGL 窗口管理</a>
+          
+            <a href="/tags/glut/" rel="tag"># glut</a>
+          
+            <a href="/tags/freeglut/" rel="tag"># freeglut</a>
           
         </div>
       
@@ -578,7 +590,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -600,7 +612,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -663,7 +675,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

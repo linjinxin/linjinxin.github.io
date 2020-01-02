@@ -111,18 +111,18 @@
 
 
 
-<meta name="description" content="**  Lua 是一个用 C 编写的库，但这个库不仅能编译成动态链接库和静态链接库给其它 C 程序使用，也能编译成单独的可执行文件，比如用于编译 Lua 源代码的 Lua编译器 和 Lua 独立运行环境 Lua解释器。有了解释器，理论上 Lua 代码是可以独立执行的，不需要嵌入到任何高级语言的程序中去，而且，反过来 Lua 代码还可以访问 C 代码编写的一些库。但是，现实中 Lua 解释器的运用">
+<meta name="description" content="Lua 是一个使用 C 编写的库，可以通过 C API 可以很简单的实现 Lua 与 C 之间的交互，Lua 虚拟机会维护一个栈，所有的 C API 都是通过操作这个栈来实现交互。C 调用 Lua 很简单，直接通过虚拟机编译执行 Lua 代码即可，而 Lua 调用 C 则需要先将 C 函数导出，注册到虚拟机环境中去；C 函数导出可以单个导出，也可以使用模块进行批量导出，而最高效的方法是借用第三方库">
 <meta name="keywords" content="tolua++,Lua&amp;&amp;C++交互,Lua 绑定,tolua">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【Lua】Lua 与 C++ 交互及 Lua 绑定">
 <meta property="og:url" content="http://linjinxin.com/2019/12/07/lua/c++/index.html">
 <meta property="og:site_name" content="B.C. Studio">
-<meta property="og:description" content="**  Lua 是一个用 C 编写的库，但这个库不仅能编译成动态链接库和静态链接库给其它 C 程序使用，也能编译成单独的可执行文件，比如用于编译 Lua 源代码的 Lua编译器 和 Lua 独立运行环境 Lua解释器。有了解释器，理论上 Lua 代码是可以独立执行的，不需要嵌入到任何高级语言的程序中去，而且，反过来 Lua 代码还可以访问 C 代码编写的一些库。但是，现实中 Lua 解释器的运用">
+<meta property="og:description" content="Lua 是一个使用 C 编写的库，可以通过 C API 可以很简单的实现 Lua 与 C 之间的交互，Lua 虚拟机会维护一个栈，所有的 C API 都是通过操作这个栈来实现交互。C 调用 Lua 很简单，直接通过虚拟机编译执行 Lua 代码即可，而 Lua 调用 C 则需要先将 C 函数导出，注册到虚拟机环境中去；C 函数导出可以单个导出，也可以使用模块进行批量导出，而最高效的方法是借用第三方库">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-12-12T13:11:06.219Z">
+<meta property="og:updated_time" content="2020-01-02T04:22:33.141Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【Lua】Lua 与 C++ 交互及 Lua 绑定">
-<meta name="twitter:description" content="**  Lua 是一个用 C 编写的库，但这个库不仅能编译成动态链接库和静态链接库给其它 C 程序使用，也能编译成单独的可执行文件，比如用于编译 Lua 源代码的 Lua编译器 和 Lua 独立运行环境 Lua解释器。有了解释器，理论上 Lua 代码是可以独立执行的，不需要嵌入到任何高级语言的程序中去，而且，反过来 Lua 代码还可以访问 C 代码编写的一些库。但是，现实中 Lua 解释器的运用">
+<meta name="twitter:description" content="Lua 是一个使用 C 编写的库，可以通过 C API 可以很简单的实现 Lua 与 C 之间的交互，Lua 虚拟机会维护一个栈，所有的 C API 都是通过操作这个栈来实现交互。C 调用 Lua 很简单，直接通过虚拟机编译执行 Lua 代码即可，而 Lua 调用 C 则需要先将 C 函数导出，注册到虚拟机环境中去；C 函数导出可以单个导出，也可以使用模块进行批量导出，而最高效的方法是借用第三方库">
 
 
 
@@ -405,8 +405,9 @@
       
 
       
-        <blockquote>
-<p>**</p>
+        <p>Lua 是一个使用 C 编写的库，可以通过 C API 可以很简单的实现 Lua 与 C 之间的交互，Lua 虚拟机会维护一个栈，所有的 C API 都是通过操作这个栈来实现交互。C 调用 Lua 很简单，直接通过虚拟机编译执行 Lua 代码即可，而 Lua 调用 C 则需要先将 C 函数导出，注册到虚拟机环境中去；C 函数导出可以单个导出，也可以使用模块进行批量导出，而最高效的方法是借用第三方库进行自动导出，比如 tolua++。</p>
+<a id="more"></a>
+<blockquote>
 </blockquote>
 <p>Lua 是一个用 C 编写的库，但这个库不仅能编译成动态链接库和静态链接库给其它 C 程序使用，也能编译成单独的可执行文件，比如用于编译 Lua 源代码的 <strong>Lua编译器</strong> 和 Lua 独立运行环境 <strong>Lua解释器</strong>。有了解释器，理论上 Lua 代码是可以独立执行的，不需要嵌入到任何高级语言的程序中去，而且，反过来 Lua 代码还可以访问 C 代码编写的一些库。但是，现实中 Lua 解释器的运用场景并不多，更多的还是将 Lua 代码嵌入到高级语言程序中去，同时 Lua 也会调用高级程序语言的一些库，也就是 <strong>Lua 和 C 相互调用</strong>。比如在使用 cocos2dx 引擎实现的游戏中，游戏引擎使用 C++ 实现，游戏逻辑使用 Lua 实现，然后引擎执行 Lua 代码(C++调用Lua)，而 Lua 代码又会使用到引擎库的功能(Lua调用C++)。</p>
 <pre class="mermaid">graph LR
@@ -415,8 +416,8 @@ game --> |调用| cocos2dx库
 C++程序 --> |执行| lua[Lua代码]
 lua --> |调用| C++库</pre>
 
-<h1 id="C-调-Lua"><a href="#C-调-Lua" class="headerlink" title="C 调 Lua"></a>C 调 Lua</h1><p>Lua 源码是用 C 语言写的，可以把 Lua 源码看成是一个 C 语言库，C 程序只要包含了这个库，就具备了与 Lua 交互的条件。C 程序通过 C API 创建 Lua 执行环境、执行 Lua 代码、访问 Lua 变量和函数。</p>
-<h2 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h2><p>首先，C 程序会创建一个 Lua 执行环境 <code>lua_State</code>，这个执行环境会维护一个栈，所有的 Lua&amp;C 交互都基于这个栈。</p>
+<h1 id="C-调-Lua"><a href="#C-调-Lua" class="headerlink" title="C 调 Lua"></a>C 调 Lua</h1><p>Lua 源码是用 C 语言写的，可以把 Lua 源码看成是一个 C 语言库，C 程序只要包含了这个库，就具备了与 Lua 交互的条件。C 程序通过 C API 创建 Lua 虚拟机、执行 Lua 代码、访问 Lua 变量和函数。</p>
+<h2 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h2><p>首先，C 程序会创建一个 Lua 虚拟机 <code>lua_State</code>，这个虚拟机会维护一个栈，所有的 Lua&amp;C 交互都基于这个栈。</p>
 <p>栈的索引有两种，栈底为 1，然后往栈顶递增，栈顶索引未知，即从栈底到栈顶索引为 1,2,3,…；栈顶为 -1，然后往栈底递减，栈底索引未知，即从栈顶到栈底索引为 -1,-2,-3,…。</p>
 <h2 id="C-API"><a href="#C-API" class="headerlink" title="C API"></a>C API</h2><p>基础操作</p>
 <ul>
@@ -687,7 +688,7 @@ lua --> |调用| C++库</pre>
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -709,7 +710,7 @@ lua --> |调用| C++库</pre>
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -772,7 +773,7 @@ lua --> |调用| C++库</pre>
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

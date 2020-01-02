@@ -111,18 +111,18 @@
 
 
 
-<meta name="description" content="每天进步一点点，能不退步太多；再进步一点，能不退步；再进步一点点，能有所进步；再进步一点点，方能成功。  Cocos2dx 版本非常乱，主要有 2.x 和 3.x 两个版本，另外还是 lua 版本还有 quick 分支。本文主要介绍低版本(2.x)cocos2d-x 对应的 quick 版本，如何使用 tolua++ 来导出自定义的 C++ 类，因为没找到 cocos2d-x 的 2.x 版本，">
+<meta name="description" content="Cocos2dx 2.x 版本使用 tolua++ 进行 Lua 绑定，需要三个文件，包描述文件 *.tolua，定制脚本 basic.lua 和可执行脚本 build.bat。">
 <meta name="keywords" content="cocos2dx lua,tolua++,cocos2dx tolua">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【Cocos2d-x】使用 tolua++ 导出 C++ 类（2.x版本）">
 <meta property="og:url" content="http://linjinxin.com/2019/12/03/cocos2dx/tolua1/index.html">
 <meta property="og:site_name" content="B.C. Studio">
-<meta property="og:description" content="每天进步一点点，能不退步太多；再进步一点，能不退步；再进步一点点，能有所进步；再进步一点点，方能成功。  Cocos2dx 版本非常乱，主要有 2.x 和 3.x 两个版本，另外还是 lua 版本还有 quick 分支。本文主要介绍低版本(2.x)cocos2d-x 对应的 quick 版本，如何使用 tolua++ 来导出自定义的 C++ 类，因为没找到 cocos2d-x 的 2.x 版本，">
+<meta property="og:description" content="Cocos2dx 2.x 版本使用 tolua++ 进行 Lua 绑定，需要三个文件，包描述文件 *.tolua，定制脚本 basic.lua 和可执行脚本 build.bat。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-12-12T11:23:11.189Z">
+<meta property="og:updated_time" content="2020-01-02T04:22:33.141Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【Cocos2d-x】使用 tolua++ 导出 C++ 类（2.x版本）">
-<meta name="twitter:description" content="每天进步一点点，能不退步太多；再进步一点，能不退步；再进步一点点，能有所进步；再进步一点点，方能成功。  Cocos2dx 版本非常乱，主要有 2.x 和 3.x 两个版本，另外还是 lua 版本还有 quick 分支。本文主要介绍低版本(2.x)cocos2d-x 对应的 quick 版本，如何使用 tolua++ 来导出自定义的 C++ 类，因为没找到 cocos2d-x 的 2.x 版本，">
+<meta name="twitter:description" content="Cocos2dx 2.x 版本使用 tolua++ 进行 Lua 绑定，需要三个文件，包描述文件 *.tolua，定制脚本 basic.lua 和可执行脚本 build.bat。">
 
 
 
@@ -405,8 +405,10 @@
       
 
       
-        <blockquote>
-<p><em>每天进步一点点，能不退步太多；再进步一点，能不退步；再进步一点点，能有所进步；再进步一点点，方能成功。</em></p>
+        <p>Cocos2dx 2.x 版本使用 tolua++ 进行 Lua 绑定，需要三个文件，包描述文件 <code>*.tolua</code>，定制脚本 <code>basic.lua</code> 和可执行脚本 <code>build.bat</code>。</p>
+<a id="more"></a>
+<blockquote>
+<p>每天进步一点点，能不退步太多；再进步一点，能不退步；再进步一点点，能有所进步；再进步一点点，方能成功。</p>
 </blockquote>
 <p>Cocos2dx 版本非常乱，主要有 2.x 和 3.x 两个版本，另外还是 lua 版本还有 quick 分支。本文主要介绍低版本(2.x)cocos2d-x 对应的 quick 版本，如何使用 tolua++ 来导出自定义的 C++ 类，因为没找到 cocos2d-x 的 2.x 版本，所以不知道 2dx 和 quick 是不是一样。</p>
 <h1 id="工程结构"><a href="#工程结构" class="headerlink" title="工程结构"></a>工程结构</h1><p>先来看一下 quick-cocos2d-x-2.x 的工程结构，</p>
@@ -595,7 +597,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -617,7 +619,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -680,7 +682,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

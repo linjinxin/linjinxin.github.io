@@ -111,19 +111,19 @@
 
 
 
-<meta name="description" content="版本之痛，痛中之痛；环境之难，难中之难。  cocos2d-x3.x 与 2.x 很不一样，关于 Lua 绑定也不同。在 2.x 版本，引擎目录下有个 tolua++.exe 文件，通过包描述文件 *.tolua，执行脚本 build.bat 来一键导出。而在 3.x 版本，描述文件换成了 *.ini，然后编写 python 脚本 generator.py，使用 python 来导出。 工程结构">
+<meta name="description" content="Cocos2dx 3.x 使用 Python 进行 Lua 绑定，除了为每个类定制配置文件 *.ini 之外，还需要修改可执行脚本 generator.py。">
 <meta name="keywords" content="cocos2dx lua,tolua++,cocos2dx tolua">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【Cocos2d-x】使用 tolua++ 导出 C++ 类（3.x版本）">
 <meta property="og:url" content="http://linjinxin.com/2019/12/03/cocos2dx/tolua2/index.html">
 <meta property="og:site_name" content="B.C. Studio">
-<meta property="og:description" content="版本之痛，痛中之痛；环境之难，难中之难。  cocos2d-x3.x 与 2.x 很不一样，关于 Lua 绑定也不同。在 2.x 版本，引擎目录下有个 tolua++.exe 文件，通过包描述文件 *.tolua，执行脚本 build.bat 来一键导出。而在 3.x 版本，描述文件换成了 *.ini，然后编写 python 脚本 generator.py，使用 python 来导出。 工程结构">
+<meta property="og:description" content="Cocos2dx 3.x 使用 Python 进行 Lua 绑定，除了为每个类定制配置文件 *.ini 之外，还需要修改可执行脚本 generator.py。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTcwOTI5MjExNDEzMjQ2?x-oss-process=image/format,png">
-<meta property="og:updated_time" content="2019-12-07T09:35:01.253Z">
+<meta property="og:updated_time" content="2020-01-02T04:22:33.141Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【Cocos2d-x】使用 tolua++ 导出 C++ 类（3.x版本）">
-<meta name="twitter:description" content="版本之痛，痛中之痛；环境之难，难中之难。  cocos2d-x3.x 与 2.x 很不一样，关于 Lua 绑定也不同。在 2.x 版本，引擎目录下有个 tolua++.exe 文件，通过包描述文件 *.tolua，执行脚本 build.bat 来一键导出。而在 3.x 版本，描述文件换成了 *.ini，然后编写 python 脚本 generator.py，使用 python 来导出。 工程结构">
+<meta name="twitter:description" content="Cocos2dx 3.x 使用 Python 进行 Lua 绑定，除了为每个类定制配置文件 *.ini 之外，还需要修改可执行脚本 generator.py。">
 <meta name="twitter:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTcwOTI5MjExNDEzMjQ2?x-oss-process=image/format,png">
 
 
@@ -407,8 +407,10 @@
       
 
       
-        <blockquote>
-<p><em>版本之痛，痛中之痛；环境之难，难中之难。</em></p>
+        <p>Cocos2dx 3.x 使用 Python 进行 Lua 绑定，除了为每个类定制配置文件 <code>*.ini</code> 之外，还需要修改可执行脚本 <code>generator.py</code>。</p>
+<a id="more"></a>
+<blockquote>
+<p>版本之痛，痛中之痛；环境之难，难中之难。</p>
 </blockquote>
 <p>cocos2d-x3.x 与 2.x 很不一样，关于 Lua 绑定也不同。在 2.x 版本，引擎目录下有个 <code>tolua++.exe</code> 文件，通过包描述文件 <code>*.tolua</code>，执行脚本 <code>build.bat</code> 来一键导出。而在 3.x 版本，描述文件换成了 <code>*.ini</code>，然后编写 python 脚本 <code>generator.py</code>，使用 python 来导出。</p>
 <h1 id="工程结构"><a href="#工程结构" class="headerlink" title="工程结构"></a>工程结构</h1><p>首先来看一下 cocos2d-x3.x 的源码目录结构，</p>
@@ -592,7 +594,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -614,7 +616,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -677,7 +679,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

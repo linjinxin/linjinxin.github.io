@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Times New Roman:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="OpenGL,OpenGL 窗口管理,glfw,SFML," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="在 这篇文章 中我们介绍了使用 glut 库来创建和管理窗口，这里我们再介绍另外两个可用于 OpenGL 窗口管理的库 glfw 和 SFML。">
+<meta name="keywords" content="OpenGL,OpenGL 窗口管理,glfw,SFML">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【OpenGL】创建窗口（二）">
+<meta property="og:url" content="http://linjinxin.com/2019/12/28/opengl/window2/index.html">
+<meta property="og:site_name" content="B.C. Studio">
+<meta property="og:description" content="在 这篇文章 中我们介绍了使用 glut 库来创建和管理窗口，这里我们再介绍另外两个可用于 OpenGL 窗口管理的库 glfw 和 SFML。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-01-02T04:22:33.141Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【OpenGL】创建窗口（二）">
+<meta name="twitter:description" content="在 这篇文章 中我们介绍了使用 glut 库来创建和管理窗口，这里我们再介绍另外两个可用于 OpenGL 窗口管理的库 glfw 和 SFML。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://linjinxin.com/2019/12/28/opengl/window2/"/>
+
+
+
+
+
+  <title>【OpenGL】创建窗口（二） | B.C. Studio</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">B.C. Studio</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">Learning the ocean without boundaries</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linjinxin.com/2019/12/28/opengl/window2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="林锦新">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="B.C. Studio">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">【OpenGL】创建窗口（二）</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-28T17:24:37+08:00">
+                2019-12-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenGL/" itemprop="url" rel="index">
+                    <span itemprop="name">OpenGL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/12/28/opengl/window2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/12/28/opengl/window2/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在 <a href="/2019/09/10/opengl/window1">这篇文章</a> 中我们介绍了使用 glut 库来创建和管理窗口，这里我们再介绍另外两个可用于 OpenGL 窗口管理的库 glfw 和 SFML。</p>
+<a id="more"></a>
+<blockquote>
+</blockquote>
+<h1 id="glfw"><a href="#glfw" class="headerlink" title="glfw"></a>glfw</h1><p>glfw 是一个专门针对 OpenGL 编写的 C 语言库，它提供了渲染物体所需的最低限度的接口。</p>
+<h2 id="配置环境"><a href="#配置环境" class="headerlink" title="配置环境"></a>配置环境</h2><p><a href="http://www.glfw.org/download.html" target="_blank" rel="noopener">下载 glfw</a>，可以下载编译好的二进制包，也可以下载源代码；这里我们下载源代码，然后手动进行编译。</p>
+<p>源码中没有工程文件，需要手动创建一个工程，然后进行配置。这个过程比较笨重，可以使用一个工程文件生成工具 <a href="https://cmake.org/download/" target="_blank" rel="noopener">CMake</a>，它可以使用预定义好的 CMake 脚本自动生成工程文件。</p>
+<ul>
+<li>第一步，点击 Browse Source 按钮，选择源路径，这里选择 glfw 的根目录；</li>
+<li>第二步，点击 Browse Build 按钮，选择生成的项目文件存放位置，可以在 glfw 根目录下新建一个 build 目录；</li>
+<li>第三步，点击 Configure 按钮，选择要生成的项目类型，如果是 Windows 平台则选择电脑上安装的 vs 版本即可；</li>
+<li>第四步，Generate 按钮，则会在 build 目录下生成一个 vs 解决方案文件；</li>
+<li>第五步，打开 glfw.sln，生成项目 glfw，会生成一个 glfw3.lib，这是一个静态链接库文件；如果要生成动态链接库，把项目属性改成动态链接库就行了。</li>
+</ul>
+<p>使用的方法就很简单了，和之前使用 glew 一样，三步曲操作：</p>
+<ul>
+<li>把 glfw3.h 和 glfw3native.h 文件拷贝到 vs 目录下或项目目录下；</li>
+<li>把 glfw3.lib 拷贝到 vs 目录下或项目目录下；</li>
+<li>如果是使用动态链接库的形式，把 glfw3.dll 拷贝到系统目录下或项目可执行文件目录下。</li>
+</ul>
+<p>之前使用 glut 的时候不需要配置环境，只需要引入头文件 <code>glut.h</code>，那是因为这个头文件帮我们做了很多事情。打开 <code>glut.h</code>，可以看到下面几行代码。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment (lib, <span class="meta-string">"winmm.lib"</span>)     <span class="comment">/* link with Windows MultiMedia lib */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment (lib, <span class="meta-string">"opengl32.lib"</span>)  <span class="comment">/* link with Microsoft OpenGL lib */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment (lib, <span class="meta-string">"glu32.lib"</span>)     <span class="comment">/* link with OpenGL Utility lib */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment (lib, <span class="meta-string">"glut32.lib"</span>)    <span class="comment">/* link with Win32 GLUT lib */</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;GL/gl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;GL/glu.h&gt;</span></span></span><br></pre></td></tr></table></figure>
+<p><code>#pragma comment</code> 命令用于添加要使用的静态库，其作用和在 <em>链接器-&gt;输入</em> 添加相应的库是一样的。在 <code>glut.h</code> 中添加了对 OpenGL 核心库 <code>opengl32.lib</code>，实用库 <code>glu32.lib</code> 和工具库 <code>glut32.lib</code> 的引用。还 include 了 <code>gl.h</code> 和 <code>glu.h</code> 这两个头文件，所以在我们的项目中只需要 incldue <code>glut.h</code> 即可。</p>
+<p>现在我们使用 glfw 库来代替 glut 库，则需要手动添加对 <code>opengl32.lib, glu32.lib, glfw3.lib</code> 的引用，还要在 <code>#include &lt;glfw3.h&gt;</code> 之前 include <code>gl.h</code> 和 <code>glu.h</code> 这两个头文件。如果想省略这些工作，可以模仿 <code>glut.h</code>，在 <code>glfw3.h</code> 中添加下面的代码。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment (lib, <span class="meta-string">"opengl32.lib"</span>)  <span class="comment">/* link with Microsoft OpenGL lib */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment (lib, <span class="meta-string">"glu32.lib"</span>)     <span class="comment">/* link with OpenGL Utility lib */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment(lib, <span class="meta-string">"glfw3.lib"</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;GL/gl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;GL/glu.h&gt;</span></span></span><br></pre></td></tr></table></figure>
+<h2 id="创建窗口"><a href="#创建窗口" class="headerlink" title="创建窗口"></a>创建窗口</h2><p>先上完整的代码。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;GL\glew.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;GLFW\glfw3.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>** argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	glfwInit();</span><br><span class="line">	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, <span class="number">4</span>);</span><br><span class="line">	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, <span class="number">4</span>);</span><br><span class="line">	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);</span><br><span class="line">	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);</span><br><span class="line"></span><br><span class="line">	GLFWwindow* window = glfwCreateWindow(<span class="number">400</span>, <span class="number">400</span>, <span class="string">"Shader"</span>, <span class="literal">nullptr</span>, <span class="literal">nullptr</span>);</span><br><span class="line">	<span class="keyword">if</span> (window == <span class="literal">nullptr</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	glfwMakeContextCurrent(window);</span><br><span class="line"></span><br><span class="line">	glewExperimental = <span class="literal">true</span>;</span><br><span class="line">	<span class="keyword">if</span> (GLEW_OK != glewInit())</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">2</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	GLint width, height;</span><br><span class="line">	glfwGetFramebufferSize(window, &amp;width, &amp;height);</span><br><span class="line">	glViewport(<span class="number">0</span>, <span class="number">0</span>, width, height);</span><br><span class="line">	</span><br><span class="line">	glClearColor(<span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>);</span><br><span class="line">	<span class="keyword">while</span> (!glfwWindowShouldClose(window))</span><br><span class="line">	&#123;</span><br><span class="line">		glfwPollEvents();</span><br><span class="line">		glfwSwapBuffers(window);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	glfwTerminate();</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>注意 <code>glew.h</code> 在所有 OpenGL 头文件中必须第一个 include。</li>
+<li><code>glfwInit</code> 用于初始化 glfw。</li>
+<li><code>glfwWindowHint</code> 用于初始化 OpenGL 参数。<blockquote>
+<p>GLFW_CONTEXT_VERSION_MAJOR 指定 OpenGL Context 的主版本号。<br>GLFW_CONTEXT_VERSION_MINOR 指定 OpenGL Context 的次版本号，这两个版本号均不能高于系统上的 OpenGL 版本。<br>GLFW_OPENGL_PROFILE 指定使用的 OpenGL 模式为核心模式。<br>GLFW_RESIZEABLE 指定窗口是否可以改变大小，如果设置成 false，则窗口大小不能改且最大化按钮不能用。</p>
+</blockquote>
+</li>
+<li><code>glfwCreateWindow</code> 创建一个窗口，前两个参数设置窗口宽高，第三个参数设置窗口标题，最后两个参数设置为空即可。</li>
+<li><code>glfwMakeContextCurrent</code> 把创建的窗口设置成 OpenGL Context。<blockquote>
+<p>前面讲过 Context 是 OpenGL 状态的合集，没有 Context，OpenGL 将不存在；之前使用 glut 只要创建出窗口就行了，使用 glfw 要手动把窗口设置成 OpenGL 的 Context。</p>
+</blockquote>
+</li>
+<li><code>glViewport</code> 来设置视口大小，这一步暂时不设置也行，其默认的视口大小就是窗口初始的大小，后面讲到摄像机的时候会再讨论视口的知识。</li>
+<li><code>glfwGetFramebufferSize</code> 可以得到窗口的大小，这个函数中在窗口大小改变时很有用。</li>
+<li>最后我们使用一个 while 循环让程序阻塞，在 while 循环条件中调用 <code>glfwWindowShouldClose</code> 函数判断窗口是否关闭，如果关闭则跳出循环。<blockquote>
+<p>glut 阻塞程序的方式是使用 glMainLoop 函数。</p>
+</blockquote>
+</li>
+<li>在 while 循环中先调用 <code>glfwPollEvents</code> 处理窗口事件，然后开始渲染，<code>glfwSwapBuffers</code> 和 <code>glutSwapBuffers</code> 的作用是一样的。</li>
+<li>最后窗口关闭时调用 <code>glfwTerminate</code> 来释放 glfw 分配的内存。</li>
+</ul>
+<p>整个过程很简单，在前面的例子中我们都会使用一个 init 函数来初始化一些数据，然后使用一个 render 或 display 函数来进行渲染，在 glut 中是在 glutCreateWindow 之后调用 init 函数，然后使用 glutDisplayFunc(display) 来注册回调函数。在 glfw 中同样是在 glfwCreateWindow 之后调用 init 函数，然后在 while 循环中调用 display 函数即可。这里有一点不同的是在 glut 中，display 只有在窗口改变时才会调用，而在 glfw 中 display 函数是每一帧都会调用的。</p>
+<h2 id="键盘事件"><a href="#键盘事件" class="headerlink" title="键盘事件"></a>键盘事件</h2><p>glfw 中的键盘事件是通过回调函数设置的，函数原型如下。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">key_callback</span><span class="params">(GLFWwindow* window, <span class="keyword">int</span> key, <span class="keyword">int</span> scancode, <span class="keyword">int</span> action, <span class="keyword">int</span> mode)</span></span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>第二个参数是按下的键的 ascii 码；</li>
+<li>第三个参数暂没用到；</li>
+<li>第四个参数表示当前是按下动作 <code>GL_PRESS</code> 还是松开动作 <code>GL_RELEASE</code>；</li>
+<li>第五个参数表示当前是否按下 <code>Ctrl, Alt, Shift</code> 等特殊键。</li>
+</ul>
+<p>注册事件方法如下。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glfwSetKeyCallback(window, key_callback);</span><br></pre></td></tr></table></figure>
+<p>下面是一个实例。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">key_callback</span><span class="params">(GLFWwindow* window, <span class="keyword">int</span> key, <span class="keyword">int</span> scancode, <span class="keyword">int</span> action, <span class="keyword">int</span> mode)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (key == GLFW_KEY_ESCAPE &amp;&amp; action == GLFW_RELEASE)</span><br><span class="line">	&#123;</span><br><span class="line">		glfwSetWindowShouldClose(window, GL_TRUE);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span> (mode == GLFW_MOD_CONTROL &amp;&amp; action == GLFW_RELEASE)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (key == GLFW_KEY_1)</span><br><span class="line">		&#123;</span><br><span class="line">			vertices[<span class="number">0</span>] -= <span class="number">0.1f</span>;</span><br><span class="line">			glBindBuffer(GL_ARRAY_BUFFER, VBO);</span><br><span class="line">			glBufferData(GL_ARRAY_BUFFER, <span class="keyword">sizeof</span>(vertices), vertices, GL_STATIC_DRAW);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (key == GLFW_KEY_2)</span><br><span class="line">		&#123;</span><br><span class="line">			vertices[<span class="number">0</span>] += <span class="number">0.1f</span>;</span><br><span class="line">			glBindBuffer(GL_ARRAY_BUFFER, VBO);</span><br><span class="line">			glBufferData(GL_ARRAY_BUFFER, <span class="keyword">sizeof</span>(vertices), vertices, GL_STATIC_DRAW);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在这个回调函数里，首先检测到按下 esc 键然后松开，则把窗口关闭；然后检测按下 ctr+1 或 ctr+2 键松开，修改顶点数据，在下一帧绘制的时候就会生效。</p>
+<h2 id="鼠标事件"><a href="#鼠标事件" class="headerlink" title="鼠标事件"></a>鼠标事件</h2><p>glfw 中鼠标事件共四种，分别是移动鼠标事件、鼠标进入离开事件、鼠标按键事件和鼠标滚轮事件。</p>
+<h3 id="移动鼠标事件"><a href="#移动鼠标事件" class="headerlink" title="移动鼠标事件"></a>移动鼠标事件</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glfwSetCursorPosCallback(window, mouse_callback);</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">mouse_callback</span><span class="params">(GLFWwindow* window, <span class="keyword">double</span> x, <span class="keyword">double</span> y)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>x y 是当前鼠标相对于窗口的位置。</p>
+<h3 id="鼠标进入离开事件"><a href="#鼠标进入离开事件" class="headerlink" title="鼠标进入离开事件"></a>鼠标进入离开事件</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glfwSetCursorEnterCallback(window, mouse_enter_callback);</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">mouse_enter_callback</span><span class="params">(GLFWwindow* window, <span class="keyword">int</span> enter)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>enter 等于 0 表示鼠标离开，enter 等于 1 表示鼠标进入。</p>
+<h3 id="鼠标按键事件"><a href="#鼠标按键事件" class="headerlink" title="鼠标按键事件"></a>鼠标按键事件</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glfwSetMouseButtonCallback(window, mouse_down_callback);</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">mouse_down_callback</span><span class="params">(GLFWwindow* window, <span class="keyword">int</span> button, <span class="keyword">int</span> action, <span class="keyword">int</span> mods)</span></span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>第二个参数指按下的是哪个键，取值范围有 <code>GLFW_MOUSE_BUTTON_LEFT, GL_MOUSE_BUTTON_MIDDLE, GL_MOUSE_BUTTON_RIGHT</code>；</li>
+<li>第三个参数表示是按下动作还是松开动作；</li>
+<li>最后一个参数表示当前是否有按下 <code>ctrl, shift, alt</code> 键。</li>
+</ul>
+<h3 id="鼠标滚轮事件"><a href="#鼠标滚轮事件" class="headerlink" title="鼠标滚轮事件"></a>鼠标滚轮事件</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glfwSetScrollCallback(window, mouse_scroll_callback);</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">mouse_scroll_callback</span><span class="params">(GLFWwindow* window, <span class="keyword">double</span> xoffset, <span class="keyword">double</span> yoffset)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>xoffset 和 yoffset 表示两个方向的滚动值，一般的鼠标滚动事件都只有垂直方向，即 xoffset 恒定为 0，yoffset = 1 表示向上滚动，yoffset = -1 表示向下滚动。</p>
+<h1 id="SFML"><a href="#SFML" class="headerlink" title="SFML"></a>SFML</h1><p>SFML，全称是简单快速的多媒体库，用于快速构建 PC 上的多媒体应用和游戏，其本身内嵌了 OpenGL，能够快速创建 OpenGL Context，而且无需包含其它库。SFML 比 freeglut 功能更强大，使用起来也简单，除了 OpenGL 环境，SFML 本身包括 <em>系统、窗口、图形、网络、音频</em> 五个模块，窗口模块用于创建 OpenGL 环境，其它模块可快速实现 OpenGL 之外的功能。</p>
+<p>关于 SFML，有专门的 <a href="/categories/SFML">系列文章</a> 介绍，这里就不展开讲了。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/OpenGL/" rel="tag"># OpenGL</a>
+          
+            <a href="/tags/OpenGL-窗口管理/" rel="tag"># OpenGL 窗口管理</a>
+          
+            <a href="/tags/glfw/" rel="tag"># glfw</a>
+          
+            <a href="/tags/SFML/" rel="tag"># SFML</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/12/27/opengl/texture/" rel="next" title="【OpenGL】使用贴图">
+                <i class="fa fa-chevron-left"></i> 【OpenGL】使用贴图
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="林锦新" />
+            
+              <p class="site-author-name" itemprop="name">林锦新</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/linjinxin" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#glfw"><span class="nav-number">1.</span> <span class="nav-text">glfw</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#配置环境"><span class="nav-number">1.1.</span> <span class="nav-text">配置环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建窗口"><span class="nav-number">1.2.</span> <span class="nav-text">创建窗口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#键盘事件"><span class="nav-number">1.3.</span> <span class="nav-text">键盘事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#鼠标事件"><span class="nav-number">1.4.</span> <span class="nav-text">鼠标事件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#移动鼠标事件"><span class="nav-number">1.4.1.</span> <span class="nav-text">移动鼠标事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#鼠标进入离开事件"><span class="nav-number">1.4.2.</span> <span class="nav-text">鼠标进入离开事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#鼠标按键事件"><span class="nav-number">1.4.3.</span> <span class="nav-text">鼠标按键事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#鼠标滚轮事件"><span class="nav-number">1.4.4.</span> <span class="nav-text">鼠标滚轮事件</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SFML"><span class="nav-number">2.</span> <span class="nav-text">SFML</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">林锦新</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+
+  <script src='https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js'></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({theme: 'forest'});
+    }
+  </script>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://ljx.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://linjinxin.com/2019/12/28/opengl/window2/';
+          this.page.identifier = '2019/12/28/opengl/window2/';
+          this.page.title = '【OpenGL】创建窗口（二）';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://ljx.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

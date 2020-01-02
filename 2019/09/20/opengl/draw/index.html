@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Times New Roman:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="OpenGL,OpenGL 绘制图元," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="glew 库可以自动管理 OpenGL 扩展，每个 OpenGL 程序都应该在程序开始的地方引入这个库。OpenGL 提供基础图元的绘制方法，包括点、线段、三角形、四边形，任何复杂的图元都可以转换成三角形进行绘制。OpenGL 基于状态，每个 GL Object 都有自己的一套状态，全局环境 GL Context 也有一套状态，对象绘制前先绑定到上下文。">
+<meta name="keywords" content="OpenGL,OpenGL 绘制图元">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【OpenGL】绘制基础图元">
+<meta property="og:url" content="http://linjinxin.com/2019/09/20/opengl/draw/index.html">
+<meta property="og:site_name" content="B.C. Studio">
+<meta property="og:description" content="glew 库可以自动管理 OpenGL 扩展，每个 OpenGL 程序都应该在程序开始的地方引入这个库。OpenGL 提供基础图元的绘制方法，包括点、线段、三角形、四边形，任何复杂的图元都可以转换成三角形进行绘制。OpenGL 基于状态，每个 GL Object 都有自己的一套状态，全局环境 GL Context 也有一套状态，对象绘制前先绑定到上下文。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://linjinxin.com/image/opengl/draw/point.png">
+<meta property="og:image" content="http://linjinxin.com/image/opengl/draw/primitive.png">
+<meta property="og:image" content="http://linjinxin.com/image/opengl/draw/line.png">
+<meta property="og:image" content="http://linjinxin.com/image/opengl/draw/line-adj.png">
+<meta property="og:image" content="http://linjinxin.com/image/opengl/draw/line-strip.png">
+<meta property="og:image" content="http://linjinxin.com/image/opengl/draw/line-strip-adj.png">
+<meta property="og:image" content="http://linjinxin.com/image/opengl/draw/line-loop.png">
+<meta property="og:image" content="http://linjinxin.com/image/opengl/draw/triangle.png">
+<meta property="og:image" content="http://linjinxin.com/image/opengl/draw/triangle-strip.png">
+<meta property="og:image" content="http://linjinxin.com/image/opengl/draw/triangle-fan.png">
+<meta property="og:image" content="http://linjinxin.com/image/opengl/draw/circle.png">
+<meta property="og:image" content="http://linjinxin.com/image/opengl/draw/quad.png">
+<meta property="og:updated_time" content="2019-12-28T09:22:02.337Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【OpenGL】绘制基础图元">
+<meta name="twitter:description" content="glew 库可以自动管理 OpenGL 扩展，每个 OpenGL 程序都应该在程序开始的地方引入这个库。OpenGL 提供基础图元的绘制方法，包括点、线段、三角形、四边形，任何复杂的图元都可以转换成三角形进行绘制。OpenGL 基于状态，每个 GL Object 都有自己的一套状态，全局环境 GL Context 也有一套状态，对象绘制前先绑定到上下文。">
+<meta name="twitter:image" content="http://linjinxin.com/image/opengl/draw/point.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://linjinxin.com/2019/09/20/opengl/draw/"/>
+
+
+
+
+
+  <title>【OpenGL】绘制基础图元 | B.C. Studio</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">B.C. Studio</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">Learning the ocean without boundaries</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linjinxin.com/2019/09/20/opengl/draw/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="林锦新">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="B.C. Studio">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">【OpenGL】绘制基础图元</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-20T15:53:21+08:00">
+                2019-09-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenGL/" itemprop="url" rel="index">
+                    <span itemprop="name">OpenGL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/09/20/opengl/draw/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/09/20/opengl/draw/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>glew 库可以自动管理 OpenGL 扩展，每个 OpenGL 程序都应该在程序开始的地方引入这个库。OpenGL 提供基础图元的绘制方法，包括点、线段、三角形、四边形，任何复杂的图元都可以转换成三角形进行绘制。OpenGL 基于状态，每个 GL Object 都有自己的一套状态，全局环境 GL Context 也有一套状态，对象绘制前先绑定到上下文。</p>
+<a id="more"></a>
+<blockquote>
+</blockquote>
+<h1 id="使用-glew"><a href="#使用-glew" class="headerlink" title="使用 glew"></a>使用 glew</h1><p>glew 全称是 <code>OpenGL Extension Wrangler Library</code>，它能够帮忙解决 OpenGL 不断扩展的问题。初始化 glew 之后，它将查询系统上所有可用的扩展功能并自动加载它们，然后提供一个头文件作为接口，我们直接通过头文件就可以使用这些扩展功能。</p>
+<p><a href="http://glew.sourceforge.net/" target="_blank" rel="noopener">下载 glew</a>，下载之后进行解压，得到以下目录结构。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">|-glew-2.1.0</span><br><span class="line">    |-bin</span><br><span class="line">    |-lib</span><br><span class="line">    |-include</span><br><span class="line">    |-doc</span><br></pre></td></tr></table></figure>
+<p>接下来开始配置环境，配置的方式有两种，第一种方式跟之前配置 glut 一样，系统级的配置，配置之后所有的 OpenGL 项目都不需要配置。</p>
+<ul>
+<li>第一步，把 include 目录下的头文件放在 <code>%VISUAL_STUDIO%\VC\include\gl</code> 目录下；</li>
+<li>第二步，把 lib 目录下的 lib 文件放在 <code>%VISUAL_STUDIO%\VC\lib</code> 目录下，然后在项目属性的 <em>链接器</em> –&gt; <em>输入</em> 添加相应库的引用；<blockquote>
+<p>如果要创建 64 位程序，则要把 lib 文件放在 <code>%VISUAL_STUDIO%\VC\lib\amd64</code> 目录下。</p>
+</blockquote>
+</li>
+<li>第三步，把 bin 目录下的 dll 文件放在系统目录下。<blockquote>
+<p>32 位系统直接放在 <code>System32</code> 目录下；64 位系统如果要创建 64 位程序也放在 <code>System32</code> 目录下，如果要创建 32 位程序则要放在 <code>SysWOW64</code> 目录下。</p>
+</blockquote>
+</li>
+</ul>
+<p>这是系统级的配置，一次配置对所有项目都生效，这种方式虽然能够一劳永逸，但过多地把库文件拷到系统路径也不好，因此还有第二种方式，即给每个创建的项目单独配置环境，</p>
+<ul>
+<li>把头文件放在 <code>$PROJECT_ROOT%\include\GL</code> 目录下，然后在项目属性的 <em>C/C++</em> –&gt; <em>附加包含目录</em> 中添加 <code>.\include</code>；</li>
+<li>把静态库 lib 文件放在 <code>$PROJECT_ROOT%\lib</code> 目录下，然后在项目属性的 <em>链接器</em> –&gt; <em>常规</em> –&gt; <em>附加库目录</em> 中添加 <code>.\lib</code>，在 <em>链接器</em> –&gt; <em>输入</em> 中添加相应库的引用；<blockquote>
+<p>如果要同时编译 32 位程序和 64 位程序，可以在项目下建立 <code>.\lib\win32</code> 和 <code>.\lib\x64</code> 两个目录，然后配置 32 位程序链接第一个目录，配置 64 位程序链接第二个目录。</p>
+</blockquote>
+</li>
+<li>把动态库 dll 文件放在可执行程序 exe 同级目录下。</li>
+</ul>
+<p>如果一个项目想同时编译 32 位和 64 位，则可以分别把 32 位的 lib 文件和 64 位的 lib 文件放在 .\lib\win32 和 .\lib\x64 目录下，然后分别修改附加库目录，再把相应的 dll 文件拷到编译后的 32 位程序和 64 位程序目录下。</p>
+<p>关于 VS 配置的详细内容，可参考 <a href="/2019/09/10/coder/vs">Visual Studio 环境配置</a>。</p>
+<h1 id="GL-context"><a href="#GL-context" class="headerlink" title="GL context"></a>GL context</h1><p>在开始绘制图形之前，我们必须先了解 GL context 和 GL objects 这两个重要概念，详细的可参考 <a href="https://www.khronos.org/opengl/wiki/Main_Page" target="_blank" rel="noopener">官方文档</a>。</p>
+<p>上一篇文章讲到 OpenGL 渲染是基于状态(state)的。OpenGL context 是一个重要的概念，只有创建了 context，OpenGL 才存在，context 一旦被销毁了，OpenGL 就不存在了。context 存储了一个 OpenGL 实例的所有状态，类似于一个程序开辟的所有内存空间。context 可以看作进程在操作系统中的一个执行过程，一个进程可以创建多个 context，每一个 context 代表一个可视面，就像一个应用程序的一个界面一样。</p>
+<p>简单来讲，OpenGL 上下文保存了一个 OpenGL 实例的所有状态，在使用 OpenGL 之前必须先创建一个 OpenGL context。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">char</span> *GL_version=(<span class="keyword">char</span> *)glGetString(GL_VERSION);</span><br><span class="line">	<span class="keyword">char</span> *GL_vendor=(<span class="keyword">char</span> *)glGetString(GL_VENDOR);</span><br><span class="line">	<span class="keyword">char</span> *GL_renderer=(<span class="keyword">char</span> *)glGetString(GL_RENDERER);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里是想获取一些系统信息，但得到的结果却全是空，这里因为此时还没有创建 context，OpenGL 相当于不存在。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>** argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	glutInit(&amp;argc, argv);</span><br><span class="line">	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);</span><br><span class="line"></span><br><span class="line">	glutInitWindowSize(<span class="number">400</span>, <span class="number">400</span>);</span><br><span class="line">	glutInitWindowPosition(<span class="number">100</span>, <span class="number">100</span>);</span><br><span class="line">	glutCreateWindow(<span class="string">"Create Dot"</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//获取 OpenGL 版本号</span></span><br><span class="line">	<span class="keyword">char</span> *GL_version = (<span class="keyword">char</span> *)glGetString(GL_VERSION);</span><br><span class="line">	<span class="comment">//获取本机提供 GL 支持的公司</span></span><br><span class="line">	<span class="keyword">char</span> *GL_vendor = (<span class="keyword">char</span> *)glGetString(GL_VENDOR);</span><br><span class="line">	<span class="comment">//获取渲染器的名称</span></span><br><span class="line">	<span class="keyword">char</span> *GL_renderer = (<span class="keyword">char</span> *)glGetString(GL_RENDERER);</span><br><span class="line">	<span class="comment">//获取着色器的版本号</span></span><br><span class="line">	<span class="keyword">char</span>* GL_shader_version = (<span class="keyword">char</span>*)glGetString(GL_SHADING_LANGUAGE_VERSION);</span><br><span class="line">	<span class="comment">//获取本机硬件支持的最大顶点属性数</span></span><br><span class="line">	GLint max_vertex_attrib;</span><br><span class="line">	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &amp;max_vertex_attrib);</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样就可以正常获取信息了，因为 <code>glutCreateWindow</code> 创建一个窗口的同时就已经创建了一个 OpenGL context。</p>
+<h1 id="GL-objects"><a href="#GL-objects" class="headerlink" title="GL objects"></a>GL objects</h1><p>再重申一遍，OpenGL 基于状态来渲染，可以说 OpenGL 被定义成“状态机”，所有的 API 都是修改状态、查询状态或者使用状态来渲染。GL Object 是一些状态的集合，这点看起来跟 GL Context 有点像，也可以这样类比，但要知道 object 和 context 的 state 是相互独立的，context 有一套状态，每个 object 也会有自己的一些状态。只有把 object 绑定到 context 上，它的状态都会映射到 context 上，绑定之后修改 context 的状态，object 也会受影响；相反基于 context 状态的函数也可以使用 object 的状态。</p>
+<p>对象可以分成两大类，<strong>regular objects</strong> 和 <strong>container objects</strong>。  </p>
+<ul>
+<li>regular object 包括 <em>Buffer Objects，Query Objects，Renderbuffer Objects，Sampler Objects，Texture Objects</em>。  </li>
+<li>container objects 包括 <em>Vertex Array Objects，Framebuffer Objects，Program Pipeline Objects，Transform Feedback Objects</em>。</li>
+</ul>
+<h2 id="对象创建"><a href="#对象创建" class="headerlink" title="对象创建"></a>对象创建</h2><p>使用 <code>glGen*</code> 函数给对象生成一个名字，就是创建对象了。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> glGen*(GLsizei n, GLuint *objects);</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>@param n</code> 表示要创建的对象个数；</li>
+<li><code>@param objects</code> 表示对象的地址，如果只创建一个对象，则传这个对象的地址，如果创建多个，则传数组的首地址。</li>
+</ul>
+<p>对象创建成功会给对象分配一个名字，也就是对象的唯一 ID，这是一个 32 位无符号整型，用于标识这个对象。另外，整数 0 这个名字用于空对象，给对象分配名字时是从 1 开始的。</p>
+<h2 id="对象销毁"><a href="#对象销毁" class="headerlink" title="对象销毁"></a>对象销毁</h2><p>使用 <code>glDelete*</code> 可以销毁一个或多个对象，参数同创建对象一样。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> glDelete*(GLsizei n, <span class="keyword">const</span> GLuint *objects);</span><br></pre></td></tr></table></figure>
+<p>关于对象销毁有几点要注意的：</p>
+<ul>
+<li>如果对象已经绑定到 GL Context ，则对象销毁后会自动解绑；但如果对象附加到另一个对象上，则这种附加关系不会解除；</li>
+<li>对象被 delete 之后并不会立即删除，它的名字还可以使用，但请不要用。</li>
+</ul>
+<h2 id="对象绑定"><a href="#对象绑定" class="headerlink" title="对象绑定"></a>对象绑定</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> glBind*(GLenum target, GLuint object);</span><br></pre></td></tr></table></figure>
+<p>这个函数用于把对象绑定到 GL Context。OpenGL 是无法直接操作 GL Object 的，只能操作 GL Context，所以必须先把对象绑定到上下文，绑定的时候会指定一个类型，有些对象可以绑定为多个类型，比如一个 <code>buffer obejct</code> 可以绑定为 <code>array buffer，index buffer，pixel buffer，transform buffer</code> 或者其它。</p>
+<ul>
+<li><code>@param target</code> 指明了对象要绑定的类型；</li>
+<li><code>@param object</code> 要绑定的对象。</li>
+</ul>
+<h1 id="VAO-amp-amp-VBO"><a href="#VAO-amp-amp-VBO" class="headerlink" title="VAO &amp;&amp; VBO"></a>VAO &amp;&amp; VBO</h1><p>我们知道了 OpenGL 是一个状态机，使用 object 来保存数据和状态，通过绑定到 context，将 object 的状态和 context 的状态关联起来，然后使用 context 的状态进行渲染。绘制图形的时候需要两个最基础的对象 <code>VBO</code> 和 <code>VAO</code>。</p>
+<p><code>VBO</code>，即 <code>Vertex Buffer Object</code>，顶点缓冲对象，用于在缓存区保存顶点数据。<code>VBO</code> 对象创建后要给其填充数据。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glBufferData(GL_ARRAY_BUFFER, <span class="keyword">sizeof</span>(vertices), vertices, GL_STATIC_DRAW);</span><br></pre></td></tr></table></figure>
+<p><code>VAO</code> 即 <code>Vertex Array Object</code>，顶点数组对象（亦或叫顶点属性对象），它不保存顶点数据，而是保存了顶点数据的格式和所需 buffer 对象的引用。</p>
+<p>顶点的每一个状态属性都是可以开启和关闭的，只有开启的顶点属性在绘制的时候才会生效。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">glEnableVertexAttribArray</span><span class="params">(GLuint index)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">glDisableVertexAttribArray</span><span class="params">(GLuint index)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>为了让 <code>VAO</code> 能使用 <code>VBO</code> 的数据，我们需要告诉 OpenGL 编号为 index 的顶点属性使用当前绑定 <code>VBO</code> 的哪个数据。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glVertexAttribPointer(index, size, type, normalized, stride, pointer);</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>index</code> 是第几个属性，像顶点的第 0 个属性就是位置；</li>
+<li><code>size</code> 指定构成属性的分量个数，像顶点位置由 <code>x,y,z</code> 三个分量组成，所以 <code>size = 3</code>；</li>
+<li><code>type</code> 指定属性值的类型，像顶点位置为 <code>GL_FLOAT</code>；</li>
+<li><code>normalized</code> 指属性在管线中使用之前是否需要被规范化；</li>
+<li><code>stride</code> 指两个相同属性值之间间隔的字节数，只有一个属性时可以直接填 0，但实际上步长不会为 0 的；</li>
+<li><code>pointer</code> 指存储数据的偏移值，只有一个属性时偏移值为 0。</li>
+</ul>
+<h1 id="绘制点"><a href="#绘制点" class="headerlink" title="绘制点"></a>绘制点</h1><p>直接先上代码。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//定义数据</span></span><br><span class="line">	GLfloat vertices[] = &#123;</span><br><span class="line">		<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,</span><br><span class="line">		<span class="number">0</span>, <span class="number">0.5f</span>, <span class="number">0</span>,</span><br><span class="line">		<span class="number">0.1f</span>, <span class="number">0.5f</span>, <span class="number">0</span>,</span><br><span class="line">		<span class="number">0.1f</span>, <span class="number">0</span>, <span class="number">0</span>,</span><br><span class="line">		<span class="number">0.2f</span>, <span class="number">0</span>, <span class="number">0</span>,</span><br><span class="line">		<span class="number">0.2f</span>, <span class="number">0.5f</span>, <span class="number">0</span>,</span><br><span class="line">		<span class="number">0.3f</span>, <span class="number">0.5f</span>, <span class="number">0</span>,</span><br><span class="line">		<span class="number">0.3f</span>, <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">	&#125;;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//创建 buffer 对象</span></span><br><span class="line">	GLuint VBO;</span><br><span class="line">	glGenBuffers(<span class="number">1</span>, &amp;VBO);</span><br><span class="line">	<span class="comment">//绑定 buffer 对象</span></span><br><span class="line">	glBindBuffer(GL_ARRAY_BUFFER, VBO);</span><br><span class="line">	<span class="comment">//填充 buffer 的值</span></span><br><span class="line">	glBufferData(GL_ARRAY_BUFFER, <span class="keyword">sizeof</span>(vertices), vertices, GL_STATIC_DRAW);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//开启顶点属性</span></span><br><span class="line">	glEnableVertexAttribArray(<span class="number">0</span>);</span><br><span class="line">	<span class="comment">//指定属性使用的 buffer</span></span><br><span class="line">	glVertexAttribPointer(<span class="number">0</span>, <span class="number">3</span>, GL_FLOAT, GL_FALSE, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 设置顶点大小</span></span><br><span class="line">	glPointSize(<span class="number">15</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">display</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	glClear(GL_COLOR_BUFFER_BIT);</span><br><span class="line">	glDrawArrays(GL_POINTS, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">	glutSwapBuffers();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>初始化</strong></p>
+<ul>
+<li>创建顶点缓冲对象 VBO，把 VBO 绑定到 GL Context，给顶点缓冲对象填充顶点数据。</li>
+<li>创建顶点数组对象 VAO，把 VAO 绑定到 GL Context，链接顶点属性，即指定顶点哪个属性用 VBO 中的哪个数值，最后顶点属性必须开启才能生效。<blockquote>
+<p>这里省略 VAO 的创建和绑定，使用了全局的默认 VAO 对象，详细的后面再讲。</p>
+</blockquote>
+</li>
+<li><code>glPointSize</code> 设置顶点大小，也就是一个点占用几个像素。</li>
+</ul>
+<p><strong>绘制</strong></p>
+<p>绘制的时候是基于 GL Context 状态，初始化的时候已经将 VBO 和 VAO 绑定到 GL Context 了，所以在绘制函数中直接绘制即可。</p>
+<p><code>glDrawArrays</code> 绘制基础图元：</p>
+<ul>
+<li>参数一指定要绘制的图元类型，<code>GL_POINTS</code> 就是绘制点；</li>
+<li>参数二指定从第几个顶点数据开始使用；</li>
+<li>参数三指定要使用几个顶点的数据，在这里也就是绘制几个点。</li>
+</ul>
+<p>这里我们从第 0 个点开始绘制，只绘制一个点，结果如下。</p>
+<p><img src="/image/opengl/draw/point.png" alt="绘制一个点"></p>
+<h1 id="绘制线段"><a href="#绘制线段" class="headerlink" title="绘制线段"></a>绘制线段</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	glLineWidth(<span class="number">2</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">display</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	glDrawArrays(GL_LINES, <span class="number">0</span>, <span class="number">8</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先使用 <code>glLineWidth</code> 设置线段宽度。</p>
+<p>绘制线段只需要把图元类型设置为线段即可，<code>0</code> 仍表示从第 0 个顶点开始绘制，<code>8</code> 表示使用 8 个顶点，注意不是指绘制 8 条线，无论绘制什么图元，这个参数的意思都是使用的顶点个数。</p>
+<p>不同于点的单一，线段是由多个顶点确定的图元，那顶点之间的组合方式就有多种，<code>GL_LINES, GL_LINES_ADJACENCY, GL_LINE_STRIP, GL_LINE_STRIP_ADJACENCY, GL_LINE_LOOP</code> 都表示线段。下图很好地解释了各种图元是怎么绘制的。</p>
+<p><img src="/image/opengl/draw/primitive.png" alt="primitive"></p>
+<h2 id="GL-LINES"><a href="#GL-LINES" class="headerlink" title="GL_LINES"></a>GL_LINES</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glDrawArrays(GL_LINES, <span class="number">0</span>, <span class="number">8</span>);</span><br></pre></td></tr></table></figure>
+<p><code>GL_LINES</code> 按照顺序两点确定一条线段，0~1 为线段一，2~3 为线段二，依次类推。</p>
+<p>两个顶点确定一条线段，这里使用了 8 个顶点，所以绘制了 4 条线段。OpenGL 会尽可能地满足我们的绘制要求，如果满足不了就向下兼容。比如我们要求使用 4 个顶点，但 VBO 中只有 3 个顶点，那 OpenGL 就只会绘制一条线段。再比如我们要求使用 5 个顶点，OpenGL 也只会绘制两条线段。</p>
+<p><img src="/image/opengl/draw/line.png" alt="线段"></p>
+<h2 id="GL-LINES-ADJACENCY"><a href="#GL-LINES-ADJACENCY" class="headerlink" title="GL_LINES_ADJACENCY"></a>GL_LINES_ADJACENCY</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glDrawArrays(GL_LINES_ADJACENCY, <span class="number">0</span>, <span class="number">8</span>);</span><br></pre></td></tr></table></figure>
+<p>adjacency 为“邻接”的意思，<code>GL_LINES_ADJACENCY</code> 给每条线段两端留一个邻接点，也就是线段两端各跳过一个点不使用。具体的就是 1~2 为线段一，0,3 这两个顶点跳过；5~6 为线段二，4,7 这两个点跳过。</p>
+<p><img src="/image/opengl/draw/line-adj.png" alt="邻接线段"></p>
+<h2 id="GL-LINE-STRIP"><a href="#GL-LINE-STRIP" class="headerlink" title="GL_LINE_STRIP"></a>GL_LINE_STRIP</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glDrawArrays(GL_LINE_STRIP, <span class="number">0</span>, <span class="number">8</span>);</span><br></pre></td></tr></table></figure>
+<p><code>strip</code> 是长条的意思，也就是一个挨着一个，<code>GL_LINE_STRIP</code> 绘制连续的线段，下一条线段的起点为上一条线段的终点。具体的就是 0~1 为线段一，1~2 为线段二，2~3 为线段三，依次类推。</p>
+<p><img src="/image/opengl/draw/line-strip.png" alt="线段条"></p>
+<h2 id="GL-LINE-STRIP-ADJACENCY"><a href="#GL-LINE-STRIP-ADJACENCY" class="headerlink" title="GL_LINE_STRIP_ADJACENCY"></a>GL_LINE_STRIP_ADJACENCY</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glDrawArrays(GL_LINE_STRIP_ADJACENCY, <span class="number">0</span>, <span class="number">8</span>);</span><br></pre></td></tr></table></figure>
+<p><code>adjacency</code> 要跳过一个点，而 <code>strip</code> 则重复一个点，两个矛盾体结合的结果是 <code>strip</code> 占主导地位，最终的结果是只跳过首尾两个点，中间仍是线段条的形式。具体的就是 1~2 为线段一，2~3 为线段二，5~6 为最后一条线段，0,7 这两个点跳过。</p>
+<p><img src="/image/opengl/draw/line-strip-adj.png" alt="邻接线段条"></p>
+<h2 id="GL-LINE-LOOP"><a href="#GL-LINE-LOOP" class="headerlink" title="GL_LINE_LOOP"></a>GL_LINE_LOOP</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glDrawArrays(GL_LINE_LOOP, <span class="number">0</span>, <span class="number">8</span>);</span><br></pre></td></tr></table></figure>
+<p><code>GL_LINE_LOOP</code> 在 <code>GL_LINE_STRIP</code> 的基础上把首尾两个点连接起来，形成一个循环。</p>
+<p><img src="/image/opengl/draw/line-loop.png" alt="循环线段条"></p>
+<h1 id="绘制三角形"><a href="#绘制三角形" class="headerlink" title="绘制三角形"></a>绘制三角形</h1><p>三角形是组成其它复杂图元的基础图元，一个三角形就是一个网格，其它图元，无论是矩形，圆形，还是复杂的三维模型，都可以拆分成一个个三角形。</p>
+<p>同顶点一样，三角形中顶点的组合方式也有多种，<code>GL_TRIANGLE_STRIP, GL_TRIANGLE_FAN, GL_TRIANGLES, GL_TRIANGLE_STRIP_ADJACENCY, GL_TRIANGLES_ADJACENCY</code> 都表示三角形。</p>
+<h2 id="GL-TRIANGLES"><a href="#GL-TRIANGLES" class="headerlink" title="GL_TRIANGLES"></a>GL_TRIANGLES</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glDrawArrays(GL_TRIANGLES, <span class="number">0</span>, <span class="number">8</span>);</span><br></pre></td></tr></table></figure>
+<p>这是基础的三角形，按顺序三个点确定一个三角形，0~2 为三角形一，3~5 为三角形二，6,7 只有两点不足以形成三角形，舍去。</p>
+<p><img src="/image/opengl/draw/triangle.png" alt="三角形"></p>
+<h2 id="GL-TRIANGLE-STRIP"><a href="#GL-TRIANGLE-STRIP" class="headerlink" title="GL_TRIANGLE_STRIP"></a>GL_TRIANGLE_STRIP</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);</span><br><span class="line">glDrawArrays(GL_TRIANGLE_STRIP, <span class="number">0</span>, <span class="number">4</span>);</span><br></pre></td></tr></table></figure>
+<p>“三角形条”每次都保留上个三角形的最后两个点，再增加一个点组成新的三角形。0,1,2 为三角形一，1,2,3 为三角形二。</p>
+<p>为了更容易看出效果，使用 <code>glPolygonMode</code> 设置多边形的显示模式为线条。</p>
+<p><img src="/image/opengl/draw/triangle-strip.png" alt="三角形条"></p>
+<h2 id="GL-TRIANGLE-FAN"><a href="#GL-TRIANGLE-FAN" class="headerlink" title="GL_TRIANGLE_FAN"></a>GL_TRIANGLE_FAN</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glDrawArrays(GL_TRIANGLE_FAN, <span class="number">0</span>, <span class="number">4</span>);</span><br></pre></td></tr></table></figure>
+<p>与“三角形条”不同的是，“三角形扇”每次保留的是首个点和上个三角形的最后一个点。0,1,2 为三角形一，0,2,3 为三角形二。</p>
+<p><img src="/image/opengl/draw/triangle-fan.png" alt="三角形扇"></p>
+<p>“三角形条” 和 “三角形扇”的用途非常广泛，合理利用能节省很多顶点空间。特别是<code>GL_TRIANGLE_FAN</code>，上面的例子就是使用 4 个顶点来绘制一个矩形，如果使用 <code>GL_TRIANGLES</code> 来绘制，则需要 6 个顶点。<code>GL_TRIANGLE_FAN</code> 还可以用来绘制圆形，看下面例子。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">GLfloat vertices[<span class="number">114</span>] = &#123; <span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span> &#125;;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= <span class="number">36</span>; i++ )</span><br><span class="line">&#123;</span><br><span class="line">	vertices[(i + <span class="number">1</span>) * <span class="number">3</span>] = <span class="built_in">cos</span>(i * <span class="number">10</span> * <span class="number">3.14</span> / <span class="number">180</span>) * <span class="number">0.8</span>;</span><br><span class="line">	vertices[(i + <span class="number">1</span>) * <span class="number">3</span> + <span class="number">1</span>] = <span class="built_in">sin</span>(i * <span class="number">10</span> * <span class="number">3.14</span> / <span class="number">180</span>) * <span class="number">0.8</span>;</span><br><span class="line">	vertices[(i + <span class="number">1</span>) * <span class="number">3</span> + <span class="number">2</span>] = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">glDrawArrays(GL_TRIANGLE_FAN, <span class="number">0</span>, <span class="number">38</span>);</span><br></pre></td></tr></table></figure>
+<p>以 38 个点绘制 36 个三角形，组成一个比较粗糙的圆形。</p>
+<p><img src="/image/opengl/draw/circle.png" alt="圆形"></p>
+<p><code>GL_TRIANGLE_ADJACENCY</code> 和 <code>GL_TRIANGLE_STRIP_ADJACENCY</code> 应用相对来讲不是很广，也比较复杂，这里就不演示了，绘制方法可以参考上面的图。</p>
+<h1 id="绘制四边形"><a href="#绘制四边形" class="headerlink" title="绘制四边形"></a>绘制四边形</h1><p>虽然三角形能组成任意图形，OpenGL 还是提供了直接绘制四边形的方法。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glDrawArrays(GL_QUADS, <span class="number">0</span>, <span class="number">4</span>);</span><br></pre></td></tr></table></figure>
+<p><img src="/image/opengl/draw/quad.png" alt="四边形"></p>
+<p>对比这个四边形和上面的四边形，上面的四边形是由两个三角形组成的，中间有一条斜，而这个四边形直接由四个顶点组成。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/OpenGL/" rel="tag"># OpenGL</a>
+          
+            <a href="/tags/OpenGL-绘制图元/" rel="tag"># OpenGL 绘制图元</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/10/coder/vs/" rel="next" title="Visual Studio 环境配置">
+                <i class="fa fa-chevron-left"></i> Visual Studio 环境配置
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/10/14/coder/vim/" rel="prev" title="Vim 简明教程">
+                Vim 简明教程 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="林锦新" />
+            
+              <p class="site-author-name" itemprop="name">林锦新</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/linjinxin" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#使用-glew"><span class="nav-number">1.</span> <span class="nav-text">使用 glew</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GL-context"><span class="nav-number">2.</span> <span class="nav-text">GL context</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GL-objects"><span class="nav-number">3.</span> <span class="nav-text">GL objects</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#对象创建"><span class="nav-number">3.1.</span> <span class="nav-text">对象创建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象销毁"><span class="nav-number">3.2.</span> <span class="nav-text">对象销毁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象绑定"><span class="nav-number">3.3.</span> <span class="nav-text">对象绑定</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#VAO-amp-amp-VBO"><span class="nav-number">4.</span> <span class="nav-text">VAO &amp;&amp; VBO</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#绘制点"><span class="nav-number">5.</span> <span class="nav-text">绘制点</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#绘制线段"><span class="nav-number">6.</span> <span class="nav-text">绘制线段</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#GL-LINES"><span class="nav-number">6.1.</span> <span class="nav-text">GL_LINES</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GL-LINES-ADJACENCY"><span class="nav-number">6.2.</span> <span class="nav-text">GL_LINES_ADJACENCY</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GL-LINE-STRIP"><span class="nav-number">6.3.</span> <span class="nav-text">GL_LINE_STRIP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GL-LINE-STRIP-ADJACENCY"><span class="nav-number">6.4.</span> <span class="nav-text">GL_LINE_STRIP_ADJACENCY</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GL-LINE-LOOP"><span class="nav-number">6.5.</span> <span class="nav-text">GL_LINE_LOOP</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#绘制三角形"><span class="nav-number">7.</span> <span class="nav-text">绘制三角形</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#GL-TRIANGLES"><span class="nav-number">7.1.</span> <span class="nav-text">GL_TRIANGLES</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GL-TRIANGLE-STRIP"><span class="nav-number">7.2.</span> <span class="nav-text">GL_TRIANGLE_STRIP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GL-TRIANGLE-FAN"><span class="nav-number">7.3.</span> <span class="nav-text">GL_TRIANGLE_FAN</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#绘制四边形"><span class="nav-number">8.</span> <span class="nav-text">绘制四边形</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">林锦新</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+
+  <script src='https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js'></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({theme: 'forest'});
+    }
+  </script>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://ljx.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://linjinxin.com/2019/09/20/opengl/draw/';
+          this.page.identifier = '2019/09/20/opengl/draw/';
+          this.page.title = '【OpenGL】绘制基础图元';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://ljx.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

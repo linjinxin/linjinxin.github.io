@@ -111,21 +111,21 @@
 
 
 
-<meta name="description" content="你要相信，机会不来是因为你还没准备好。  git 基础 文件状态： 未跟踪(untracked)、已提交(committed)、已修改(modified)、已暂存(staged) 工作区域： 远程仓库、工作目录、暂存区域   在工作目录修改文件 –&amp;gt; committed ot modified 将文件快照放入暂存区域 –&amp;gt; modified to staged 提交更新 –&amp;gt;">
+<meta name="description" content="Git 是一个免费的开源分布式版本控制系统，旨在快速高效地处理从小型到大型项目的所有内容。Git 的使用要比 Svn 复杂很多，Git 命令也很多，这里做个简单记录，方便查阅。">
 <meta name="keywords" content="Git,Git 用法">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Git 基础用法">
 <meta property="og:url" content="http://linjinxin.com/2019/09/05/coder/git/index.html">
 <meta property="og:site_name" content="B.C. Studio">
-<meta property="og:description" content="你要相信，机会不来是因为你还没准备好。  git 基础 文件状态： 未跟踪(untracked)、已提交(committed)、已修改(modified)、已暂存(staged) 工作区域： 远程仓库、工作目录、暂存区域   在工作目录修改文件 –&amp;gt; committed ot modified 将文件快照放入暂存区域 –&amp;gt; modified to staged 提交更新 –&amp;gt;">
+<meta property="og:description" content="Git 是一个免费的开源分布式版本控制系统，旨在快速高效地处理从小型到大型项目的所有内容。Git 的使用要比 Svn 复杂很多，Git 命令也很多，这里做个简单记录，方便查阅。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://linjinxin.com/image/coder/git/merge-fast-forward.png">
 <meta property="og:image" content="http://linjinxin.com/image/coder/git/merge-advanced.png">
 <meta property="og:image" content="http://linjinxin.com/image/coder/git/after-merge.png">
-<meta property="og:updated_time" content="2019-11-11T02:06:30.060Z">
+<meta property="og:updated_time" content="2019-12-27T06:46:58.075Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Git 基础用法">
-<meta name="twitter:description" content="你要相信，机会不来是因为你还没准备好。  git 基础 文件状态： 未跟踪(untracked)、已提交(committed)、已修改(modified)、已暂存(staged) 工作区域： 远程仓库、工作目录、暂存区域   在工作目录修改文件 –&amp;gt; committed ot modified 将文件快照放入暂存区域 –&amp;gt; modified to staged 提交更新 –&amp;gt;">
+<meta name="twitter:description" content="Git 是一个免费的开源分布式版本控制系统，旨在快速高效地处理从小型到大型项目的所有内容。Git 的使用要比 Svn 复杂很多，Git 命令也很多，这里做个简单记录，方便查阅。">
 <meta name="twitter:image" content="http://linjinxin.com/image/coder/git/merge-fast-forward.png">
 
 
@@ -409,8 +409,10 @@
       
 
       
-        <blockquote>
-<p><em>你要相信，机会不来是因为你还没准备好。</em></p>
+        <p>Git 是一个免费的开源分布式版本控制系统，旨在快速高效地处理从小型到大型项目的所有内容。Git 的使用要比 Svn 复杂很多，Git 命令也很多，这里做个简单记录，方便查阅。</p>
+<a id="more"></a>
+<blockquote>
+<p>你要相信，机会不来是因为你还没准备好。</p>
 </blockquote>
 <h1 id="git-基础"><a href="#git-基础" class="headerlink" title="git 基础"></a>git 基础</h1><ul>
 <li>文件状态： <strong>未跟踪(untracked)、已提交(committed)、已修改(modified)、已暂存(staged)</strong></li>
@@ -436,7 +438,7 @@
 <p>如果不指定作用域，则默认为 <code>--local</code>。</p>
 <h3 id="删除配置项"><a href="#删除配置项" class="headerlink" title="删除配置项"></a>删除配置项</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global --<span class="built_in">unset</span> user.name</span><br><span class="line">git config --<span class="built_in">local</span> --<span class="built_in">unset</span> user.email</span><br></pre></td></tr></table></figure>
 <p>如果不指定作用域，则默认为 <code>--local</code>。</p>
-<h2 id="短命令"><a href="#短命令" class="headerlink" title="短命令"></a>短命令</h2><p>有些命令经常使用，如果可以使用更短的命令代替会方便很多，git alias 提供了给命令设置别名的功能，打开系统配置文件 <code>/etc/gitconfig</code>，添加下面的配置项，</p>
+<h2 id="短命令"><a href="#短命令" class="headerlink" title="短命令"></a>短命令</h2><p>有些命令经常使用，如果可以使用更短的命令代替会方便很多，git alias 提供了给命令设置别名的功能，打开系统配置文件 <code>/etc/gitconfig</code>，添加下面的配置项。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[alias]</span><br><span class="line">co = checkout</span><br><span class="line">st = status</span><br><span class="line">ci = commit</span><br><span class="line">br = branch</span><br><span class="line">bm = branch -m</span><br><span class="line">bd = branch -d </span><br><span class="line">cb = checkout -b</span><br><span class="line">df = diff</span><br><span class="line">ls = log --stat</span><br><span class="line">lp = log -p</span><br><span class="line">plo = pull origin</span><br><span class="line">pho = push origin</span><br></pre></td></tr></table></figure>
 <h2 id="忽略文件"><a href="#忽略文件" class="headerlink" title="忽略文件"></a>忽略文件</h2><p>在 <code>.gitignore</code> 中指定哪些文件不需要跟踪。空目录默认不会跟踪。</p>
 <ul>
@@ -777,7 +779,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -799,7 +801,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -862,7 +864,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

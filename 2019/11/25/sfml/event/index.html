@@ -111,18 +111,18 @@
 
 
 
-<meta name="description" content="**  事件SFML 的事件使用联合(union)实现，即所有类型的事件使用同一个数据类型，使用的时候先通过 event.type 拿到事件类型，再去拿相应的成员数据，去拿不属于当前事件类型的成员数据是非法的，通常会拿到一个随机值或非法值。事件由窗口的 pollEvent 或 waitEvent 生产，通常是在主循环中迭代处理每一个事件。下面是一个典型的事件循环， 123456789101112">
+<meta name="description" content="SFML 能够处理 PC 程序的几乎所有事件，包括窗口关闭事件、窗口大小改变事件、失去/获得焦点事件、字符输入事件、键盘事件、鼠标事件、游戏手柄事件。另外，对象全局的输入设备，比如鼠标、键盘、游戏手柄，SFML 还提供对应的静态类，用于获取设备的各个状态，能够实现事件无法很好实现的功能。">
 <meta name="keywords" content="sfml,sfml 事件管理">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【SFML】事件管理">
 <meta property="og:url" content="http://linjinxin.com/2019/11/25/sfml/event/index.html">
 <meta property="og:site_name" content="B.C. Studio">
-<meta property="og:description" content="**  事件SFML 的事件使用联合(union)实现，即所有类型的事件使用同一个数据类型，使用的时候先通过 event.type 拿到事件类型，再去拿相应的成员数据，去拿不属于当前事件类型的成员数据是非法的，通常会拿到一个随机值或非法值。事件由窗口的 pollEvent 或 waitEvent 生产，通常是在主循环中迭代处理每一个事件。下面是一个典型的事件循环， 123456789101112">
+<meta property="og:description" content="SFML 能够处理 PC 程序的几乎所有事件，包括窗口关闭事件、窗口大小改变事件、失去/获得焦点事件、字符输入事件、键盘事件、鼠标事件、游戏手柄事件。另外，对象全局的输入设备，比如鼠标、键盘、游戏手柄，SFML 还提供对应的静态类，用于获取设备的各个状态，能够实现事件无法很好实现的功能。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-12-21T11:01:25.211Z">
+<meta property="og:updated_time" content="2020-01-02T04:22:33.141Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【SFML】事件管理">
-<meta name="twitter:description" content="**  事件SFML 的事件使用联合(union)实现，即所有类型的事件使用同一个数据类型，使用的时候先通过 event.type 拿到事件类型，再去拿相应的成员数据，去拿不属于当前事件类型的成员数据是非法的，通常会拿到一个随机值或非法值。事件由窗口的 pollEvent 或 waitEvent 生产，通常是在主循环中迭代处理每一个事件。下面是一个典型的事件循环， 123456789101112">
+<meta name="twitter:description" content="SFML 能够处理 PC 程序的几乎所有事件，包括窗口关闭事件、窗口大小改变事件、失去/获得焦点事件、字符输入事件、键盘事件、鼠标事件、游戏手柄事件。另外，对象全局的输入设备，比如鼠标、键盘、游戏手柄，SFML 还提供对应的静态类，用于获取设备的各个状态，能够实现事件无法很好实现的功能。">
 
 
 
@@ -405,8 +405,9 @@
       
 
       
-        <blockquote>
-<p>**</p>
+        <p>SFML 能够处理 PC 程序的几乎所有事件，包括窗口关闭事件、窗口大小改变事件、失去/获得焦点事件、字符输入事件、键盘事件、鼠标事件、游戏手柄事件。另外，对象全局的输入设备，比如鼠标、键盘、游戏手柄，SFML 还提供对应的静态类，用于获取设备的各个状态，能够实现事件无法很好实现的功能。</p>
+<a id="more"></a>
+<blockquote>
 </blockquote>
 <h1 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h1><p>SFML 的事件使用联合(union)实现，即所有类型的事件使用同一个数据类型，使用的时候先通过 <code>event.type</code> 拿到事件类型，再去拿相应的成员数据，去拿不属于当前事件类型的成员数据是非法的，通常会拿到一个随机值或非法值。事件由窗口的 <code>pollEvent</code> 或 <code>waitEvent</code> 生产，通常是在主循环中迭代处理每一个事件。下面是一个典型的事件循环，</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dealEvent</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    sf::Event evt;</span><br><span class="line">    <span class="keyword">while</span> (window.pollEvent(evt))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">switch</span> (evt.type)</span><br><span class="line">        &#123;</span><br><span class="line">        <span class="keyword">case</span> sf::Event::Closed:</span><br><span class="line">            window.close();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> sf::Event::Resized:</span><br><span class="line">            window.display();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> sf::Event::KeyPressed:</span><br><span class="line">            <span class="comment">//...</span></span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="comment">//...</span></span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -603,7 +604,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -625,7 +626,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -688,7 +689,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

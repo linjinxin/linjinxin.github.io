@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Times New Roman:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="OpenGL,OpenGL Shader,OpenGL 着色器,Shader," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="GLSL 是一门类 C 语言，为图形计算量身定制，包含了很多针对向量和矩阵运行的特性。GLSL 的变量分为输入变量、输出变量和 uniform 变量，除了基础的数据类型外，还定义了向量、矩阵等常用数据类型。">
+<meta name="keywords" content="OpenGL,OpenGL Shader,OpenGL 着色器,Shader">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【OpenGL】着色器（二）">
+<meta property="og:url" content="http://linjinxin.com/2019/12/27/opengl/shader2/index.html">
+<meta property="og:site_name" content="B.C. Studio">
+<meta property="og:description" content="GLSL 是一门类 C 语言，为图形计算量身定制，包含了很多针对向量和矩阵运行的特性。GLSL 的变量分为输入变量、输出变量和 uniform 变量，除了基础的数据类型外，还定义了向量、矩阵等常用数据类型。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://learnopengl-cn.readthedocs.io/zh/latest/img/01/05/vertex_attribute_pointer_interleaved.png">
+<meta property="og:image" content="http://linjinxin.com/image/opengl/shader2/triangle.png">
+<meta property="og:updated_time" content="2020-01-02T04:22:33.141Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【OpenGL】着色器（二）">
+<meta name="twitter:description" content="GLSL 是一门类 C 语言，为图形计算量身定制，包含了很多针对向量和矩阵运行的特性。GLSL 的变量分为输入变量、输出变量和 uniform 变量，除了基础的数据类型外，还定义了向量、矩阵等常用数据类型。">
+<meta name="twitter:image" content="https://learnopengl-cn.readthedocs.io/zh/latest/img/01/05/vertex_attribute_pointer_interleaved.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://linjinxin.com/2019/12/27/opengl/shader2/"/>
+
+
+
+
+
+  <title>【OpenGL】着色器（二） | B.C. Studio</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">B.C. Studio</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">Learning the ocean without boundaries</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linjinxin.com/2019/12/27/opengl/shader2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="林锦新">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="B.C. Studio">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">【OpenGL】着色器（二）</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-27T15:41:02+08:00">
+                2019-12-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenGL/" itemprop="url" rel="index">
+                    <span itemprop="name">OpenGL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/12/27/opengl/shader2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/12/27/opengl/shader2/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>GLSL 是一门类 C 语言，为图形计算量身定制，包含了很多针对向量和矩阵运行的特性。GLSL 的变量分为输入变量、输出变量和 uniform 变量，除了基础的数据类型外，还定义了向量、矩阵等常用数据类型。</p>
+<a id="more"></a>
+<blockquote>
+</blockquote>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>上一节我们已经简单地介绍了着色器的用法，这一节以更广泛的方法详细讲解着色器。shader 是运行在 GPU 上的小程序，为图形渲染管线的某个特定部分而运行。shader 只是一种把输入转为输出的程序。每个 shader 都是独立的小程序，它们之间不能无师自通通信，只能通过输入和输出进行沟通，即渲染管线的上一阶段把输出作为下一阶段的输入。</p>
+<h1 id="GLSL"><a href="#GLSL" class="headerlink" title="GLSL"></a>GLSL</h1><p>OpenGL 着色器是使用一种叫 GLSL 的类 C 语言编写的，GLSL 是为图形计算量身定制的，它包含了很多针对向量和矩阵操作的特性。</p>
+<p>GLSL 总是要先声明版本，接着是定义输入和输出变量，然后定义 uniform 变量，最后在 main 函数里把输入变量转换成输出变量，一个典型的着色器有下面的结构。</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#version version_number core</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">in</span> type in_var</span><br><span class="line"><span class="keyword">out</span> type out_var</span><br><span class="line"></span><br><span class="line"><span class="keyword">uniform</span> type u_var</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> main()</span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">    out_var = ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>顶点着色器的输入变量叫顶点属性，我们能声明的顶点属性个数是有限的，一般由硬件决定；OpenGL 保证了至少有 16 个 4 分量的顶点属性可用，硬件支持的个数可能不只 16 个，可以在程序中查询。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GLint max_vertex_attrib;</span><br><span class="line">glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &amp;max_vertex_attrib);</span><br></pre></td></tr></table></figure>
+<h1 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h1><p>GLSL 的数据类型除了基本数据类型 int, uint, bool, float, double 这五种之外，还有向量和矩阵，矩阵后面再讲，先说一下向量。向量有一维、二维、三维和四维，其分量类型可以是前面五种基本数据类型之一，总结起来就是：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>vecn</td>
+<td>n 维 float 型向量</td>
+</tr>
+<tr>
+<td>dvecn</td>
+<td>n 维 double 型向量</td>
+</tr>
+<tr>
+<td>ivecn</td>
+<td>n 维 int 型向量</td>
+</tr>
+<tr>
+<td>uvecn</td>
+<td>n 维 unsigned int 型向量</td>
+</tr>
+<tr>
+<td>bvecn</td>
+<td>n 维 bool 型向量</td>
+</tr>
+</tbody>
+</table>
+<p>我们可以使用 <code>vec.x vec.y vec.z vec.w</code> 来获取向量的分量，如果是颜色的话也可以使用 <code>rgba</code> 来获取分量，贴图使用 <code>stpq</code> 来获取分量。</p>
+<p>向量可以进行很灵活的重组，即根据一个向量生成另一个向量。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vec2 v1 = vec2(<span class="number">0.5f</span>, <span class="number">0.7f</span>);</span><br><span class="line">vec4 v2 = v1.xyyx;</span><br><span class="line">vec3 v3 = v2.ywx;</span><br><span class="line">vec4 v4 = v1.xxxx + v3.xyzw;</span><br><span class="line">vec4 v5 = vec4(v1, <span class="number">0.0f</span>, <span class="number">0.0f</span>);</span><br><span class="line">vec4 v6 = vec4(<span class="number">1.0f</span>, v3);</span><br></pre></td></tr></table></figure>
+<h1 id="输入变量与输出变量"><a href="#输入变量与输出变量" class="headerlink" title="输入变量与输出变量"></a>输入变量与输出变量</h1><p>每个着色器都可以使用 in 关键字来声明输入变量，使用 out 关键字来声明输出变量。着色器会从渲染管线的上阶段接收数据作为输入变量的值，并把输出变量的值给下一阶段使用。如果要使上阶段着色器的输出变量能给下阶段的着色器使用，则上阶段的输出变量和下阶段的输入变量在类型和名称上必须一样。</p>
+<p>我们修改之前的着色器，在顶点着色器中声明一个输出变量颜色；然后在片段着色器中声明一个输入变量颜色，接收从顶点着色器传过来的颜色值。</p>
+<p>vertex.vs</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#version 440 core</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">layout</span> (<span class="keyword">location</span> = <span class="number">0</span>) <span class="keyword">in</span> <span class="type">vec3</span> position;</span><br><span class="line"><span class="keyword">out</span> <span class="type">vec4</span> vertexColor;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> main()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">gl_Position</span> = <span class="type">vec4</span>(position.x, position.y, position.z, <span class="number">1.0</span>);</span><br><span class="line">    vertexColor = <span class="type">vec4</span>(<span class="number">1.0</span>f, <span class="number">0.2</span>f, <span class="number">0.3</span>f, <span class="number">1.0</span>f);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>fragment.fs</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#version 440 core</span></span><br><span class="line"><span class="keyword">in</span> <span class="type">vec4</span> vertexColor;</span><br><span class="line"><span class="keyword">out</span> <span class="type">vec4</span> color;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> main()</span><br><span class="line">&#123;</span><br><span class="line">	color = vertexColor;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="uniform"><a href="#uniform" class="headerlink" title="uniform"></a>uniform</h1><p>uniform 是 CPU 中的应用程序向 GPU 中的着色器发送数据的一种方式，即在着色器中使用 uniform 声明一个变量，然后在应用程序中赋值。uniform 是全局的，这意味着每个着色器都能使用，所以每个着色器中的 uniform 变量必须是独一无二的。另外，uniform 变量一旦赋值就一直保持着这个值，直到被重置或更新。</p>
+<p>接下来修改片段着色器，使用 uniform 变量来声明颜色。</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#version 440 core</span></span><br><span class="line"><span class="keyword">out</span> <span class="type">vec4</span> color;</span><br><span class="line"></span><br><span class="line"><span class="keyword">uniform</span> <span class="type">vec4</span> ourColor;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> main()</span><br><span class="line">&#123;</span><br><span class="line">	color = ourColor;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后在 C++ 代码中给这个变量赋值。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">GLint uniformLocation = glGetUniformLocation(shaderProgram, <span class="string">"ourColor"</span>);</span><br><span class="line">glUseProgram(shaderProgram);</span><br><span class="line">glUniform4f(uniformLocation, <span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>);</span><br><span class="line">glDrawArrays(GL_TRIANGLES, <span class="number">0</span>, <span class="number">3</span>);</span><br></pre></td></tr></table></figure>
+<p>使用 <code>glGetUniformLocation</code> 来获取 uniform 变量的位置，这条语句可以在使用着色器程序之前；然后使用 glUniform 来设置 uniform 变量的值，这条语句必须在使用着色器程序之后。</p>
+<p><code>glUniform</code> 有多个形式的函数，这里设置颜色需要 4 个 float 分量，所以使用 <code>glUniform4f</code>，也可以使用向量的形式，即 <code>glUniform4fv</code>，另外还有 <code>glUniform1f, glUniform2d, glUniform2uiv</code> 等等。上面的例子也可以这样写。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GLfloat color[<span class="number">4</span>] = &#123; <span class="number">0.0f</span>,<span class="number">1.0f</span>,<span class="number">0.0f</span>,<span class="number">1.0f</span> &#125;;</span><br><span class="line">glUniform4fv(uniformLocation, <span class="number">1</span>, color);</span><br></pre></td></tr></table></figure>
+<p>我们可以让 uniform 变量的值随时间不断不变，从而达到三角形颜色不断变化的效果。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GLint second = clock();</span><br><span class="line">glUniform4f(uniformLocation, <span class="built_in">cos</span>(second) / <span class="number">2</span> + <span class="number">0.5</span>, <span class="built_in">sin</span>(second) / <span class="number">2</span> + <span class="number">0.5</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>);</span><br></pre></td></tr></table></figure>
+<p>你可能看不到变化的效果，那是因为 glut 主回调函数并不是每帧调用一次的，而是当窗口有变化需要重新绘制时才调用，比如窗口大小改变时。可以使用 <code>glutPostRedisplay</code> 函数来立即刷新，在主回调函数绘制完成后调用该函数，就可以实现每一帧重绘。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">glClear(GL_COLOR_BUFFER_BIT);</span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line">glutSwapBuffers();</span><br><span class="line">glutPostRedisplay();</span><br></pre></td></tr></table></figure>
+<h1 id="使用更多属性"><a href="#使用更多属性" class="headerlink" title="使用更多属性"></a>使用更多属性</h1><p>到目前为止，我们定义的顶点数组就只有位置一个属性，接下来我们扩展数据，在顶点缓冲区中保存顶点位置和颜色两个属性。</p>
+<p>首先，定义顶点数据。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">GLuint VBO;</span><br><span class="line">glGenBuffers(<span class="number">1</span>, &amp;VBO);</span><br><span class="line">glBindBuffer(GL_ARRAY_BUFFER, VBO);</span><br><span class="line"></span><br><span class="line">GLfloat vertices[][<span class="number">6</span>] =</span><br><span class="line">&#123;</span><br><span class="line">	&#123; <span class="number">-0.5f</span>, <span class="number">-0.5f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span> &#125;,</span><br><span class="line">	&#123; <span class="number">0.5f</span>, <span class="number">-0.5f</span>, <span class="number">0.0f</span> , <span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span> &#125;,</span><br><span class="line">	&#123; <span class="number">0.0f</span>,  <span class="number">0.5f</span>, <span class="number">0.0f</span> , <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span> &#125;</span><br><span class="line">&#125;;</span><br><span class="line">glBufferData(GL_ARRAY_BUFFER, <span class="keyword">sizeof</span>(vertices), vertices, GL_STATIC_DRAW);</span><br></pre></td></tr></table></figure>
+<p>现在顶点颜色作为顶点属性保存在顶点缓冲区中，所以我们要修改我们的着色器，顶点颜色从顶点属性传给顶点着色器，再由顶点着色器传给片段着色器。</p>
+<p>顶点着色器如下。</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#version 440 core</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">layout</span> (<span class="keyword">location</span> = <span class="number">0</span>) <span class="keyword">in</span> <span class="type">vec3</span> position;</span><br><span class="line"><span class="keyword">layout</span> (<span class="keyword">location</span> = <span class="number">1</span>) <span class="keyword">in</span> <span class="type">vec3</span> color;</span><br><span class="line"></span><br><span class="line"><span class="keyword">out</span> <span class="type">vec4</span> vertexColor;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> main()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">gl_Position</span> = <span class="type">vec4</span>(position.x, position.y, position.z, <span class="number">1.0</span>);</span><br><span class="line">	vertexColor = <span class="type">vec4</span>(color, <span class="number">1.0</span>f);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>片段着色器如下。</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#version 440 core</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">in</span> <span class="type">vec4</span> vertexColor;</span><br><span class="line"><span class="keyword">out</span> <span class="type">vec4</span> fragmentColor;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> main()</span><br><span class="line">&#123;</span><br><span class="line">	fragmentColor = vertexColor;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接下来就是链接顶点属性指针了，现在有位置和颜色两个属性，先看一下顶点数据在缓冲区中的存储方式。</p>
+<p><img src="https://learnopengl-cn.readthedocs.io/zh/latest/img/01/05/vertex_attribute_pointer_interleaved.png" alt="顶点数据"></p>
+<p>现在两个属性，六个分量，所以每个属性值的步长都是 <code>6 * sizeof(GL_FLOAT)</code>，位置属性在属性组的起始处，所以偏移值为 0，颜色属性在位置属性之后，偏移值为 <code>3 * sizeof(GL_FLOAT)</code>。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glVertexAttribPointer(<span class="number">0</span>, <span class="number">3</span>, GL_FLOAT, GL_FALSE, <span class="number">6</span> * <span class="keyword">sizeof</span>(GL_FLOAT), (GLvoid*)<span class="number">0</span>);</span><br><span class="line">glVertexAttribPointer(<span class="number">1</span>, <span class="number">3</span>, GL_FLOAT, GL_FALSE, <span class="number">6</span> * <span class="keyword">sizeof</span>(GL_FLOAT), (GLvoid*)(<span class="number">3</span> * <span class="keyword">sizeof</span>(GL_FLOAT)));</span><br></pre></td></tr></table></figure>
+<p>注意最后一个参数的类型是 void，所以要进行类型转换；最后不要忘记开启第二个属性，否则会看不到颜色效果，完整的绘制部分代码。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">render</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	glClear(GL_COLOR_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">	glVertexAttribPointer(<span class="number">0</span>, <span class="number">3</span>, GL_FLOAT, GL_FALSE, <span class="number">6</span> * <span class="keyword">sizeof</span>(GL_FLOAT), (GLvoid*)<span class="number">0</span>);</span><br><span class="line">	glVertexAttribPointer(<span class="number">1</span>, <span class="number">3</span>, GL_FLOAT, GL_FALSE, <span class="number">6</span> * <span class="keyword">sizeof</span>(GL_FLOAT), (GLvoid*)(<span class="number">3</span> * <span class="keyword">sizeof</span>(GL_FLOAT)));</span><br><span class="line"></span><br><span class="line">	glEnableVertexAttribArray(<span class="number">0</span>);</span><br><span class="line">	glEnableVertexAttribArray(<span class="number">1</span>);</span><br><span class="line">	glUseProgram(shaderProgram);</span><br><span class="line">	glDrawArrays(GL_TRIANGLES, <span class="number">0</span>, <span class="number">3</span>);</span><br><span class="line">	glDisableVertexAttribArray(<span class="number">0</span>);</span><br><span class="line">	glDisableVertexAttribArray(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">	glutSwapBuffers();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行效果如下，之所以会有渐变效果，是因为片段着色器会进行片段插值。</p>
+<p><img src="/image/opengl/shader2/triangle.png" alt="shader"></p>
+<h1 id="封装自己的着色器类"><a href="#封装自己的着色器类" class="headerlink" title="封装自己的着色器类"></a>封装自己的着色器类</h1><p>创建着色器、编译着色器，链接着色器是一个复杂又单一的过程，每个程序都要重复这个过程是很痛苦的，我们可以封装一个 Shader 类，专门用于管理着色器。</p>
+<p>Shader.h<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> __SHADER_H__</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __SHADER_H__</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;GL\glew.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;GL\glut.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;math3d.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fstream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sstream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Shader</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	Shader() &#123;&#125;</span><br><span class="line">	~Shader() &#123;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">init</span><span class="params">(GLchar* vertexPath, GLchar* fragmentPath)</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">use</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	GLuint glProgram;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> SUCCESS = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> COMPILE_ERROR = <span class="number">2</span>;</span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> LINK_ERROR = <span class="number">3</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">// !__SHADER_H__</span></span></span><br></pre></td></tr></table></figure></p>
+<p>Shader.cpp<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"Shader.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> Shader::init(GLchar * vertexPath, GLchar * fragmentPath)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">//创建着色器</span></span><br><span class="line">	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);</span><br><span class="line">	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//读取着色器文件</span></span><br><span class="line">	ifstream vertexFile, fragmentFile;</span><br><span class="line">	<span class="built_in">stringstream</span> vertexBuffer, fragmentBuffer;</span><br><span class="line">	<span class="built_in">string</span> vertexString, fragmentString;</span><br><span class="line">	<span class="keyword">const</span> GLchar* vertexSource;</span><br><span class="line">	<span class="keyword">const</span> GLchar* fragmentSource;</span><br><span class="line"></span><br><span class="line">	vertexFile.open(vertexPath, ios::in);</span><br><span class="line">	vertexBuffer &lt;&lt; vertexFile.rdbuf();</span><br><span class="line">	vertexString = vertexBuffer.str();</span><br><span class="line">	vertexSource = vertexString.c_str();</span><br><span class="line"></span><br><span class="line">	fragmentFile.open(fragmentPath, ios::in);</span><br><span class="line">	fragmentBuffer &lt;&lt; fragmentFile.rdbuf();</span><br><span class="line">	fragmentString = fragmentBuffer.str();</span><br><span class="line">	fragmentSource = fragmentString.c_str();</span><br><span class="line"></span><br><span class="line">	<span class="comment">//编译着色器</span></span><br><span class="line">	GLint status;</span><br><span class="line">	GLchar errInfo[<span class="number">512</span>];</span><br><span class="line">	glShaderSource(vertexShader, <span class="number">1</span>, &amp;vertexSource, <span class="literal">NULL</span>);</span><br><span class="line">	glCompileShader(vertexShader);</span><br><span class="line">	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &amp;status);</span><br><span class="line">	<span class="keyword">if</span> (!status)</span><br><span class="line">	&#123;</span><br><span class="line">		glGetShaderInfoLog(vertexShader, <span class="number">512</span>, <span class="literal">NULL</span>, errInfo);</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; errInfo &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		<span class="keyword">return</span> Shader::COMPILE_ERROR;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	glShaderSource(fragmentShader, <span class="number">1</span>, &amp;fragmentSource, <span class="literal">NULL</span>);</span><br><span class="line">	glCompileShader(fragmentShader);</span><br><span class="line">	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &amp;status);</span><br><span class="line">	<span class="keyword">if</span> (!status)</span><br><span class="line">	&#123;</span><br><span class="line">		glGetShaderInfoLog(vertexShader, <span class="number">512</span>, <span class="literal">NULL</span>, errInfo);</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; errInfo &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		<span class="keyword">return</span> Shader::COMPILE_ERROR;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//创建着色器程序</span></span><br><span class="line">	<span class="keyword">this</span>-&gt;glProgram = glCreateProgram();</span><br><span class="line"></span><br><span class="line">	<span class="comment">//链接着色器</span></span><br><span class="line">	glAttachShader(glProgram, vertexShader);</span><br><span class="line">	glAttachShader(glProgram, fragmentShader);</span><br><span class="line">	glLinkProgram(glProgram);</span><br><span class="line">	glGetProgramiv(glProgram, GL_LINK_STATUS, &amp;status);</span><br><span class="line">	<span class="keyword">if</span> (!status)</span><br><span class="line">	&#123;</span><br><span class="line">		glGetProgramInfoLog(glProgram, <span class="number">512</span>, <span class="literal">NULL</span>, errInfo);</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; errInfo &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		<span class="keyword">return</span> Shader::LINK_ERROR;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//删除着色器</span></span><br><span class="line">	glDeleteShader(vertexShader);</span><br><span class="line">	glDeleteShader(fragmentShader);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> Shader::SUCCESS;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> Shader::use()</span><br><span class="line">&#123;</span><br><span class="line">	glUseProgram(glProgram);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>使用的时候调用 init  函数，把顶点着色器文件路径和片段着色器文件路径传进去，会生成一个着色器程序对象。然后渲染的时候调用 use 函数即可。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"Shader.h"</span></span></span><br><span class="line"></span><br><span class="line">Shader shader;</span><br><span class="line">GLfloat vertices[][<span class="number">6</span>] =</span><br><span class="line">&#123;</span><br><span class="line">	&#123; <span class="number">-0.5f</span>, <span class="number">-0.5f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span> &#125;,</span><br><span class="line">	&#123; <span class="number">0.5f</span>, <span class="number">-0.5f</span>, <span class="number">0.0f</span> , <span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span> &#125;,</span><br><span class="line">	&#123; <span class="number">0.0f</span>,  <span class="number">0.5f</span>, <span class="number">0.0f</span> , <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span> &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">init</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">render</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>** argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	glutInit(&amp;argc, argv);</span><br><span class="line">	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);</span><br><span class="line"></span><br><span class="line">	glutInitWindowPosition(<span class="number">400</span>, <span class="number">400</span>);</span><br><span class="line">	glutInitWindowSize(<span class="number">400</span>, <span class="number">400</span>);</span><br><span class="line">	glutCreateWindow(argv[<span class="number">0</span>]);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (GLEW_OK != glewInit())</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"glew init failded!"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (!init())</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"init shader failed!"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	glClearColor(<span class="number">0.2f</span>, <span class="number">0.3f</span>, <span class="number">0.5f</span>, <span class="number">1.0f</span>);</span><br><span class="line">	glutDisplayFunc(render);</span><br><span class="line">	glutMainLoop();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">init</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	GLuint VBO;</span><br><span class="line">	glGenBuffers(<span class="number">1</span>, &amp;VBO);</span><br><span class="line">	glBindBuffer(GL_ARRAY_BUFFER, VBO);</span><br><span class="line">	glBufferData(GL_ARRAY_BUFFER, <span class="keyword">sizeof</span>(vertices), vertices, GL_STATIC_DRAW);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (shader.init(<span class="string">"vertex.vs"</span>, <span class="string">"fragment.fs"</span>) != Shader::SUCCESS)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">render</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	glClear(GL_COLOR_BUFFER_BIT);</span><br><span class="line">	</span><br><span class="line">	glVertexAttribPointer(<span class="number">0</span>, <span class="number">3</span>, GL_FLOAT, GL_FALSE, <span class="number">6</span> * <span class="keyword">sizeof</span>(GL_FLOAT), (GLvoid*)<span class="number">0</span>);</span><br><span class="line">	glVertexAttribPointer(<span class="number">1</span>, <span class="number">3</span>, GL_FLOAT, GL_FALSE, <span class="number">6</span> * <span class="keyword">sizeof</span>(GL_FLOAT), (GLvoid*)(<span class="number">3</span> * <span class="keyword">sizeof</span>(GL_FLOAT)));</span><br><span class="line"></span><br><span class="line">	glEnableVertexAttribArray(<span class="number">0</span>);</span><br><span class="line">	glEnableVertexAttribArray(<span class="number">1</span>);</span><br><span class="line">	shader.use();</span><br><span class="line">	glDrawArrays(GL_TRIANGLES, <span class="number">0</span>, <span class="number">3</span>);</span><br><span class="line">	glDisableVertexAttribArray(<span class="number">0</span>);</span><br><span class="line">	glDisableVertexAttribArray(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">	glutSwapBuffers();</span><br><span class="line">	glutPostRedisplay();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/OpenGL/" rel="tag"># OpenGL</a>
+          
+            <a href="/tags/OpenGL-Shader/" rel="tag"># OpenGL Shader</a>
+          
+            <a href="/tags/OpenGL-着色器/" rel="tag"># OpenGL 着色器</a>
+          
+            <a href="/tags/Shader/" rel="tag"># Shader</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/12/27/opengl/shader1/" rel="next" title="【OpenGL】着色器（一）">
+                <i class="fa fa-chevron-left"></i> 【OpenGL】着色器（一）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/12/27/opengl/draw2/" rel="prev" title="【OpenGL】其它绘制方式">
+                【OpenGL】其它绘制方式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="林锦新" />
+            
+              <p class="site-author-name" itemprop="name">林锦新</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/linjinxin" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GLSL"><span class="nav-number">2.</span> <span class="nav-text">GLSL</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数据类型"><span class="nav-number">3.</span> <span class="nav-text">数据类型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#输入变量与输出变量"><span class="nav-number">4.</span> <span class="nav-text">输入变量与输出变量</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#uniform"><span class="nav-number">5.</span> <span class="nav-text">uniform</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用更多属性"><span class="nav-number">6.</span> <span class="nav-text">使用更多属性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#封装自己的着色器类"><span class="nav-number">7.</span> <span class="nav-text">封装自己的着色器类</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">林锦新</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+
+  <script src='https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js'></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({theme: 'forest'});
+    }
+  </script>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://ljx.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://linjinxin.com/2019/12/27/opengl/shader2/';
+          this.page.identifier = '2019/12/27/opengl/shader2/';
+          this.page.title = '【OpenGL】着色器（二）';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://ljx.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

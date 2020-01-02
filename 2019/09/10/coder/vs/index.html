@@ -111,13 +111,13 @@
 
 
 
-<meta name="description" content="链接库在 Windows 上开发 C++ 程序，需要 头文件 和 链接库，头文件大家都很熟，就是包含函数定义的 .h 文件，链接库就是编译好的代码库，供其它程序使用，分为 动态链接库 和 静态链接库。关于动态链接库和静态链接库的区别，简单来说，就是下面几点  静态链接库把所有指令都编译到 .lib 文件中。使用时要把 lib 文件和头文件包含到项目中，生成项目时地把静态链接库的所有指令链接到应用程">
+<meta name="description" content="理解动态链接库和静态链接库的区别，lib 文件，dll 文件和头文件的各自作用，Debug 版本 &amp;amp; Release 版本，32 位版本 &amp;amp; 64 位版本，让以后编写任何 C++ 程序都不再迷惘。">
 <meta name="keywords" content="Visual Studio,Visual Studio 环境配置,Windows 环境配置">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Visual Studio 环境配置">
 <meta property="og:url" content="http://linjinxin.com/2019/09/10/coder/vs/index.html">
 <meta property="og:site_name" content="B.C. Studio">
-<meta property="og:description" content="链接库在 Windows 上开发 C++ 程序，需要 头文件 和 链接库，头文件大家都很熟，就是包含函数定义的 .h 文件，链接库就是编译好的代码库，供其它程序使用，分为 动态链接库 和 静态链接库。关于动态链接库和静态链接库的区别，简单来说，就是下面几点  静态链接库把所有指令都编译到 .lib 文件中。使用时要把 lib 文件和头文件包含到项目中，生成项目时地把静态链接库的所有指令链接到应用程">
+<meta property="og:description" content="理解动态链接库和静态链接库的区别，lib 文件，dll 文件和头文件的各自作用，Debug 版本 &amp;amp; Release 版本，32 位版本 &amp;amp; 64 位版本，让以后编写任何 C++ 程序都不再迷惘。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://linjinxin.com/image/coder/vs/include.png">
 <meta property="og:image" content="http://linjinxin.com/image/coder/vs/lib-include.png">
@@ -125,10 +125,10 @@
 <meta property="og:image" content="http://linjinxin.com/image/coder/vs/platform-config.png">
 <meta property="og:image" content="http://linjinxin.com/image/coder/vs/platform-select.png">
 <meta property="og:image" content="http://linjinxin.com/image/coder/vs/all-platform.png">
-<meta property="og:updated_time" content="2019-09-21T02:31:24.726Z">
+<meta property="og:updated_time" content="2020-01-02T04:22:33.141Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Visual Studio 环境配置">
-<meta name="twitter:description" content="链接库在 Windows 上开发 C++ 程序，需要 头文件 和 链接库，头文件大家都很熟，就是包含函数定义的 .h 文件，链接库就是编译好的代码库，供其它程序使用，分为 动态链接库 和 静态链接库。关于动态链接库和静态链接库的区别，简单来说，就是下面几点  静态链接库把所有指令都编译到 .lib 文件中。使用时要把 lib 文件和头文件包含到项目中，生成项目时地把静态链接库的所有指令链接到应用程">
+<meta name="twitter:description" content="理解动态链接库和静态链接库的区别，lib 文件，dll 文件和头文件的各自作用，Debug 版本 &amp;amp; Release 版本，32 位版本 &amp;amp; 64 位版本，让以后编写任何 C++ 程序都不再迷惘。">
 <meta name="twitter:image" content="http://linjinxin.com/image/coder/vs/include.png">
 
 
@@ -412,7 +412,9 @@
       
 
       
-        <h1 id="链接库"><a href="#链接库" class="headerlink" title="链接库"></a>链接库</h1><p>在 Windows 上开发 C++ 程序，需要 <strong>头文件</strong> 和 <strong>链接库</strong>，头文件大家都很熟，就是包含函数定义的 <code>.h</code> 文件，链接库就是编译好的代码库，供其它程序使用，分为 <strong>动态链接库</strong> 和 <strong>静态链接库</strong>。关于动态链接库和静态链接库的区别，简单来说，就是下面几点</p>
+        <p>理解动态链接库和静态链接库的区别，lib 文件，dll 文件和头文件的各自作用，Debug 版本 &amp; Release 版本，32 位版本 &amp; 64 位版本，让以后编写任何 C++ 程序都不再迷惘。</p>
+<a id="more"></a>
+<h1 id="链接库"><a href="#链接库" class="headerlink" title="链接库"></a>链接库</h1><p>在 Windows 上开发 C++ 程序，需要 <strong>头文件</strong> 和 <strong>链接库</strong>，头文件大家都很熟，就是包含函数定义的 <code>.h</code> 文件，链接库就是编译好的代码库，供其它程序使用，分为 <strong>动态链接库</strong> 和 <strong>静态链接库</strong>。关于动态链接库和静态链接库的区别，简单来说，就是下面几点</p>
 <ol>
 <li>静态链接库把所有指令都编译到 <code>.lib</code> 文件中。使用时要把 lib 文件和头文件包含到项目中，生成项目时地把静态链接库的所有指令链接到应用程序 exe 中去；因此应用程序会比较大，但不需要其它库的支持，单独一个 exe 文件就能执行；</li>
 <li>动态链接库把所有指令都编译到 <code>.dll</code> 文件中去，另外还会生成一个导入动态库的 lib 文件，这个文件只定义了 dll 文件中哪个指令可以使用，并不包含实际的指令内容，使用时要把 lib 文件和头文件包含到项目中，生成项目时不会把指令链接到 exe 文件中，而是在执行时动态从 dll 文件中加载，因此应用程序会比较小，但必须把 dll 文件放在可执行文件所在目录或程序能找到的系统目录；</li>
@@ -500,8 +502,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/09/20/opengl/point/" rel="prev" title="【OpenGL】绘制一个点">
-                【OpenGL】绘制一个点 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/09/20/opengl/draw/" rel="prev" title="【OpenGL】绘制基础图元">
+                【OpenGL】绘制基础图元 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -593,7 +595,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -615,7 +617,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -678,7 +680,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

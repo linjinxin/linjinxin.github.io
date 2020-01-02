@@ -111,18 +111,18 @@
 
 
 
-<meta name="description" content="**  SchedulerScheduler 是定义在 Director 下的全局定时器，在任何地方任何时候都可以通过导演类来取得定时器实例指针。 1Scheduler *scheduler = Director::getInstance()-&amp;gt;getScheduler(); Scheuler 提供以下接口： 1234567891011121314151617181920212223242">
+<meta name="description" content="Cocos2d-x 3.x 由导演类维护一个全局的 Scheduler，由导演控制其刷新，在任何地方都可以通过导演来获取这个全局定时器的实例指针，当然也可以自己手动创建另一个定时器，但手动创建的定时器默认不会刷新，需要手动去刷新。">
 <meta name="keywords" content="cocos2dx scheduler,Scheduler,cocos2dx 定时器">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【Cocos2d-x】Cocos2d-x3.x 定时器 Scheduler 的用法">
 <meta property="og:url" content="http://linjinxin.com/2019/12/10/cocos2dx/scheduler/index.html">
 <meta property="og:site_name" content="B.C. Studio">
-<meta property="og:description" content="**  SchedulerScheduler 是定义在 Director 下的全局定时器，在任何地方任何时候都可以通过导演类来取得定时器实例指针。 1Scheduler *scheduler = Director::getInstance()-&amp;gt;getScheduler(); Scheuler 提供以下接口： 1234567891011121314151617181920212223242">
+<meta property="og:description" content="Cocos2d-x 3.x 由导演类维护一个全局的 Scheduler，由导演控制其刷新，在任何地方都可以通过导演来获取这个全局定时器的实例指针，当然也可以自己手动创建另一个定时器，但手动创建的定时器默认不会刷新，需要手动去刷新。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-12-14T11:56:20.352Z">
+<meta property="og:updated_time" content="2019-12-27T07:33:02.175Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【Cocos2d-x】Cocos2d-x3.x 定时器 Scheduler 的用法">
-<meta name="twitter:description" content="**  SchedulerScheduler 是定义在 Director 下的全局定时器，在任何地方任何时候都可以通过导演类来取得定时器实例指针。 1Scheduler *scheduler = Director::getInstance()-&amp;gt;getScheduler(); Scheuler 提供以下接口： 1234567891011121314151617181920212223242">
+<meta name="twitter:description" content="Cocos2d-x 3.x 由导演类维护一个全局的 Scheduler，由导演控制其刷新，在任何地方都可以通过导演来获取这个全局定时器的实例指针，当然也可以自己手动创建另一个定时器，但手动创建的定时器默认不会刷新，需要手动去刷新。">
 
 
 
@@ -405,8 +405,10 @@
       
 
       
-        <blockquote>
-<p>**</p>
+        <p>Cocos2d-x 3.x 由导演类维护一个全局的 Scheduler，由导演控制其刷新，在任何地方都可以通过导演来获取这个全局定时器的实例指针，当然也可以自己手动创建另一个定时器，但手动创建的定时器默认不会刷新，需要手动去刷新。</p>
+<a id="more"></a>
+<blockquote>
+<p>今日事今日毕，写文章有头就得有尾，任何时候都不要产生以后再完善的想法。</p>
 </blockquote>
 <h1 id="Scheduler"><a href="#Scheduler" class="headerlink" title="Scheduler"></a>Scheduler</h1><p><code>Scheduler</code> 是定义在 <code>Director</code> 下的全局定时器，在任何地方任何时候都可以通过导演类来取得定时器实例指针。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Scheduler *scheduler = Director::getInstance()-&gt;getScheduler();</span><br></pre></td></tr></table></figure>
@@ -534,6 +536,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2019/12/27/opengl/shader1/" rel="prev" title="【OpenGL】着色器（一）">
+                【OpenGL】着色器（一） <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -623,7 +629,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -645,7 +651,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -708,7 +714,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
