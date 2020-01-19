@@ -305,6 +305,440 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linjinxin.com/2020/01/02/opengl/coord/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="林锦新">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="B.C. Studio">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/01/02/opengl/coord/" itemprop="url">【OpenGL】坐标系统</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-01-02T15:22:09+08:00">
+                2020-01-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenGL/" itemprop="url" rel="index">
+                    <span itemprop="name">OpenGL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/01/02/opengl/coord/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2020/01/02/opengl/coord/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <a id="more"></a>
+<blockquote>
+</blockquote>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>为了计算方便，OpenGL 引入了五个坐标空间，每个空间都有其发挥作用的地方，这些坐标空间在 CPU 或顶点着色器中进行转换。顶点着色器运行之后，所有顶点位置被转换成标准化设备坐标，即在 -1.0~1.0 之间，超出这个范围的顶点将被裁剪掉。标准化坐标之后的顶点传入光栅器，由光栅器转换成屏幕坐标显示在屏幕上。</p>
+<h1 id="坐标空间"><a href="#坐标空间" class="headerlink" title="坐标空间"></a>坐标空间</h1><p><img src="https://learnopengl.com/img/getting-started/coordinate_systems.png" alt="五个坐标空间"></p>
+<p>OpenGL 共使用了五个坐标空间。</p>
+<ul>
+<li><strong>局部空间</strong>，又叫物体空间，局部坐标是相对于局部原点的坐标，也就是对象开始的坐标；这个原点可能是世界坐标的原点，也可能不是，比如导入一个模型的时候，这个模型制作时的原点很可能就不是世界坐标的原点；</li>
+<li><strong>世界空间</strong>，世界坐标是相对于世界原点的坐标，所有物体加入到场景之后都需要转换其局部坐标为世界坐标；</li>
+<li><strong>观察空间</strong>，又叫摄像机空间或视图空间，场景中的顶点可能会很多，渲染的时候只能渲染其中一部分，我们需要告诉 OpenGL 要渲染哪一部分的顶点，这是通过摄像机来实现的，它指定了从哪个方向来观察场景；这一过程也是将三维顶点数据转成二维的过程，即将世界空间中的顶点转换成摄像机观察空间；</li>
+<li><strong>裁剪空间</strong>，又叫投影空间，观察空间只是定义了摄像机的方向，要让 OpenGL 知道渲染区域，还需要定义摄像机的投影方式，即定义摄像机的参数，比如焦距、张角等（我不懂现实中的摄像机，这里只是随便举例），投影之后只有在摄像机视野之内的顶点会保留，其它顶点被裁剪；</li>
+<li><strong>屏幕空间</strong>，裁剪空间中的顶点就是标准化设备顶点，这些顶点经过片段着色器上色之后，传入光栅器，由光栅器转换成屏幕坐标。</li>
+</ul>
+<p>五个坐标空间，四次转换。将局部坐标转换成世界坐标的称为 <strong>模型矩阵(Model Matrix)</strong>，将世界坐标转换成视图坐标的称为 <strong>视图矩阵(View Matrix)</strong>，将视图坐标转换成裁剪坐标的称为 <strong>裁剪矩阵(Projectile Matrix)</strong>，将裁剪坐标转换成屏幕坐标的是 <strong>视口变换</strong>。</p>
+<p>模型矩阵、视图矩阵、裁剪矩阵合称为 <strong>MVP 矩阵</strong>，一般在顶点着色器中计算，由表示顶点位置的向量与三个矩阵进行连乘。</p>
+<p>视口变换发生在片段着色器，在代码中定义视口起点和大小，片段着色器会将标准化的坐标映射到视口上。</p>
+<h1 id="使用-glm"><a href="#使用-glm" class="headerlink" title="使用 glm"></a>使用 glm</h1><p>glm(OpenGL Mathematics) 是一个专门为 OpenGL 编写的数学库，这是一个只有头文件的库，下载之后添加到项目的 include 文件夹即可。</p>
+<p><a href="http://glm.g-truc.net/0.9.5/index.html" target="_blank" rel="noopener">glm</a> 作为一个数学库，有很多针对数学运算的实用方法，特别是针对向量和矩阵的计算，大多数实用功能都在下面三个头文件里。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;glm/glm.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;glm/gtc/matrix_transform.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;glm/gtc/type_ptr.hpp&gt;</span></span></span><br></pre></td></tr></table></figure>
+<p>所有东西都在命名空间 glm 下，创建一个向量或矩阵如下。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glm::vec3 v;</span><br><span class="line">glm::mat2 mat;</span><br></pre></td></tr></table></figure>
+<p>默认创建的向量是一个零向量，即向量长度为 0；默认创建的矩阵为单位矩阵，即只有对角线为 1，其它元素全为 0；上面两条语句等价于：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glm::<span class="function">vec3 <span class="title">v</span><span class="params">(<span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>)</span></span>;</span><br><span class="line">glm::<span class="function">mat2 <span class="title">mat</span><span class="params">(<span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>)</span></span>;</span><br></pre></td></tr></table></figure>
+<h1 id="模型矩阵"><a href="#模型矩阵" class="headerlink" title="模型矩阵"></a>模型矩阵</h1><p>模型矩阵用于将局部坐标转成世界坐标，世界坐标是以世界原点为参考的，而局部坐标则不一定，因此将物体放入场景后需要进行平移操作，使其以世界坐标为参考；另外物体可能以其局部空间进行旋转和缩放操作，因此放入场景之后可能还需要进行旋转或缩放操作。模型矩阵用于处理顶点的平移、缩放和旋转操作，模型矩阵可由多个矩阵连乘得到；要注意的是矩阵连乘运算是右结合的，因此如果想对物体先缩放再旋转最后平移，则 <code>Mat = Mat_transform * Mat_rotate * Mat_scale * Mat</code>，在 glm 中的实现如下。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">glm::mat4 mode;</span><br><span class="line">mode = glm::translate(mode, glm::vec3(<span class="number">10.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>));</span><br><span class="line">mode = glm::rotate(mode, glm::radians(<span class="number">45.0f</span>), glm::vec3(<span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>));</span><br><span class="line">mode = glm::scale(mode, glm::vec3(<span class="number">2.0f</span>, <span class="number">2.0f</span>, <span class="number">2.0f</span>));</span><br></pre></td></tr></table></figure>
+<p>使用 glm 是调用相应的变换函数，作用于源矩阵生成一个新的矩阵，这个过程是一个矩阵连乘的过程，上面的代码等价于。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">glm::mat4 mode, scaleMode, rotateMode, translateMode;</span><br><span class="line">scaleMode = glm::scale(scaleMode, glm::vec3(<span class="number">2.0f</span>, <span class="number">2.0f</span>, <span class="number">2.0f</span>));</span><br><span class="line">rotateMode = glm::rotate(rotateMode, glm::radians(<span class="number">90.0f</span>), glm::vec3(<span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>));</span><br><span class="line">translateMode = glm::translate(translateMode, glm::vec3(<span class="number">10.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>));</span><br><span class="line">mode = translateMode * rotateMode * scaleMode * mode;</span><br></pre></td></tr></table></figure>
+<p>所以这过程是先缩放，再旋转，最后平移，也就是说调用 translate，rotate 或 scale 函数进行矩阵变换时，最先调用的最后执行；一般 <em>缩放–&gt;旋转–&gt;平移</em> 是一个合理的顺序，因为缩放会对旋转和平移产生影响，如果先乘以旋转矩阵或平移矩阵，那么再乘以缩放矩阵的时候会让前两个矩阵的效果产生变化（乘上了一个比例）；同样的旋转会对平移产生影响，如果先乘以平移矩阵再乘以旋转矩阵，则旋转会对平移产生影响，执行平移操作时它的平移轴已经是旋转之后的轴了。</p>
+<h1 id="视图矩阵"><a href="#视图矩阵" class="headerlink" title="视图矩阵"></a>视图矩阵</h1><p>视图矩阵用于将世界坐标转换成视图坐标，通过模型矩阵我们可以将所有的局部坐标转换成世界坐标，场景中所有的顶点都统一了坐标，但是场景是无限大的，OpenGL 并不知道要渲染哪个区域内的顶点，所以我们需要告诉 OpenGL 一个视图区域，在这个视图内的顶点才会被渲染。</p>
+<p>视图矩阵可以通过平移操作得到，比如下面的代码。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glm::mat4 view;</span><br><span class="line">view = glm::translate(view, glm::vec3(<span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">-4.0f</span>));</span><br></pre></td></tr></table></figure>
+<p>顶点乘上变换矩阵之后再乘上这个矩阵，则所以顶点都会往 z 轴负方向，即往屏幕内平移 4 个单位，相当于将我们的眼睛往 z 轴正方向平移 4 个单位。这只是一种模拟视图的方式，真正的视图由摄像机决定，视图矩阵应该通过定义摄像机的位置和方向来生成。定义摄像机的位置，望向的目标位置和摄像机的上轴方向，通过这三个参数就可以确定摄像机的位置和方向以及摄像机的旋转角度，从而确定要渲染的视图区域。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glm::mat4 view = glm::lookAt(glm::vec3(<span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">4.0f</span>), glm::vec3(<span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>), glm::vec3(<span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>));</span><br></pre></td></tr></table></figure>
+<p>这句代码定义了一个摄像机，这个摄像机的位置在 (0,0,4) 处，望向 (0,0,0) 点，同时摄像机摆放的角度是向上的轴刚好与 y 轴重合。</p>
+<h1 id="投影矩阵"><a href="#投影矩阵" class="headerlink" title="投影矩阵"></a>投影矩阵</h1><p>视图矩阵定义的摄像机的位置、方向和摆放角度，基本上确定视图在哪个位置，看向哪个方向，似乎已经能够确定 OpenGL 要渲染的视图了，其实并不然。视图矩阵并不能确定要渲染的区域，我们可以想象场景中有一个摄像机，视图矩阵只是确定了摄像机的位置以及摄像机镜头的朝向，而没有定义摄像机的参数，比如摄像机的张角有多大，焦距是多少，还有最后成像的宽高比例。</p>
+<p>为了定义摄像机的参数，就需要一个投影矩阵，投影空间的作用就是定义一个平截头体，这个平截头体就是可渲染的区域。经过投影矩阵作用之后的坐标称为裁剪坐标，这是顶点着色器处理之后的最终坐标；之所以叫裁剪坐标，是因为经过投影矩阵作用之后的顶点坐标都被标准化在 <code>[-1.0,1.0]</code> 之间，超出这个范围的顶点都会被裁剪掉。</p>
+<p>投影有两种方式，正交投影和透视投影。正交投影是一种平行光照射的方式，没有透视效果，即远处的物体和近处的物体在渲染之后一样大。透视投影则能模拟我们眼睛看事件的效果，近大远小，有透视效果，是 3d 成像的基础。透视投影一般应用到 3d 游戏中，正交投影一般用在 2d 游戏或一些特殊工程中。</p>
+<p>正交投影与我们现实的视觉效果不符合，也不能算是摄像机投影的结果，而透视投影则可以通过一个虚拟的摄像机来表示。</p>
+<h2 id="正交投影"><a href="#正交投影" class="headerlink" title="正交投影"></a>正交投影</h2><p>正交投影其实没有摄像机的概念，通过定义一个长方体形状的平截头体来确定投影区域。</p>
+<p>通过 <code>glm::ortho</code> 函数来创建一个正交投影矩阵。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glm::mat4 view = glm::ortho(left, right, bottom, top, near, far);</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>@param left, right</code> 平截头体平面的左右边界；</li>
+<li><code>@param bottom, top</code> 平截头体平面的下上边界；</li>
+<li><code>@param near, far</code> 近平面、远平面的距离。</li>
+</ul>
+<p>只有在这个平截头体内的点才会被渲染，即 <code>x=[left,right], y=[bottom,top], z=[near,far]</code> 的点。</p>
+<p>在我们之前的例子中都没有定义投影矩阵，还是可以正常绘制图元，那是因为有下面这样一个默认的投影矩阵，我们之前绘制的点坐标都在 <code>[-1, 1]</code> 之间所以可以正常显示，如果超出这个范围，比如 <code>(0, 0, 2)</code>，z 坐标超出了投影区域，则这个点是显示不出来的。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glm::ortho(<span class="number">-1.0f</span>, <span class="number">1.0f</span>, <span class="number">-1.0f</span>, <span class="number">1.0f</span>, <span class="number">-1.0f</span>, <span class="number">1.0f</span>);</span><br></pre></td></tr></table></figure>
+<p>将顶点坐标乘以这个投影矩阵就可以将坐标标准化，标准化的 <code>x,y,z</code> 坐标都在 <code>[-1, 1]</code> 范围内的点才会保留，其余的点都被裁剪掉。至于投影矩阵怎么构建以及向量与矩阵的相乘是一个比较复杂的话题，这里不展开讲，想了解的可以看 <a href="">这篇文章</a>。</p>
+<p>关于近平面、远平面的定义要特别注意，它并不是简单的等于 <code>[near, far]</code>，而是在不同的坐标系下有不同的定义。</p>
+<p><strong>首先要说一下左手坐标系和右手坐标系，使 x 轴向右，y 轴向上，z 轴指向屏幕外即是右手坐标系，z 轴指向屏幕内则是左手坐标系。DirectX 使用的是左手坐标系，OpenGL 使用的是右手坐标系，要注意的是 OpenGL 标准化后的坐标也是左手坐标系，进行转换的正是投影矩阵。</strong></p>
+<p>如果没有定义视图矩阵，则默认的视图在世界原点，从屏幕外望向屏幕内，而 OpenGL 是右手坐标系，z 轴是从屏幕内指向屏幕外，z 轴方向正好与视图相反。所以在默认视图下，近平面和远平面的距离要取反，即 <code>[-near, -far]</code>。比如下面的例子，从世界原点往视图方向（即 z 轴负方向投影 6 的距离），只有 z 坐标在 <code>[0, -6]</code> 范围的点才会被渲染，而不是 <code>[0, 6]</code> 范围的点。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glm::ortho(<span class="number">-1.0f</span>, <span class="number">1.0f</span>, <span class="number">-1.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">6.0f</span>);</span><br></pre></td></tr></table></figure>
+<p>如果要渲染 z 坐标在 <code>[0, 6]</code> 范围的顶点，则需要将 far 置反，让其往 z 轴正方向投影，即：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glm::ortho(<span class="number">-1.0f</span>, <span class="number">1.0f</span>, <span class="number">-1.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">-6.0f</span>);</span><br></pre></td></tr></table></figure>
+<p>另外，near 的值也不一定是 0，也可以从其它地方开始投影，考虑下面四条语句。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">glm::ortho(<span class="number">-1.0f</span>, <span class="number">1.0f</span>, <span class="number">-1.0f</span>, <span class="number">1.0f</span>, <span class="number">0.1f</span>, <span class="number">0.6f</span>);</span><br><span class="line">glm::ortho(<span class="number">-1.0f</span>, <span class="number">1.0f</span>, <span class="number">-1.0f</span>, <span class="number">1.0f</span>, <span class="number">0.1f</span>, <span class="number">-0.6f</span>);</span><br><span class="line">glm::ortho(<span class="number">-1.0f</span>, <span class="number">1.0f</span>, <span class="number">-1.0f</span>, <span class="number">1.0f</span>, <span class="number">-0.1f</span>, <span class="number">0.6f</span>);</span><br><span class="line">glm::ortho(<span class="number">-1.0f</span>, <span class="number">1.0f</span>, <span class="number">-1.0f</span>, <span class="number">1.0f</span>, <span class="number">-0.1f</span>, <span class="number">-0.6f</span>);</span><br></pre></td></tr></table></figure>
+<p>这四条语句对应的可渲染 z 坐标范围分别为 <code>[-0.1, -0.6], [-0.1, 0.6], [0.1, -0.6], [0.1, 0.6]</code>，其实就是对 <code>near</code> 和 <code>far</code> 取相反数。这个范围最终会被标准化为 <code>[-1, 1]</code>，<code>near=-1, far=1</code>，跟哪个数字大没关系，比如第二条语句 <code>-0.1=-1, 0.6=1</code>，而第三条语句 <code>0.1=-1, -0.6=1</code>，总之第五个参数定义的是近平面，标准化后的坐标为 -1，第六个参数定义远平面，标准化后的坐标为 1。</p>
+<p>这是使用默认视图矩阵的情况，如果定义了视图矩阵，还要考虑视图矩阵的影响。视图矩阵移动了摄像机的位置，所以投影矩阵中的 near 不再是投影的起点；视图矩阵定义了投影的方向，所以近平面、远平面不再是简单的 <code>near, far</code>。</p>
+<p><strong>从摄像机位置开始，沿摄像机投影方向移动 near 个单位为其近平面，沿摄像机投影方向移动 far 个单位为远平面</strong>。在默认视图下，从世界原点往 z 轴负方向移动 near 个单位，确定近平面为 -near，往 z 轴负方向移动 far 个单位，确定远平面为 -far。</p>
+<p>通过下面例子看看在定义视图矩阵的情况下，如何确定平截头体的近平面和远平面，这里暂不考虑摄像机方向与 z 轴不平行的情况。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glm::mat4 view = glm::lookAt(glm::vec3(<span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">4.0f</span>), glm::vec3(<span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>), glm::vec3(<span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>));</span><br><span class="line">glm::mat4 projection = glm::ortho(<span class="number">-1.0f</span>, <span class="number">1.0f</span>, <span class="number">-1.0f</span>, <span class="number">1.0f</span>, <span class="number">4.0f</span>, <span class="number">3.6f</span>);</span><br></pre></td></tr></table></figure>
+<p>第一条语句定义视图从 <code>(0,0,4)</code> 望向 <code>(0,0,0)</code>，第二条语句了投影矩阵的 <code>near=4.0f, far=3.6f</code>，从 <code>(0,0,4)</code> 开始，往 z 轴负方向分别移动 4.0 个单位和 3.6 个单位，得到近平面和远平面 <code>[0, 0.4]</code>。</p>
+<p>再考虑一下视图从屏幕内望向屏幕外的情况：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glm::mat4 view = glm::lookAt(glm::vec3(<span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">-4.0f</span>), glm::vec3(<span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>), glm::vec3(<span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>));</span><br><span class="line">glm::mat4 projection = glm::ortho(<span class="number">-1.0f</span>, <span class="number">1.0f</span>, <span class="number">-1.0f</span>, <span class="number">1.0f</span>, <span class="number">4.0f</span>, <span class="number">3.6f</span>);</span><br></pre></td></tr></table></figure>
+<p>第一条语句定义视图从 <code>(0,0,-4)</code> 望向 <code>(0,0,0)</code>，第二条语句了投影矩阵的 <code>near=4.0f, far=3.6f</code>，从 <code>(0,0,-4)</code> 开始，往 z 轴正方向移动 4.0 个单位和 3.6 个单位，得到近平面和远平面 <code>[0, -0.4]</code>。</p>
+<h2 id="透视投影"><a href="#透视投影" class="headerlink" title="透视投影"></a>透视投影</h2><p>透视投影能模拟人的眼睛看到的真实效果，由于透视的原因，物体会显现近大远小的效果，平行线似乎会在很远处相交。透视投影矩阵不仅定义了平截头体，从而得到裁剪空间，还修改了每个顶点坐标的 w 值，离摄像机越远的顶点坐标 w 值越大，被转换到裁剪空间的坐标都会在 (-w,w) 之间。OpenGL 要求所有顶点的坐标标准化为 (-1.0,1.0)，所以坐标转换到裁剪空间会进行下面的处理。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">\left(</span><br><span class="line">\begin&#123;array&#125;&#123;cc&#125;</span><br><span class="line">x \\</span><br><span class="line">y \\</span><br><span class="line">z</span><br><span class="line">\end&#123;array&#125;</span><br><span class="line">\right)</span><br><span class="line">=</span><br><span class="line">\left(</span><br><span class="line">\begin&#123;array&#125;&#123;cc&#125;</span><br><span class="line">x/w \\</span><br><span class="line">y/w \\</span><br><span class="line">z/w</span><br><span class="line">\end&#123;array&#125;</span><br><span class="line">\right)</span><br></pre></td></tr></table></figure>
+<p>物体离摄像机越远，w 值越大，转换后的裁剪坐标就越小，所以离得远的物体看起来比较小；而正交投影的 w 值是一样的，所以远近的物体看起来一样大。</p>
+<p>透视投影矩阵在 glm 中的创建方法如下。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glm::mat4 projection = glm::perspective(glm::radians(<span class="number">45.0f</span>), <span class="number">1.0f</span> * width / height, <span class="number">1.0f</span>, <span class="number">4.5f</span>);</span><br></pre></td></tr></table></figure>
+<p>第一个参数定义摄像机的张角，一般设置 45 度是一个比较真实的视野效果，这里的参数需要传入一个弧度，所以使用 glm::radians 将角度转换成弧度；第二个参数是平截头体的宽高比；最后两个参数定义了平截头体的近平面和远平面，其作用和正交投影的平截头体一样，只有在近平面和远平面之间的顶点才会被渲染，毕竟我们不能要求 OpenGL 能渲染无限远的顶点，必须给定一个具体的范围。</p>
+<p>透视投影的近平面、远平面和正交投影还是有区别的，那就是透视投影的近平面必须在摄像机方向一侧，也就是说 near 值必须为正数，否则摄像机无法投影，而远平面则可以与摄像机方向同侧或反侧，如果在反侧，则投影的效果是反的。而正交投影的近平面之所以可以在反侧，是因为正交投影没有摄像机投影的概念，只是一个平截头体而已。</p>
+<h1 id="视口变换"><a href="#视口变换" class="headerlink" title="视口变换"></a>视口变换</h1><p>通过模型矩阵、视图矩阵和投影矩阵，我们已经能够将局部坐标转换成世界坐标，再转换成视图坐标，最后转换成裁剪坐标，裁剪坐标是顶点着色器最终生成的坐标，是标准化之后的坐标，超出标准范围的顶点都已经被裁剪掉；标准化设备坐标的范围为 (-1.0, 1.0)，视图坐标转成裁剪坐标之前会先得到一个平截头体范围，再让这个范围的值除以 w 分量，最终转换为 (-1.0, 1.0) 的标准设备范围；下面我们姑且将平截头体的坐标范围称为标准化范围（事实上真正的标准化范围一定是 -1.0~1.0，现在说的标准化范围是除以 w 分量之前的），这个范围是由投影矩阵决定的。</p>
+<p>如果是正交投影，标准化坐标范围为 (left, right)，(bottom, top)</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glm::mat4 projection = glm::ortho(<span class="number">-0.3f</span>, <span class="number">0.3f</span>, <span class="number">-0.2f</span>, <span class="number">0.2f</span>, <span class="number">0.1f</span>, <span class="number">100.0f</span>);</span><br></pre></td></tr></table></figure>
+<p>上面的代码得到的标准化坐标范围和成像的宽高比例如下。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">x \in (-0.3,0.3)</span><br><span class="line"></span><br><span class="line">y \in (-0.2,0.2)</span><br><span class="line"></span><br><span class="line">aspect = &#123;3 \over 2&#125;</span><br></pre></td></tr></table></figure>
+<p>如果是透视投影，对于 <code>glm::perspective(fov, aspect, near, far);</code>，可知其成像的宽高比例为 aspect，但其标准化坐标范围无法直接得到，必须经过计算，如下图所示</p>
+<p><img src="https://learnopengl.com/img/getting-started/perspective_frustum.png" alt="透视投影成像"></p>
+<p>已知摄像机位置与近平面之间的距离为 near，则由这个距离和视野角度 fov 就可以计算出近平面的 xy 坐标范围，同样可以计算出远平面的坐标范围，近平面和远平面的坐标范围是不一样的。</p>
+<p>得到标准化坐标范围之后，顶点着色器根据这个范围对所有顶点进行裁剪，得到最终的裁剪坐标，这是顶点计算的最终坐标，但不是最终显示的坐标，最终显示的坐标应该是屏幕上的像素坐标，所以还要将裁剪坐标转换为屏幕坐标，这一过程称为视口变换。视口变换由 glViewport 函数，其指定要将顶点渲染到屏幕的哪个区域，如果屏幕大小为 400x400</p>
+<p><strong>第一种情况，正交投影，投影到屏幕的局部</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glViewport(<span class="number">0</span>, <span class="number">0</span>, <span class="number">300</span>, <span class="number">200</span>);</span><br><span class="line">glm::mat4 projection = glm::ortho(<span class="number">-3.0f</span>, <span class="number">3.0f</span>, <span class="number">-2.0f</span>, <span class="number">2.0f</span>, <span class="number">0.1f</span>, <span class="number">100.0f</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">x \in (-0.3,0.3)</span><br><span class="line"></span><br><span class="line">y \in (-0.2,0.2)</span><br><span class="line"></span><br><span class="line">aspect = &#123;3 \over 2&#125;</span><br></pre></td></tr></table></figure>
+<p>这种情况 x 方向 -0.3 投影到屏幕的 0 像素位置，0.3 投影到屏幕的 300 像素位置，y 方向 -0.2 投影到屏幕的 0 像素位置，0.2 投影到屏幕的 200 像素位置，标准化坐标宽高比例和屏幕成像宽高比例一样，所以图像不会变形</p>
+<p><img src="http://img.blog.csdn.net/20171025205714595?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveGluZ3hpbm1hbm9uZw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="正交局部投影"></p>
+<p><strong>第二种情况，也是正交投影，投影到屏幕的局部</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glViewport(100, 200, 300, 200);</span><br><span class="line">glm::mat4 projection = glm::ortho(-3.0f, 3.0f, -2.0f, 2.0f, 0.1f, 100.0f);</span><br></pre></td></tr></table></figure>
+<p><img src="http://img.blog.csdn.net/20171025205738226?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveGluZ3hpbm1hbm9uZw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="正交局部投影"></p>
+<p><strong>第三种情况，正交投影，刚好投影到全屏幕</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glViewport(0, 0, 400, 400);</span><br><span class="line">glm::mat4 projection = glm::ortho(-3.0f, 3.0f, -2.0f, 2.0f, 0.1f, 100.0f);</span><br></pre></td></tr></table></figure></p>
+<p>这种情况 x 方向 -0.3 投影到屏幕的 0 像素位置，0.3 投影到屏幕的 400 像素位置，y 方向 -0.2 投影到屏幕的 0 像素位置，0.2 投影到屏幕的 400 像素位置，标准化坐标宽高比例为 1.5，而屏幕成像宽高比例为 1，虽然可以投影到全屏幕，但图像会变形</p>
+<p><img src="http://img.blog.csdn.net/20171025205756057?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveGluZ3hpbm1hbm9uZw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="正交全屏投影"></p>
+<p><strong>第四种情况，正交投影，投影到屏幕之外</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glViewport(0, 0, 600, 400);</span><br><span class="line">glm::mat4 projection = glm::ortho(-3.0f, 3.0f, -2.0f, 2.0f, 0.1f, 100.0f);</span><br></pre></td></tr></table></figure></p>
+<p>这种情况 x 方向 -0.3 投影到屏幕的 0 像素位置，0.3 投影到屏幕的 600 像素位置，y 方向 -0.2 投影到屏幕的 0 像素位置，0.2 投影到屏幕的 400 像素位置，标准化坐标宽高比例和屏幕成像宽高比例一样，所以图像不会变形；但是 x 方向会投影到 600 像素位置，而窗口宽度只有 400 像素，所以在标准化坐标范围内的顶点也可能无法在屏幕内看到</p>
+<p><img src="http://img.blog.csdn.net/20171025205959442?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveGluZ3hpbm1hbm9uZw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="正交全屏投影"></p>
+<p><strong>第五种情况，透视投影，相同比例，全屏投影</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glViewport(0, 0, 600, 400);</span><br><span class="line">glm::mat4 projection = glm::perspective(glm::radians(fov), 600.0f / 400.0f, 1.0f, 100.0f);</span><br></pre></td></tr></table></figure></p>
+<p>这种情况，标准化坐标宽高比例和屏幕成像宽高比例一样，所以图像不会变形，而视口的大小也刚好是屏幕的大小，所以刚好能够全屏投影</p>
+<p><img src="http://img.blog.csdn.net/20171025211641094?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveGluZ3hpbm1hbm9uZw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="透视全屏投影"></p>
+<p><strong>第六种情况，透视投影，相同比例，局部投影</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glViewport(0, 0,400, 400);</span><br><span class="line">glm::mat4 projection = glm::perspective(glm::radians(fov), 1.0f, 1.0f, 100.0f);</span><br></pre></td></tr></table></figure></p>
+<p>这种情况，标准化坐标宽高比例和屏幕成像宽高比例一样，所以图像不会变形，而视口的大小只是屏幕的一部分，所以只投影到屏幕的一部分</p>
+<p><img src="http://img.blog.csdn.net/20171025211702137?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveGluZ3hpbm1hbm9uZw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="透视局部投影"></p>
+<p><strong>第七种，透视投影，不同比例，全屏投影</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glViewport(0, 0, 600, 400);</span><br><span class="line">glm::mat4 projection = glm::perspective(glm::radians(fov), 1.0f, 1.0f, 100.0f);</span><br></pre></td></tr></table></figure></p>
+<p>这种情况，标准化坐标宽高比例和屏幕成像宽高比例不一样，所以图像会发生变形</p>
+<p><img src="http://img.blog.csdn.net/20171025211718638?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveGluZ3hpbm1hbm9uZw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="透视不等比例"></p>
+<p>列了这么多种情况，其实总结起来就两点</p>
+<ul>
+<li>第一，视口大小定义了投影到屏幕上的区域</li>
+<li>第二，标准化坐标的宽高比例和视口的宽高比例一样，则图像不会变形</li>
+</ul>
+<p>如果标准化坐标的宽高比例和屏幕的宽高比例不一致，则有两种处理方法。第一种，让两个比例变为一致，这就需要将让视口小于屏幕大小或者大于屏幕大小，视口小于屏幕则屏幕上会出现空白区域，视口大于屏幕则会有图像出现在屏幕外。第二种，保持两个比例不一致，则成像结果会发生变形。</p>
+<h1 id="进入-3D"><a href="#进入-3D" class="headerlink" title="进入 3D"></a>进入 3D</h1><p>通过对局部空间、世界、视图空间、裁剪空间、屏幕空间这五个坐标空间的理解，我们已经知道如何将一个三维顶点转换到屏幕上的一个像素，现在就可以正式进入 3D 的游戏世界了。接下来我们实现在屏幕上显示一个 3d 立方体的功能，首先定义立方体的 36 个顶点，可以直接从 <a href="https://learnopengl.com/code_viewer.php?code=getting-started/cube_vertices" target="_blank" rel="noopener">这里</a> 拿到这 36 个顶点数据，包括位置和纹理坐标。</p>
+<p>绑定顶点缓冲对象 VBO 和顶点数组对象 VAO，填充顶点缓冲数据和链接顶点属性，因为没有用到索引，所以不需要索引缓冲对象 EBO。再之后就是编译、链接着色器，生成着色器程序 Program，这两部分的内容前面讲过许多了，这里就省略代码不写了。最后在 display 函数中定义模型矩阵，视图矩阵和投影矩阵并设置到对应的 uniform 变量中去，绑定贴图对象，绑定 VAO，使用着色器程序，开始绘制。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">display</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">	GLint location = glGetUniformLocation(shader-&gt;getProgram(), <span class="string">"Texture"</span>);</span><br><span class="line">	texture-&gt;bind(location, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">	glm::mat4 model, view, projection;</span><br><span class="line">	model = glm::rotate(model, (GLfloat)glfwGetTime(), glm::vec3(<span class="number">1.0f</span>, <span class="number">0.3f</span>, <span class="number">0.5f</span>));</span><br><span class="line">	view = glm::lookAt(glm::vec3(<span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">4.0f</span>), glm::vec3(<span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>), glm::vec3(<span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>));</span><br><span class="line">	projection = glm::perspective(glm::radians(<span class="number">45.0f</span>), <span class="number">1.0f</span> * width / height, <span class="number">1.0f</span>, <span class="number">4.5f</span>);</span><br><span class="line"></span><br><span class="line">	location = glGetUniformLocation(shader-&gt;getProgram(), <span class="string">"view"</span>);</span><br><span class="line">	glUniformMatrix4fv(location, <span class="number">1</span>, GL_FALSE, glm::value_ptr(view));</span><br><span class="line">	location = glGetUniformLocation(shader-&gt;getProgram(), <span class="string">"projection"</span>);</span><br><span class="line">	glUniformMatrix4fv(location, <span class="number">1</span>, GL_FALSE, glm::value_ptr(projection));</span><br><span class="line">	location = glGetUniformLocation(shader-&gt;getProgram(), <span class="string">"model"</span>);</span><br><span class="line">	glUniformMatrix4fv(location, <span class="number">1</span>, GL_FALSE, glm::value_ptr(model));</span><br><span class="line"></span><br><span class="line">	mesh-&gt;bind();</span><br><span class="line">	shader-&gt;use();</span><br><span class="line">	glDrawArrays(GL_TRIANGLES, <span class="number">0</span>, <span class="number">36</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里定义了模型矩阵、观察矩阵和投影矩阵，其中模型矩阵 <code>model</code> 对顶点进行旋转变换，<code>glfwGetTime</code> 用于获取当前游戏运行的时间，通过这个时间可以让立方体不断地旋转；观察矩阵 <code>view</code> 定义视图方向，摄像机位于 <code>(0,0,4)</code> 位置，望向 <code>(0,0,0)</code> 位置，摄像机向上方向刚好与 y 轴重合，摄像机视图方向为从屏幕外望向屏幕内；投影矩阵 <code>projection</code> 定义摄像机的裁剪空间，第一个参数定义了摄像机的视角为 45 度，视图宽高比刚好与屏幕宽高比一致，可见 z 轴范围为 <code>(-0.5,3.0)</code>。然后在顶点着色器中让顶点坐标乘上这几个矩阵。</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#version 440 core</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">layout</span>(<span class="keyword">location</span>=<span class="number">0</span>) <span class="keyword">in</span> <span class="type">vec3</span> position;</span><br><span class="line"><span class="keyword">layout</span>(<span class="keyword">location</span>=<span class="number">1</span>) <span class="keyword">in</span> <span class="type">vec2</span> texCoord;</span><br><span class="line"></span><br><span class="line"><span class="keyword">out</span> <span class="type">vec2</span> TexCoord;</span><br><span class="line"></span><br><span class="line"><span class="keyword">uniform</span> <span class="type">mat4</span> model;</span><br><span class="line"><span class="keyword">uniform</span> <span class="type">mat4</span> view;</span><br><span class="line"><span class="keyword">uniform</span> <span class="type">mat4</span> projection;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> main()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">gl_Position</span> = projection * view * model * <span class="type">vec4</span>(position, <span class="number">1.0</span>f);</span><br><span class="line">	TexCoord = <span class="type">vec2</span>(texCoord.x, <span class="number">1.0</span>f - texCoord.y);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果如下。</p>
+<p><img src="http://img.blog.csdn.net/20171018195549799?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveGluZ3hpbm1hbm9uZw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="没启用深度测试"></p>
+<p>这结果看起来并不是我们想要的，这是因为没有启用深度测试，导致后面的片段显示到前面来了。启用深度测试之后，OpenGL 会把所有深度信息保存在 z 缓冲区；每个片段也会存储自己的深度（即它的 z 值），当这个片段要输出它的颜色时，OpenGL 会将它的深度值与 z 缓冲区进行比较，如果当前片段在其它片段之后，则该片段会被丢弃。深度测试默认是关闭的，可以使用 glEnable 和 glDisable 来开启或关闭一个 OpenGL 功能，开启深度测试的代码如下。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glEnable(GL_DEPTH_TEST);</span><br></pre></td></tr></table></figure>
+<p>启用深度测试之后，每次渲染之前不仅要清除颜色缓冲，还要清除深度缓冲。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);</span><br></pre></td></tr></table></figure>
+<p>开启深度测试之后的运行结果。</p>
+<p><img src="http://img.blog.csdn.net/20171018195609944?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveGluZ3hpbm1hbm9uZw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="启用深度测试"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linjinxin.com/2020/01/02/cg/awe-list/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="林锦新">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="B.C. Studio">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/01/02/cg/awe-list/" itemprop="url">【计算机图形】教程与资源清单</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-01-02T14:55:01+08:00">
+                2020-01-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/计算机图形/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机图形</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/01/02/cg/awe-list/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2020/01/02/cg/awe-list/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>这篇文章主要记录一些和计算机图形学相关的教程、资源和素材网站，持续更新···</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/01/02/cg/awe-list/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://linjinxin.com/2019/12/28/opengl/window2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1548,320 +1982,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linjinxin.com/2019/12/03/cocos2dx/tolua2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="林锦新">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="B.C. Studio">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/12/03/cocos2dx/tolua2/" itemprop="url">【Cocos2d-x】使用 tolua++ 导出 C++ 类（3.x版本）</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-03T22:12:41+08:00">
-                2019-12-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Cocos2d-x/" itemprop="url" rel="index">
-                    <span itemprop="name">Cocos2d-x</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2019/12/03/cocos2dx/tolua2/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/12/03/cocos2dx/tolua2/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Cocos2dx 3.x 使用 Python 进行 Lua 绑定，除了为每个类定制配置文件 <code>*.ini</code> 之外，还需要修改可执行脚本 <code>generator.py</code>。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/12/03/cocos2dx/tolua2/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linjinxin.com/2019/12/03/cocos2dx/tolua1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="林锦新">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="B.C. Studio">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/12/03/cocos2dx/tolua1/" itemprop="url">【Cocos2d-x】使用 tolua++ 导出 C++ 类（2.x版本）</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-03T20:28:40+08:00">
-                2019-12-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Cocos2d-x/" itemprop="url" rel="index">
-                    <span itemprop="name">Cocos2d-x</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2019/12/03/cocos2dx/tolua1/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/12/03/cocos2dx/tolua1/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Cocos2dx 2.x 版本使用 tolua++ 进行 Lua 绑定，需要三个文件，包描述文件 <code>*.tolua</code>，定制脚本 <code>basic.lua</code> 和可执行脚本 <code>build.bat</code>。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/12/03/cocos2dx/tolua1/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1916,7 +2036,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1927,7 +2047,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1938,7 +2058,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-count">50</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
