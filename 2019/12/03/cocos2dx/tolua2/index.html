@@ -120,7 +120,7 @@
 <meta property="og:description" content="Cocos2dx 3.x 使用 Python 进行 Lua 绑定，除了为每个类定制配置文件 *.ini 之外，还需要修改可执行脚本 generator.py。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTcwOTI5MjExNDEzMjQ2?x-oss-process=image/format,png">
-<meta property="og:updated_time" content="2020-01-02T04:22:33.141Z">
+<meta property="og:updated_time" content="2021-02-22T12:56:42.193Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【Cocos2d-x】使用 tolua++ 导出 C++ 类（3.x版本）">
 <meta name="twitter:description" content="Cocos2dx 3.x 使用 Python 进行 Lua 绑定，除了为每个类定制配置文件 *.ini 之外，还需要修改可执行脚本 generator.py。">
@@ -436,11 +436,11 @@
 <ul>
 <li><code>tolua_root</code> 为包描述文件 <code>myclass.ini</code> 的路径，即 <code>project_root/cocos/custom</code>；</li>
 <li><code>output_dir</code> 为生成文件的路径，我们放在 <code>project_root/cocos/custom/auto</code> 目录下；</li>
-<li><code>cmd_args</code> 指定我们要导出的 C++ 类，key 是一个 ini 配置文件，value 指定源文件名和导出文件名；这是一个 table，可以指定多个 ini 配置文件，一个配置文件可以配置一个类或多个类；这里我们只需要一个 <code>myclass.ini</code>，源文件名为 <code>myclass</code>，这个源文件名在 <code>myclass.ini</code> 的第一行定义，不是真正的源码的文件名，导出的文件名为 <code>lua_myclass_auto</code>。</li>
+<li><code>cmd_args</code> 指定使用的配置文件以及导出的文件名，这是一个 table，可以指定多个 ini 配置文件，一个配置文件可以配置一个类或多个类，格式为 <code>&quot;ini_file&quot; : (&quot;section&quot;, &quot;output_file&quot;)</code>。这里我们只需要一个 <code>myclass.ini</code>，<code>section</code> 为 <code>myclass</code>，在 <code>myclass.ini</code> 的第一行定义，导出的文件名为 <code>lua_myclass_auto</code>。</li>
 </ul>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># genbindings_myclass.py</span></span><br><span class="line">tolua_root = <span class="string">'%s/tools/tolua'</span> % project_root</span><br><span class="line">output_dir = <span class="string">'%s/tests/custom/auto'</span> % project_root </span><br><span class="line">cmd_args = &#123;<span class="string">'myclass.ini'</span> : (<span class="string">'myclass'</span>, <span class="string">'lua_myclass_auto'</span>)&#125;</span><br></pre></td></tr></table></figure>
 <p>修改 <code>myclass.ini</code>：</p>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 源文件名，与上面 cmd_args 配置的一致</span></span><br><span class="line"><span class="section">[myclass]</span></span><br><span class="line"><span class="attr">prefix</span> = myclass</span><br><span class="line">  </span><br><span class="line"><span class="comment"># 导出的类所在命名空间，在 lua 层使用时需要用到，不写也行，表示在全局空间</span></span><br><span class="line"><span class="attr">target_namespace</span> = cc</span><br><span class="line">  </span><br><span class="line"><span class="comment"># 要导出的 c++ 类头文件路径</span></span><br><span class="line"><span class="attr">headers</span> = %(cocosdir)s/tests/custom/MyClass.h</span><br><span class="line">  </span><br><span class="line"><span class="comment"># 要导出的类名</span></span><br><span class="line"><span class="attr">classes</span> = MyClass</span><br><span class="line"></span><br><span class="line"><span class="attr">skip</span> =</span><br><span class="line"><span class="attr">abstract_classes</span> =</span><br></pre></td></tr></table></figure>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># section，与上面 cmd_args 配置的一致</span></span><br><span class="line"><span class="section">[myclass]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 固定前缀，会加在导出函数的前面</span></span><br><span class="line"><span class="attr">prefix</span> = myclass</span><br><span class="line">  </span><br><span class="line"><span class="comment"># 导出的类所在命名空间，在 lua 层使用时需要用到，不写也行，表示在全局空间</span></span><br><span class="line"><span class="attr">target_namespace</span> = cc</span><br><span class="line">  </span><br><span class="line"><span class="comment"># 要导出的 c++ 类头文件路径</span></span><br><span class="line"><span class="attr">headers</span> = %(cocosdir)s/tests/custom/MyClass.h</span><br><span class="line">  </span><br><span class="line"><span class="comment"># 要导出的类名</span></span><br><span class="line"><span class="attr">classes</span> = MyClass</span><br><span class="line"></span><br><span class="line"><span class="attr">skip</span> =</span><br><span class="line"><span class="attr">abstract_classes</span> =</span><br></pre></td></tr></table></figure>
 <p>总结一下就是创建了 <code>genbindings_myclass.py</code> 和 <code>myclass.ini</code> 这两个文件，接下来在 <code>tools/tolua</code> 文件夹下打开命令行，输入 <code>python genbindings_myclass.py</code>。 如果没错误，将在 <code>tests/custom/auto</code> 目录生成相应的文件。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">|-cocos2d-x-3.x</span><br><span class="line">    |-cocos</span><br><span class="line">        |-custom</span><br><span class="line">            |-MyClass.h</span><br><span class="line">            |-MyClass.cpp</span><br><span class="line">            |-myclass.ini</span><br><span class="line">            |-auto</span><br><span class="line">                |-lua_myclass_auto.hpp</span><br><span class="line">                |-lua_myclass_auto.cpp</span><br><span class="line">                |-api</span><br><span class="line">                    |-MyClass.lua</span><br><span class="line">                    |-lua_myclass_auto.lua</span><br></pre></td></tr></table></figure>
 <p>如果报错，检查一下 <code>genbindings_myclass.py</code> 和 <code>myclass.ini</code> 有没有写错，特别是源文件路径 <em>headers</em> 和 目标文件 <em>output_dir</em>。还有就是 python，pyyaml 和 pyCheetah 是不是全装的 32 位，还有 python 环境变量是否配置对，当然 <code>MyClass.h</code> 和 <code>MyClass.cpp</code> 肯定也不能有错误。</p>
@@ -456,6 +456,15 @@
 <h1 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h1><p><strong>1. NDK 版本不对</strong></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">====</span><br><span class="line">Errors <span class="keyword">in</span> parsing headers:</span><br><span class="line">1. &lt;severity = Fatal,</span><br><span class="line">    location = &lt;SourceLocation file <span class="string">'/home/xxx/NDK/platforms/android-14/arch-arm/usr/include/android/log.h'</span>, line 70, column 10&gt;,</span><br><span class="line">    details = <span class="string">"'stdarg.h' file not found"</span>&gt;</span><br><span class="line">====</span><br></pre></td></tr></table></figure>
 <p>如果出现这个错误，是因为 NDK 工具链 <code>llvm</code> 匹配不上，最简单直接的办法就是换一个版本的 NDK，通常是使用了版本太高的 NDK 才会出现，比如我之前电脑上装了 r10 和 r20 两个版本，不知道什么时候环境变量设成了 <code>NDK_ROOT = D:\Android\android-ndk-r20</code>，把它换成 <code>NDK_ROOT = D:\Android\android-ndk-r10e</code> 就行了。注意要删掉 <code>tools/tolua/userconfi.ini</code>，然后重启终端再执行就可以了。</p>
+<p><strong>2. 类名、头文件路径写错</strong></p>
+<p><code>TranslationUnitLoadError: Error parsing translation unit.</code></p>
+<p>如果报这个错，检查一下类名有没有写错，头文件路径是否正确。</p>
+<p>&lt;!<a href="https://www.jianshu.com/p/48a6fb7123ee&gt;" target="_blank" rel="noopener">https://www.jianshu.com/p/48a6fb7123ee&gt;</a></p>
+<p><strong>3. 命名空间解析不了</strong></p>
+<p><code>Exception: The namespace (flash::FlashSpriteFrame) conversion wasn&#39;t set in &#39;ns_map&#39; section of the conversions.yaml</code></p>
+<p>其实这个报错信息很明显了，在 <code>conversions.yaml</code> 的 <code>ns_map</code> section 中没找到这个命名空间的映射。也就是说如果定义了新的命名空间，不仅要在 ini 文件中定义 <code>target_namespace</code> 和 <code>cpp_namespace</code> 这两个字段，还要在 <code>conversions.yaml</code> 中定义这两个命名空间的映射关系，格式为 <code>&quot;cpp_namespace::&quot;: &quot;target_namespace.&quot;</code>。</p>
+<p><strong>4. 脚本工作目录错误</strong></p>
+<p><code>No option &#39;cxxgeneratordir&#39; in section: &#39;DEFAULT&#39;</code>，报这个错主要是没有进入到脚本所在的目录去执行脚本，有些配置路径就不对了。</p>
 <p>to be continue…</p>
 
       
@@ -594,7 +603,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -616,7 +625,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">51</span>
+                  <span class="site-state-item-count">53</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -679,7 +688,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

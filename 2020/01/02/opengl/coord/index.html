@@ -111,13 +111,13 @@
 
 
 
-<meta name="description" content="前言为了计算方便，OpenGL 引入了五个坐标空间，每个空间都有其发挥作用的地方，这些坐标空间在 CPU 或顶点着色器中进行转换。顶点着色器运行之后，所有顶点位置被转换成标准化设备坐标，即在 -1.0~1.0 之间，超出这个范围的顶点将被裁剪掉。标准化坐标之后的顶点传入光栅器，由光栅器转换成屏幕坐标显示在屏幕上。 坐标空间 OpenGL 共使用了五个坐标空间。  局部空间，又叫物体空间，局部">
+<meta name="description" content="OpenGL 引入五个坐标空间，分别是局部坐标、世界坐标、观察坐标、裁剪坐标和屏蔽坐标，每个坐标空间想到独立，各司其职；创建一个对象时，往往使用的是局部坐标，渲染的时候通过一步步转换最后变成屏幕坐标在屏幕上绘制。">
 <meta name="keywords" content="OpenGL 坐标系统,OpenGL 正交投影,OpenGL 透视投影,OpenGL 矩阵">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【OpenGL】坐标系统">
 <meta property="og:url" content="http://linjinxin.com/2020/01/02/opengl/coord/index.html">
 <meta property="og:site_name" content="B.C. Studio">
-<meta property="og:description" content="前言为了计算方便，OpenGL 引入了五个坐标空间，每个空间都有其发挥作用的地方，这些坐标空间在 CPU 或顶点着色器中进行转换。顶点着色器运行之后，所有顶点位置被转换成标准化设备坐标，即在 -1.0~1.0 之间，超出这个范围的顶点将被裁剪掉。标准化坐标之后的顶点传入光栅器，由光栅器转换成屏幕坐标显示在屏幕上。 坐标空间 OpenGL 共使用了五个坐标空间。  局部空间，又叫物体空间，局部">
+<meta property="og:description" content="OpenGL 引入五个坐标空间，分别是局部坐标、世界坐标、观察坐标、裁剪坐标和屏蔽坐标，每个坐标空间想到独立，各司其职；创建一个对象时，往往使用的是局部坐标，渲染的时候通过一步步转换最后变成屏幕坐标在屏幕上绘制。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://learnopengl.com/img/getting-started/coordinate_systems.png">
 <meta property="og:image" content="https://learnopengl.com/img/getting-started/perspective_frustum.png">
@@ -130,10 +130,10 @@
 <meta property="og:image" content="http://img.blog.csdn.net/20171025211718638?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveGluZ3hpbm1hbm9uZw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
 <meta property="og:image" content="http://img.blog.csdn.net/20171018195549799?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveGluZ3hpbm1hbm9uZw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
 <meta property="og:image" content="http://img.blog.csdn.net/20171018195609944?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveGluZ3hpbm1hbm9uZw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
-<meta property="og:updated_time" content="2020-02-18T10:16:36.366Z">
+<meta property="og:updated_time" content="2021-02-22T12:56:42.196Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【OpenGL】坐标系统">
-<meta name="twitter:description" content="前言为了计算方便，OpenGL 引入了五个坐标空间，每个空间都有其发挥作用的地方，这些坐标空间在 CPU 或顶点着色器中进行转换。顶点着色器运行之后，所有顶点位置被转换成标准化设备坐标，即在 -1.0~1.0 之间，超出这个范围的顶点将被裁剪掉。标准化坐标之后的顶点传入光栅器，由光栅器转换成屏幕坐标显示在屏幕上。 坐标空间 OpenGL 共使用了五个坐标空间。  局部空间，又叫物体空间，局部">
+<meta name="twitter:description" content="OpenGL 引入五个坐标空间，分别是局部坐标、世界坐标、观察坐标、裁剪坐标和屏蔽坐标，每个坐标空间想到独立，各司其职；创建一个对象时，往往使用的是局部坐标，渲染的时候通过一步步转换最后变成屏幕坐标在屏幕上绘制。">
 <meta name="twitter:image" content="https://learnopengl.com/img/getting-started/coordinate_systems.png">
 
 
@@ -417,8 +417,10 @@
       
 
       
-        <a id="more"></a>
+        <p>OpenGL 引入五个坐标空间，分别是局部坐标、世界坐标、观察坐标、裁剪坐标和屏蔽坐标，每个坐标空间想到独立，各司其职；创建一个对象时，往往使用的是局部坐标，渲染的时候通过一步步转换最后变成屏幕坐标在屏幕上绘制。</p>
+<a id="more"></a>
 <blockquote>
+<p>当断不断，必受其乱。</p>
 </blockquote>
 <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>为了计算方便，OpenGL 引入了五个坐标空间，每个空间都有其发挥作用的地方，这些坐标空间在 CPU 或顶点着色器中进行转换。顶点着色器运行之后，所有顶点位置被转换成标准化设备坐标，即在 -1.0~1.0 之间，超出这个范围的顶点将被裁剪掉。标准化坐标之后的顶点传入光栅器，由光栅器转换成屏幕坐标显示在屏幕上。</p>
 <h1 id="坐标空间"><a href="#坐标空间" class="headerlink" title="坐标空间"></a>坐标空间</h1><p><img src="https://learnopengl.com/img/getting-started/coordinate_systems.png" alt="五个坐标空间"></p>
@@ -681,7 +683,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -703,7 +705,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">51</span>
+                  <span class="site-state-item-count">53</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -766,7 +768,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
