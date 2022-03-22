@@ -305,7 +305,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linjinxin.com/2021/02/22/lua/metatable/">
+    <link itemprop="mainEntityOfPage" href="http://linjinxin.com/2021/02/22/c++/lite-talk/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="林锦新">
@@ -324,7 +324,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2021/02/22/lua/metatable/" itemprop="url">【Lua 浅入浅出】元表的秘密</a></h2>
+                <a class="post-title-link" href="/2021/02/22/c++/lite-talk/" itemprop="url">【C++】C++ 杂谈</a></h2>
         
 
         <div class="post-meta">
@@ -336,7 +336,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-02-22T20:48:31+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-02-22T21:22:06+08:00">
                 2021-02-22
               </time>
             
@@ -359,8 +359,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Lua/" itemprop="url" rel="index">
-                    <span itemprop="name">Lua</span>
+                  <a href="/categories/C/" itemprop="url" rel="index">
+                    <span itemprop="name">C++</span>
                   </a>
                 </span>
 
@@ -377,9 +377,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2021/02/22/lua/metatable/#comments" itemprop="discussionUrl">
+                <a href="/2021/02/22/c++/lite-talk/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2021/02/22/lua/metatable/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2021/02/22/c++/lite-talk/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -408,36 +408,14 @@
 
       
         
-          
-            <a id="more"></a>
-<blockquote>
-</blockquote>
-<p>在 Lua 中，可以为 table 或 userdata 定义元表来定义其行为，string 有一个共享的元表，无法更改但可以修改这个共享元表，其它类型没有元表也无法设置元表。元表实现了 table 的“运算符重载”，同时也是面向对象的根基。</p>
-<!-- more -->
-<h1 id="什么是元表"><a href="#什么是元表" class="headerlink" title="什么是元表"></a>什么是元表</h1><ul>
-<li>Lua 中可以为数据类型定义一套预定义的操作集，表示这个类型的值可以进行什么操作，这个操作集就是它的元表；</li>
-<li>对一个变量值进行某种运算时，会首先查找它有没有元表，元表中有没有这个运算对应的方法，这个方法称之为元方法；</li>
-<li>有点类似于高级语言中的运算符重载，即给数据类型定义一个运算符映射的方法，当其对执行运算符操作时就会执行这个方法。<blockquote>
-<p>举个例子，假设 a, b 是非数字类型的变量，执行 a+b 操作时，会查找 a 或 b 的元表中有没有 + 运算符对应的元方法，即 <code>__add</code> 方法，有则调用这个元方法，没有则操作不合法。</p>
-</blockquote>
-</li>
-</ul>
-<h1 id="谁有元表"><a href="#谁有元表" class="headerlink" title="谁有元表"></a>谁有元表</h1><p>只有 table，string 和 userdata 类型有元表,</p>
-<ol>
-<li>所有 string 变量共享一个元表且默认就有元表且无法更改元表，但可以修改这个共享元表，比如扩展元方法；</li>
-<li>每个 table 变量可以设置一个共享元表也可以设置独有的元表，无默认元表；</li>
-<li>其它类型的变量既无默认元表也无法设置元表。</li>
-</ol>
-<ul>
-<li>函数 <code>getmetatable</code> 用于获取一个值的元表，返回一个 table 或 nil；</li>
-<li>函数 <code>setmetatable</code> 给一个值设置一个元表，如果可以的话。</li>
-</ul>
-<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- example: metatable for string</span></span><br><span class="line"><span class="keyword">local</span> b = <span class="string">"test"</span></span><br><span class="line"><span class="keyword">local</span> c = <span class="string">"lua"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">local</span> meta1 = <span class="built_in">getmetatable</span>(b)</span><br><span class="line"><span class="keyword">local</span> meta2 = <span class="built_in">getmetatable</span>(c)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(meta1, meta2, meta1.<span class="built_in">__add</span>) <span class="comment">-- table: 0118A750 table: 0118A750 nil</span></span><br><span class="line"></span><br><span class="line">meta1.<span class="built_in">__add</span> = <span class="function"><span class="keyword">function</span><span class="params">(s1, s2)</span></span></span><br><span class="line">    <span class="keyword">return</span> s1 .. <span class="string">" "</span> .. s2</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(meta2.<span class="built_in">__add</span>) <span class="comment">-- function: 01190E90</span></span><br><span class="line"><span class="built_in">print</span>(b + c) <span class="comment">-- test lua</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">setmetatable</span>(b, &#123;&#125;) <span class="comment">-- error</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- example: metatable for table</span></span><br><span class="line"><span class="keyword">local</span> tab = &#123;&#125;</span><br><span class="line"><span class="keyword">local</span> meta = &#123;&#125;</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">getmetatable</span>(tab)) <span class="comment">-- nil</span></span><br><span class="line"><span class="built_in">setmetatable</span>(tab, meta)</span><br><span class="line"><span class="keyword">local</span> tab2 = &#123;&#125;</span><br><span class="line"><span class="built_in">setmetatable</span>(tab2, <span class="built_in">getmetatable</span>(tab))</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">getmetatable</span>(tab) == <span class="built_in">getmetatable</span>(tab2)) <span class="comment">-- true</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- example: other type has no metatable</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">getmetatable</span>(<span class="number">1</span>)) <span class="comment">-- nil</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">getmetatable</span>(<span class="literal">true</span>)) <span class="comment">-- nil</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">getmetatable</span>(<span class="literal">nil</span>)) <span class="comment">-- nil</span></span><br><span class="line"><span class="built_in">setmetatable</span>(<span class="number">1</span>, &#123;&#125;) <span class="comment">-- error</span></span><br><span class="line"><span class="built_in">setmetatable</span>(<span class="literal">false</span>, &#123;&#125;) <span class="comment">-- error</span></span><br><span class="line"><span class="built_in">setmetatable</span>(<span class="literal">nil</span>, &#123;&#125;) <span class="comment">-- error</span></span><br></pre></td></tr></table></figure>
-<h1 id="元方法"><a href="#元方法" class="headerlink" title="元方法"></a>元方法</h1><p>在元表中，很多运算符都有对应的元方法名，只要定义了对应的元方法，即可进行运算符操作。</p>
-<h2 id="算术运算元方法"><a href="#算术运算元方法" class="headerlink" title="算术运算元方法"></a>算术运算元方法</h2>
-          
+          <p>常量指针是一个指针，指向的对象是常量；指针常量是一个常量指针，不能修改指向对象；常量指针常量则是指向常量的常量指针，即不能修改指向对象，也不能通过指针修改对象的值。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2021/02/22/c++/lite-talk/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1947,7 +1925,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1958,7 +1936,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-count">58</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -2005,7 +1983,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
